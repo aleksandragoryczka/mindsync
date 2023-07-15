@@ -18,7 +18,7 @@ import lombok.Setter;
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long Id;
+	private Long id;
 
 	@NotBlank
 	@Size(min = 3, max = 40)
