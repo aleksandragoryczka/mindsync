@@ -11,7 +11,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "users")
+@Table(name = "users", uniqueConstraints = { @UniqueConstraint(columnNames = { "username" }),
+		@UniqueConstraint(columnNames = { "email" }) })
 @Setter
 @Getter
 public class User {
@@ -20,11 +21,11 @@ public class User {
 	private Long Id;
 
 	@NotBlank
-	@Size(max = 40)
+	@Size(min = 3, max = 40)
 	private String name;
 
 	@NotBlank
-	@Size(max = 15)
+	@Size(min = 3, max = 15)
 	private String username;
 
 	@NotBlank
@@ -33,7 +34,7 @@ public class User {
 	private String email;
 
 	@NotBlank
-	@Size(max = 40)
+	@Size(min = 6, max = 40)
 	private String password;
 
 	@ManyToMany(fetch = FetchType.LAZY)
