@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.project.mindsync.dto.request.RegisterRequestDto;
+import com.project.mindsync.dto.response.ApiResponseDto;
 import com.project.mindsync.exception.AppException;
+import com.project.mindsync.exception.ResourceNotFoundException;
 import com.project.mindsync.model.Role;
 import com.project.mindsync.model.User;
 import com.project.mindsync.model.enums.RoleName;
@@ -18,7 +20,7 @@ import com.project.mindsync.repository.RoleRepository;
 import com.project.mindsync.repository.UserRepository;
 
 @Service
-public class AuthService {
+public class UserService {
 	// @Autowired
 	// AuthenticationManager authenticationManager;
 
@@ -46,10 +48,22 @@ public class AuthService {
 
 		Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
 				.orElseThrow(() -> new AppException("User Role is not set."));
+		newUser.setActive(true);
 		newUser.setRoles(Collections.singleton(userRole));
 
 		userRepository.save(newUser);
 		return newUser;
+	}
+
+	public ApiResponseDto deleteUser(Long userId) {
+		User user = userRepository.findById(userId)
+				.orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));
+		// TODO: Add user principal!?
+
+		user.setActive(false);
+		userRepository.save(user);
+		return new ApiResponseDto(true, "Successfully deleted account of: " + user.getUsername());
+
 	}
 
 }
