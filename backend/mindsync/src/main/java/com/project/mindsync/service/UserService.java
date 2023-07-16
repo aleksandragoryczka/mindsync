@@ -30,31 +30,6 @@ public class UserService {
 	@Autowired
 	RoleRepository roleRepository;
 
-	// @Autowired
-	// PasswordEncoder passwordEncoder;
-
-	// @Autowired
-	// JwtTokenProvider tokenProvider;
-
-	public User registerUser(RegisterRequestDto registerRequest) {
-		if (userRepository.existsByUsername(registerRequest.getUsername())
-				|| userRepository.existsByEmail(registerRequest.getEmail())) {
-			return null;
-		}
-
-		User newUser = new User(registerRequest.getName(), registerRequest.getUsername(), registerRequest.getEmail(),
-				registerRequest.getPassword());
-		// TODO: newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
-
-		Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
-				.orElseThrow(() -> new AppException("User Role is not set."));
-		newUser.setActive(true);
-		newUser.setRoles(Collections.singleton(userRole));
-
-		userRepository.save(newUser);
-		return newUser;
-	}
-
 	public ApiResponseDto deleteUser(Long userId) {
 		User user = userRepository.findById(userId)
 				.orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));

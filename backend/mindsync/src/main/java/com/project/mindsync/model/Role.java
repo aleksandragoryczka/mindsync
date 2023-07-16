@@ -1,5 +1,7 @@
 package com.project.mindsync.model;
 
+import org.hibernate.annotations.NaturalId;
+
 import com.project.mindsync.model.enums.RoleName;
 
 import jakarta.persistence.*;
