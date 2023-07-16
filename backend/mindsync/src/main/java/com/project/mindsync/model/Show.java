@@ -1,5 +1,7 @@
 package com.project.mindsync.model;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.hibernate.annotations.OnDelete;
@@ -45,5 +47,17 @@ public class Show {
 	@JsonIgnore
 	@OneToMany(mappedBy = "show", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Screenshot> screenshots;
+
+	public List<Screenshot> getScreenshots() {
+		return screenshots == null ? null : new ArrayList<>(screenshots);
+	}
+
+	public void setScreenshots(List<Screenshot> screenshots) {
+		if (screenshots == null) {
+			this.screenshots = null;
+		} else {
+			this.screenshots = Collections.unmodifiableList(screenshots);
+		}
+	}
 
 }

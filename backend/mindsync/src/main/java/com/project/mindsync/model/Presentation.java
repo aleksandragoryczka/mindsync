@@ -61,4 +61,16 @@ public class Presentation {
 			this.slides = Collections.unmodifiableList(slides);
 		}
 	}
+
+	public List<Show> getShows() {
+		return shows == null ? null : new ArrayList<>(shows);
+	}
+
+	public void setShows(List<Show> shows) {
+		if (shows == null) {
+			this.shows = null;
+		} else {
+			this.shows = Collections.unmodifiableList(shows);
+		}
+	}
 }

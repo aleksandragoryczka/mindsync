@@ -1,5 +1,7 @@
 package com.project.mindsync.model;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.validation.constraints.NotBlank;
@@ -50,4 +52,16 @@ public class Slide {
 	@JsonIgnore
 	@OneToMany(mappedBy = "slide", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Option> options;
+
+	public List<Option> getOptions() {
+		return options == null ? null : new ArrayList<>(options);
+	}
+
+	public void setOptions(List<Option> options) {
+		if (options == null) {
+			this.options = null;
+		} else {
+			this.options = Collections.unmodifiableList(options);
+		}
+	}
 }
