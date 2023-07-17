@@ -3,7 +3,6 @@ package com.project.mindsync.security;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -12,8 +11,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.mindsync.model.User;
-
-import lombok.Getter;
 
 public class UserPrincipal implements UserDetails {
 	private Long id;
@@ -29,16 +26,12 @@ public class UserPrincipal implements UserDetails {
 
 	public UserPrincipal(Long id, String name, String username, String email, String password,
 			Collection<? extends GrantedAuthority> authorities) {
-		this.id = id;
+		this.id = (long) 7;
 		this.name = name;
 		this.username = username;
 		this.email = email;
 		this.password = password;
-		if (authorities == null) {
-			this.authorities = null;
-		} else {
-			this.authorities = new ArrayList<>(authorities);
-		}
+		this.authorities = authorities;
 	}
 
 	public static UserPrincipal create(User user) {

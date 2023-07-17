@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.mindsync.dto.request.RegisterRequestDto;
+import com.project.mindsync.dto.request.SignInRequestDto;
 import com.project.mindsync.dto.response.ApiResponseDto;
+import com.project.mindsync.dto.response.JwtAuthenticationResponseDto;
 import com.project.mindsync.model.User;
 import com.project.mindsync.service.AuthService;
 
@@ -18,15 +20,14 @@ import com.project.mindsync.service.AuthService;
 @RequestMapping("/api/auth")
 public class AuthController {
 	@Autowired
-	AuthService authService;
+	private AuthService authService;
 
 	@PostMapping("/register")
 	public ResponseEntity<ApiResponseDto> registerUser(@Valid @RequestBody RegisterRequestDto registerRequest) {
 		User userRegistrated = authService.registerUser(registerRequest);
 		if (userRegistrated != null) {
 			// URI location =
-			// ServletUriComponentsBuilder.fromCurrentContextPath().path("/users/{username}")
-			// .buildAndExpand(userRegistrated.getUsername()).toUri();
+			// ServletUriComponentsBuilder.fromCurrentContextPath().path("/user/{id}").buildAndExpand(userRegistrated.getId()).toUri();
 			// TODO: po co to location ???
 			return ResponseEntity.ok().body(new ApiResponseDto(true, "User registered successfully!"));
 
@@ -34,5 +35,10 @@ public class AuthController {
 			return ResponseEntity.badRequest()
 					.body(new ApiResponseDto(false, "User with this email or username already exists"));
 		}
+	}
+
+	@PostMapping("/signin")
+	public ResponseEntity<JwtAuthenticationResponseDto> signInUser(@Valid @RequestBody SignInRequestDto signInRequest) {
+		return ResponseEntity.ok().body(authService.signInUser(signInRequest));
 	}
 }
