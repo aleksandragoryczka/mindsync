@@ -13,6 +13,8 @@ import com.project.mindsync.model.User;
 import com.project.mindsync.model.enums.RoleName;
 import com.project.mindsync.repository.RoleRepository;
 import com.project.mindsync.repository.UserRepository;
+import com.project.mindsync.security.JwtTokenProvider;
+import com.project.mindsync.security.JwtUtils;
 
 @Service
 public class AuthService {
@@ -22,12 +24,12 @@ public class AuthService {
 	@Autowired
 	RoleRepository roleRepository;
 
-	//@Autowired
-	//PasswordEncoder passwordEncoder;
+	@Autowired
+	PasswordEncoder passwordEncoder;
 	// TODO: Implement PasswordEncoder better (?)
 
-	// @Autowired
-	// JwtTokenProvider tokenProvider;
+	@Autowired
+	JwtUtils tokenProvider;
 
 	public User registerUser(RegisterRequestDto registerRequest) {
 		if (userRepository.existsByUsername(registerRequest.getUsername())
@@ -37,7 +39,7 @@ public class AuthService {
 		System.out.println("kkkkkkkkkkkkkkkkkk");
 		User newUser = new User(registerRequest.getName(), registerRequest.getUsername(), registerRequest.getEmail(),
 				registerRequest.getPassword());
-		//newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
+		newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
 
 		Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
 				.orElseThrow(() -> new AppException("User Role is not set."));
