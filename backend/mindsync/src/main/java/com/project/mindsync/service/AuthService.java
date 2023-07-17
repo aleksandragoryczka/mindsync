@@ -49,7 +49,6 @@ public class AuthService {
 
 		Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
 				.orElseThrow(() -> new AppException("User Role is not set."));
-		newUser.setActive(true);
 		newUser.setRoles(Collections.singleton(userRole));
 
 		userRepository.save(newUser);
