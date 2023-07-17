@@ -34,7 +34,7 @@ public class AuthService {
 				|| userRepository.existsByEmail(registerRequest.getEmail())) {
 			return null;
 		}
-
+		System.out.println("kkkkkkkkkkkkkkkkkk");
 		User newUser = new User(registerRequest.getName(), registerRequest.getUsername(), registerRequest.getEmail(),
 				registerRequest.getPassword());
 		//newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));

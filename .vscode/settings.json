@@ -1,29 +1,30 @@
 {
-    "editor.formatOnSave": true,
-    "[typescript]": {
-        "editor.formatOnSave": true
-    },
-    "[html]": {
-        "editor.formatOnSave": true
-    },
-    "[scss]": {
+  "editor.formatOnSave": true,
+  "[typescript]": {
     "editor.formatOnSave": true
-    },
-    "editor.codeActionsOnSave": {
-        "source.fixAll.eslint": true
-    },
-    "eslint.alwaysShowStatus": true,
-    "bracketSpacing": true,
-    "printWidth": 166,
-    "semi": true,
-    "singleQuote": true,
-    "tabWidth": 2,
-    "trailingComma": "es5",
-    "useTabs": false,
-    "java.format.settings.url": ".vscode/java-formatter.xml",
-    "[java]": {
-        "editor.detectIndentation": true,
-        "editor.insertSpaces": false
-    },
-    "java.configuration.updateBuildConfiguration": "interactive"
+  },
+  "[html]": {
+    "editor.formatOnSave": true
+  },
+  "[scss]": {
+    "editor.formatOnSave": true
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "eslint.alwaysShowStatus": true,
+  "bracketSpacing": true,
+  "printWidth": 166,
+  "semi": true,
+  "singleQuote": true,
+  "tabWidth": 2,
+  "trailingComma": "es5",
+  "useTabs": false,
+  "java.format.settings.url": ".vscode/java-formatter.xml",
+  "[java]": {
+    "editor.detectIndentation": true,
+    "editor.insertSpaces": false
+  },
+  "java.configuration.updateBuildConfiguration": "interactive",
+  "java.compile.nullAnalysis.mode": "automatic"
 }
