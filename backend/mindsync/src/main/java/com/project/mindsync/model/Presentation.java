@@ -1,12 +1,16 @@
 package com.project.mindsync.model;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.springframework.data.annotation.CreatedDate;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -43,6 +47,10 @@ public class Presentation {
 	@JsonIgnore
 	@OneToMany(mappedBy = "presentation", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Show> shows;
+
+	@CreatedDate
+	@Column(name = "created_at", nullable = false, updatable = false)
+	private Instant createdAt;
 
 	public List<Slide> getSlides() {
 		return slides == null ? null : new ArrayList<>(slides);
