@@ -1,7 +1,5 @@
 package com.project.mindsync.service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -10,31 +8,32 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.project.mindsync.dto.response.PagedResponseDto;
-import com.project.mindsync.dto.response.PresentationResponseDto;
+import com.project.mindsync.exception.ResourceNotFoundException;
 import com.project.mindsync.model.Presentation;
 import com.project.mindsync.model.User;
 import com.project.mindsync.repository.PresentationRepository;
+import com.project.mindsync.repository.UserRepository;
 import com.project.mindsync.security.UserPrincipal;
 import com.project.mindsync.utils.AppUtils;
 
-import org.modelmapper.ModelMapper;
-
 @Service
-public class PresentationService {
+public class PresentationServiceImpl {
 	private static final String CREATED_AT = "createdAt";
 
 	@Autowired
 	private PresentationRepository presentationRepository;
 
-	public PagedResponseDto<Presentation> getAllSlidesForUser(UserPrincipal currentUser, int page, int size) {
+	@Autowired
+	private UserRepository userRepository;
 
+	public PagedResponseDto<Presentation> getUserPresentations(Long id, int page, int size) {
+		User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User", "id", id));
 		AppUtils.validatePageNumberAndSIze(page, size);
-		Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, CREATED_AT); // TODO: sortowanie??
-		Page<Presentation> presentatations = presentationRepository.findByUserId(currentUser.getId(), pageable);
+		Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, CREATED_AT);
+		Page<Presentation> presentatations = presentationRepository.findByUserId(user.getId(), pageable);
 
 		List<Presentation> content = presentatations.getNumberOfElements() == 0 ? Collections.emptyList()
 				: presentatations.getContent();

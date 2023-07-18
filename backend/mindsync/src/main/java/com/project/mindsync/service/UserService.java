@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.project.mindsync.dto.response.ApiResponseDto;
+import com.project.mindsync.dto.response.UserSummaryResponseDto;
 import com.project.mindsync.exception.ResourceNotFoundException;
 import com.project.mindsync.model.User;
 import com.project.mindsync.repository.RoleRepository;
@@ -18,6 +19,10 @@ public class UserService {
 
 	@Autowired
 	RoleRepository roleRepository;
+
+	public UserSummaryResponseDto getCurrentUser(UserPrincipal currentUser) {
+		return new UserSummaryResponseDto(currentUser.getName(), currentUser.getUsername(), currentUser.getEmail());
+	}
 
 	public ApiResponseDto deleteUser(Long userId, UserPrincipal currentUser) {
 		User user = userRepository.findById(userId)

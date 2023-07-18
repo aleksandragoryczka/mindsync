@@ -22,7 +22,7 @@ import com.project.mindsync.repository.UserRepository;
 import com.project.mindsync.security.JwtUtils;
 
 @Service
-public class AuthService {
+public class AuthServiceImpl {
 	@Autowired
 	UserRepository userRepository;
 

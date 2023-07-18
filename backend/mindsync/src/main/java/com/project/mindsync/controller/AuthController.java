@@ -14,13 +14,13 @@ import com.project.mindsync.dto.request.SignInRequestDto;
 import com.project.mindsync.dto.response.ApiResponseDto;
 import com.project.mindsync.dto.response.JwtAuthenticationResponseDto;
 import com.project.mindsync.model.User;
-import com.project.mindsync.service.AuthService;
+import com.project.mindsync.service.AuthServiceImpl;
 
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
 	@Autowired
-	private AuthService authService;
+	private AuthServiceImpl authService;
 
 	@PostMapping("/register")
 	public ResponseEntity<ApiResponseDto> registerUser(@Valid @RequestBody RegisterRequestDto registerRequest) {
