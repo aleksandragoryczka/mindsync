@@ -39,6 +39,7 @@ public class AuthServiceImpl implements AuthService {
 	@Autowired
 	private AuthenticationManager authenticationManager;
 
+	@Override
 	public User registerUser(RegisterRequestDto registerRequest) {
 		if (userRepository.existsByUsername(registerRequest.getUsername())
 				|| userRepository.existsByEmail(registerRequest.getEmail())) {
@@ -56,6 +57,7 @@ public class AuthServiceImpl implements AuthService {
 		return newUser;
 	}
 
+	@Override
 	public JwtAuthenticationResponseDto signInUser(SignInRequestDto signInRequest) {
 		Authentication authentication = authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(signInRequest.getUsername(), signInRequest.getPassword()));

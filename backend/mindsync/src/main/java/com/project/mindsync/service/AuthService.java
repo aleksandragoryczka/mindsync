@@ -6,7 +6,7 @@ import com.project.mindsync.dto.response.JwtAuthenticationResponseDto;
 import com.project.mindsync.model.User;
 
 public interface AuthService {
-	public User registerUser(RegisterRequestDto registerRequest);
+	User registerUser(RegisterRequestDto registerRequest);
 
-	public JwtAuthenticationResponseDto signInUser(SignInRequestDto signInRequest);
+	JwtAuthenticationResponseDto signInUser(SignInRequestDto signInRequest);
 }

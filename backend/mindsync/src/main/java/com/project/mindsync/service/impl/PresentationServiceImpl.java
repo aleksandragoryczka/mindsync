@@ -30,6 +30,7 @@ public class PresentationServiceImpl implements PresentationService {
 	@Autowired
 	private UserRepository userRepository;
 
+	@Override
 	public PagedResponseDto<Presentation> getUserPresentations(Long id, int page, int size) {
 		User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User", "id", id));
 		AppUtils.validatePageNumberAndSIze(page, size);
