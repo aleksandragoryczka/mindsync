@@ -1,4 +1,4 @@
-package com.project.mindsync.service;
+package com.project.mindsync.service.impl;
 
 import java.util.Collections;
 
@@ -20,9 +20,10 @@ import com.project.mindsync.model.enums.RoleName;
 import com.project.mindsync.repository.RoleRepository;
 import com.project.mindsync.repository.UserRepository;
 import com.project.mindsync.security.JwtUtils;
+import com.project.mindsync.service.AuthService;
 
 @Service
-public class AuthServiceImpl {
+public class AuthServiceImpl implements AuthService {
 	@Autowired
 	UserRepository userRepository;
 
@@ -56,8 +57,8 @@ public class AuthServiceImpl {
 	}
 
 	public JwtAuthenticationResponseDto signInUser(SignInRequestDto signInRequest) {
-		Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-				signInRequest.getUsername(), signInRequest.getPassword()));
+		Authentication authentication = authenticationManager.authenticate(
+				new UsernamePasswordAuthenticationToken(signInRequest.getUsername(), signInRequest.getPassword()));
 
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		String jwt = tokenProvider.generateTokenFromUsername(signInRequest.getUsername());

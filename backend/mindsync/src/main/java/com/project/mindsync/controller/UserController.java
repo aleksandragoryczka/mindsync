@@ -14,8 +14,8 @@ import com.project.mindsync.dto.response.UserSummaryResponseDto;
 import com.project.mindsync.model.Presentation;
 import com.project.mindsync.security.CurrentUser;
 import com.project.mindsync.security.UserPrincipal;
-import com.project.mindsync.service.PresentationServiceImpl;
-import com.project.mindsync.service.UserService;
+import com.project.mindsync.service.impl.PresentationServiceImpl;
+import com.project.mindsync.service.impl.UserServiceImpl;
 import com.project.mindsync.utils.AppConstants;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/api/user")
 public class UserController {
 	@Autowired
-	UserService userService;
+	UserServiceImpl userService;
 
 	@Autowired
 	PresentationServiceImpl presentationService;

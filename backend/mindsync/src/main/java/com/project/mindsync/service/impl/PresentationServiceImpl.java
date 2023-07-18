@@ -1,4 +1,4 @@
-package com.project.mindsync.service;
+package com.project.mindsync.service.impl;
 
 import java.util.Collections;
 import java.util.List;
@@ -17,10 +17,11 @@ import com.project.mindsync.model.User;
 import com.project.mindsync.repository.PresentationRepository;
 import com.project.mindsync.repository.UserRepository;
 import com.project.mindsync.security.UserPrincipal;
+import com.project.mindsync.service.PresentationService;
 import com.project.mindsync.utils.AppUtils;
 
 @Service
-public class PresentationServiceImpl {
+public class PresentationServiceImpl implements PresentationService {
 	private static final String CREATED_AT = "createdAt";
 
 	@Autowired
