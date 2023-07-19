@@ -22,8 +22,8 @@ public class PresentationRequestDto {
 	}
 
 	public void setSlides(List<Slide> slides) {
-		if (slides == null) {
-			this.slides = null;
+		if (slides.isEmpty()) {
+			this.slides = new ArrayList<>(slides);
 		} else {
 			this.slides = Collections.unmodifiableList(slides);
 		}

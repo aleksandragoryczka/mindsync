@@ -41,7 +41,6 @@ public class Presentation extends DateAudit {
 	@JsonIgnore
 	private User user;
 
-	@JsonIgnore
 	@OneToMany(mappedBy = "presentation", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Slide> slides;
 

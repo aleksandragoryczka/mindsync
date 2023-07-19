@@ -15,14 +15,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.project.mindsync.dto.request.PresentationRequestDto;
+import com.project.mindsync.dto.response.ApiResponseDto;
 import com.project.mindsync.dto.response.PagedResponseDto;
 import com.project.mindsync.exception.ResourceNotFoundException;
+import com.project.mindsync.exception.UnauthorizedException;
 import com.project.mindsync.model.Presentation;
 import com.project.mindsync.model.User;
 import com.project.mindsync.repository.PresentationRepository;
 import com.project.mindsync.repository.UserRepository;
 import com.project.mindsync.security.UserPrincipal;
 import com.project.mindsync.service.PresentationService;
+import com.project.mindsync.utils.AppConstants;
 import com.project.mindsync.utils.AppUtils;
 
 @Service
@@ -50,16 +53,50 @@ public class PresentationServiceImpl implements PresentationService {
 	}
 
 	@Override
+	public Presentation getPresentation(Long id) {
+		return presentationRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Presentation", "Id", id));
+	}
+
+	@Override
 	public ResponseEntity<Presentation> addPresentation(PresentationRequestDto presentationRequest,
 			UserPrincipal currentUser) {
 		User user = userRepository.getUser(currentUser);
 
 		Presentation presentation = new Presentation();
 		presentation.setTitle(presentationRequest.getTitle());
+		presentation.setSlides(presentationRequest.getSlides());
 		presentation.setUser(user);
 		presentation.setCode(generateCode());
 		Presentation newPresentation = presentationRepository.save(presentation);
 		return ResponseEntity.ok().body(newPresentation);
+	}
+
+	@Override
+	public Presentation updatePresentation(Long id, PresentationRequestDto updatedPresentationRequest,
+			UserPrincipal currentUser) {
+		Presentation presentation = presentationRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException(AppConstants.PRESENTATION, AppConstants.ID, id));
+		if (AppUtils.checkUserIsCurrentUserOrAdmin(presentation.getUser(), currentUser)) {
+			presentation.setTitle(updatedPresentationRequest.getTitle());
+			presentation.setSlides(updatedPresentationRequest.getSlides());
+			// presentation.setShows(updatedPresentationRequest.);
+			return presentationRepository.save(presentation);
+		}
+		ApiResponseDto apiResponse = new ApiResponseDto(false, "You do not have permissions to edit that post.");
+		throw new UnauthorizedException(apiResponse);
+	}
+
+	@Override
+	public ApiResponseDto deletePresentation(Long id, UserPrincipal currentUser) {
+		Presentation presentation = presentationRepository.findById(id).orElseThrow(
+				() -> new ResourceNotFoundException(AppConstants.PRESENTATION, AppConstants.ID, currentUser));
+		if (AppUtils.checkUserIsCurrentUserOrAdmin(presentation.getUser(), currentUser)) {
+			presentationRepository.deleteById(id);
+			return new ApiResponseDto(true, "Successfully deleted presentation");
+		}
+		ApiResponseDto apiResponse = new ApiResponseDto(false, "You do not have permissions to delete that post.");
+		throw new UnauthorizedException(apiResponse);
 	}
 
 	private String generateCode() {
@@ -80,12 +117,6 @@ public class PresentationServiceImpl implements PresentationService {
 		} while (codeExists);
 
 		return codeGenerated;
-	}
-
-	@Override
-	public Presentation getPresentation(Long id) {
-		return presentationRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("Presentation", "Id", id));
 	}
 
 }
