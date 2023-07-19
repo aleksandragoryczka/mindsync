@@ -10,6 +10,8 @@ import com.project.mindsync.security.UserPrincipal;
 public interface PresentationService {
 	PagedResponseDto<Presentation> getUserPresentations(Long id, int page, int size);
 
+	Presentation getPresentation(Long id);
+
 	ResponseEntity<Presentation> addPresentation(PresentationRequestDto presentationRequest, UserPrincipal currentUser);
 
 }

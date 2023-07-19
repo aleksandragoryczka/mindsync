@@ -82,4 +82,10 @@ public class PresentationServiceImpl implements PresentationService {
 		return codeGenerated;
 	}
 
+	@Override
+	public Presentation getPresentation(Long id) {
+		return presentationRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Presentation", "Id", id));
+	}
+
 }
