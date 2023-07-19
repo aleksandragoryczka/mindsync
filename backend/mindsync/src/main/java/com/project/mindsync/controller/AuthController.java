@@ -31,10 +31,10 @@ public class AuthController {
 			// TODO: po co to location ???
 			return ResponseEntity.ok().body(new ApiResponseDto(true, "User registered successfully!"));
 
-		} else {
-			return ResponseEntity.badRequest()
-					.body(new ApiResponseDto(false, "User with this email or username already exists"));
 		}
+		return ResponseEntity.badRequest()
+				.body(new ApiResponseDto(false, "User with this email or username already exists"));
+
 	}
 
 	@PostMapping("/signin")

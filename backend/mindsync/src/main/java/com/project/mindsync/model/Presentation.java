@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.data.annotation.CreatedDate;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.project.mindsync.model.audit.DateAudit;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -27,7 +28,7 @@ import lombok.Setter;
 @Table(name = "presentatations")
 @Setter
 @Getter
-public class Presentation {
+public class Presentation extends DateAudit {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -47,10 +48,6 @@ public class Presentation {
 	@JsonIgnore
 	@OneToMany(mappedBy = "presentation", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Show> shows;
-
-	@CreatedDate
-	@Column(name = "created_at", nullable = false, updatable = false)
-	private Instant createdAt;
 
 	public List<Slide> getSlides() {
 		return slides == null ? null : new ArrayList<>(slides);

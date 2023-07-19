@@ -2,14 +2,19 @@ package com.project.mindsync.service.impl;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.project.mindsync.dto.request.PresentationRequestDto;
 import com.project.mindsync.dto.response.PagedResponseDto;
 import com.project.mindsync.exception.ResourceNotFoundException;
 import com.project.mindsync.model.Presentation;
@@ -42,20 +47,39 @@ public class PresentationServiceImpl implements PresentationService {
 
 		return new PagedResponseDto<Presentation>(content, presentatations.getNumber(), presentatations.getSize(),
 				presentatations.getTotalElements(), presentatations.getTotalPages(), presentatations.isLast());
-		/*
-		 * if (presentatations.getNumberOfElements() == 0) { return new
-		 * PagedResponseDto<PresentationResponseDto>(Collections.emptyList(),
-		 * presentatations.getNumber(), presentatations.getSize(),
-		 * presentatations.getTotalElements(), presentatations.getTotalPages(),
-		 * presentatations.isLast()); } List<PresentationResponseDto>
-		 * presentationResponses = Arrays
-		 * .asList(modelMapper.map(presentatations.getContent(),
-		 * PresentationResponseDto[].class)); return new
-		 * PagedResponseDto<PresentationResponseDto>(presentationResponses,
-		 * presentatations.getNumber(), presentatations.getSize(),
-		 * presentatations.getTotalElements(), presentatations.getTotalPages(),
-		 * presentatations.isLast());
-		 */
+	}
+
+	@Override
+	public ResponseEntity<Presentation> addPresentation(PresentationRequestDto presentationRequest,
+			UserPrincipal currentUser) {
+		User user = userRepository.getUser(currentUser);
+
+		Presentation presentation = new Presentation();
+		presentation.setTitle(presentationRequest.getTitle());
+		presentation.setUser(user);
+		presentation.setCode(generateCode());
+		Presentation newPresentation = presentationRepository.save(presentation);
+		return ResponseEntity.ok().body(newPresentation);
+	}
+
+	private String generateCode() {
+		List<String> existingCodes = presentationRepository.findAll().stream().map(Presentation::getCode)
+				.collect(Collectors.toList());
+		Random random = new Random();
+
+		String codeGenerated;
+		boolean codeExists;
+
+		do {
+			StringBuilder codeBuilder = new StringBuilder();
+			for (int i = 0; i < 6; i++) {
+				codeBuilder.append(random.nextInt(10));
+			}
+			codeGenerated = codeBuilder.toString();
+			codeExists = existingCodes.contains(codeGenerated);
+		} while (codeExists);
+
+		return codeGenerated;
 	}
 
 }
