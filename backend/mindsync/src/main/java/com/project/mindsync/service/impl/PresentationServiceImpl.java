@@ -30,7 +30,6 @@ import com.project.mindsync.utils.AppUtils;
 
 @Service
 public class PresentationServiceImpl implements PresentationService {
-	private static final String CREATED_AT = "createdAt";
 
 	@Autowired
 	private PresentationRepository presentationRepository;
@@ -42,7 +41,7 @@ public class PresentationServiceImpl implements PresentationService {
 	public PagedResponseDto<Presentation> getUserPresentations(Long id, int page, int size) {
 		User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User", "id", id));
 		AppUtils.validatePageNumberAndSIze(page, size);
-		Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, CREATED_AT);
+		Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, AppConstants.CREATED_AT);
 		Page<Presentation> presentatations = presentationRepository.findByUserId(user.getId(), pageable);
 
 		List<Presentation> content = presentatations.getNumberOfElements() == 0 ? Collections.emptyList()

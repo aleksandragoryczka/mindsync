@@ -9,7 +9,7 @@ import com.project.mindsync.model.Slide;
 import com.project.mindsync.model.User;
 
 import lombok.Data;
-
+//TODO: to delted
 @Data
 public class PresentationResponseDto {
 	private Long id;

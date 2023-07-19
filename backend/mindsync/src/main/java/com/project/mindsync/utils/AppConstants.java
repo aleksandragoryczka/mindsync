@@ -7,4 +7,5 @@ public class AppConstants {
 	public static final String PRESENTATION = "Presentation";
 	public static final String USER = "User";
 	public static final String ID = "Id";
+	public static final String CREATED_AT = "createdAt";
 }

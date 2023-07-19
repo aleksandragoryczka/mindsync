@@ -19,8 +19,8 @@ import com.project.mindsync.model.Presentation;
 import com.project.mindsync.model.User;
 import com.project.mindsync.security.CurrentUser;
 import com.project.mindsync.security.UserPrincipal;
-import com.project.mindsync.service.impl.PresentationServiceImpl;
-import com.project.mindsync.service.impl.UserServiceImpl;
+import com.project.mindsync.service.PresentationService;
+import com.project.mindsync.service.UserService;
 import com.project.mindsync.utils.AppConstants;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,10 +30,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/api/user")
 public class UserController {
 	@Autowired
-	UserServiceImpl userService;
+	private UserService userService;
 
 	@Autowired
-	PresentationServiceImpl presentationService;
+	private PresentationService presentationService;
 
 	@GetMapping("")
 	public ResponseEntity<UserSummaryResponseDto> getCurrentUser(@CurrentUser UserPrincipal currentUser) {
