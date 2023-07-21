@@ -21,6 +21,8 @@ import com.project.mindsync.security.UserPrincipal;
 import com.project.mindsync.service.UserService;
 import com.project.mindsync.utils.AppUtils;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class UserServiceImpl implements UserService {
 	@Autowired
@@ -51,6 +53,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	@Transactional
 	public User updateUser(UserUpdatedRequestDto newUser, Long userId, UserPrincipal currentUser) {
 		User user = userRepository.findById(userId)
 				.orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));

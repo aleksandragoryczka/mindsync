@@ -30,7 +30,7 @@ public class Option {
 	private String option;
 
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinColumn(name = "slide_id", nullable = false)
+	@JoinColumn(name = "slide_id")
 	@JsonIgnore
 	private Slide slide;
 
@@ -38,5 +38,9 @@ public class Option {
 		this.option = option;
 	}
 
-	
+	public Option(Long id, String option) {
+		this.id = id;
+		this.option = option;
+	}
+
 }

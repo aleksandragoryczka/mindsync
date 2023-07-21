@@ -24,10 +24,7 @@ import com.project.mindsync.security.CurrentUser;
 import com.project.mindsync.security.UserPrincipal;
 import com.project.mindsync.service.PresentationService;
 import com.project.mindsync.service.SlideService;
-import com.project.mindsync.service.impl.PresentationServiceImpl;
-import com.project.mindsync.service.impl.SlideServiceImpl;
 import com.project.mindsync.utils.AppConstants;
-import com.project.mindsync.utils.AppUtils;
 
 @RestController
 @RequestMapping("/api/presentation")

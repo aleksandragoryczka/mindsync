@@ -18,6 +18,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -27,6 +28,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class Slide extends DateAudit {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,7 +46,7 @@ public class Slide extends DateAudit {
 	@JsonIgnore
 	private Presentation presentation;
 
-	@OneToMany(mappedBy = "slide", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "slide", cascade = CascadeType.ALL)
 	private List<Option> options;
 
 	public SlideType getType() {
@@ -64,9 +66,13 @@ public class Slide extends DateAudit {
 		this.options = options;
 	}
 
-	public void removeOption(Option option){
+	public void removeOption(Option option) {
 		options.remove(option);
 		option.setSlide(this);
+	}
+
+	public Slide(Long id, String title, SlideType slideType, Presentation presentation){
+		
 	}
 	/*
 	 * public void setOptions(List<Option> options) { if (options == null) {

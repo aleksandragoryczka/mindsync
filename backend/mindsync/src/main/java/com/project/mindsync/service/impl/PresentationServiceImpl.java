@@ -135,62 +135,114 @@ public class PresentationServiceImpl implements PresentationService {
 							.filter(slide -> slide.getId().equals(updatedSlide.getId())).findFirst()
 							.orElseThrow(() -> new ResourceNotFoundException(AppConstants.SLIDE, AppConstants.ID,
 									updatedSlide.getId()));
-					existingSlide.setTitle(updatedSlide.getTitle());
-					SlideType slideType = slideTypeRepository.findByName(SlideTypeName.valueOf(updatedSlide.getType()));
-					existingSlide.setType(slideType);
-
-					if (AppConstants.OPTIONS_SLIDES_TYPES.contains(slideType.getName())) {
-						List<Option> existingOptions = existingSlide.getOptions();
-						List<Option> updatedOptions = updatedSlide.getOptions();
-
-						// update existing option
-						for (Option updatedOption : updatedOptions) {
-							for (Option existingOption : existingOptions) {
-								if (existingOption.getId() != null
-										&& existingOption.getId().equals(updatedOption.getId())) {
-									existingOption.setOption(updatedOption.getOption());
-									break;
-								}
-							}
-						}
-
-						// remove options that are not in updateOptions list
-						existingOptions.removeIf(existingOption -> existingOption.getId() != null
-								&& updatedOptions.stream().noneMatch(updatedOption -> updatedOption.getId() != null
-										&& updatedOption.getId().equals(existingOption.getId())));
-
-					}
+					existingSlide = updateSlide(existingSlide, updatedSlide);
 				} else {
-					SlideType slideType = slideTypeRepository.findByName(SlideTypeName.valueOf(updatedSlide.getType()));
-					Slide newSlide = new Slide();
-					newSlide.setTitle(updatedSlide.getTitle());
-					newSlide.setType(slideType);
-					newSlide.setPresentation(presentation);
-					if (AppConstants.OPTIONS_SLIDES_TYPES.contains(slideType.getName())) {
-						List<Option> options = new ArrayList<>();
-						Option option = new Option();
-						for (Option updatedOption : updatedSlide.getOptions()) {
-							Option newOption = new Option();
-							newOption.setOption(updatedOption.getOption());
-							newOption.setSlide(newSlide);
-							options.add(option);
-						}
-						newSlide.setOptions(options);
-					}
-					presentation.addSlide(newSlide);
+					Slide newSlide = createSlide(updatedSlide, presentation);
+					existingSlides.add(newSlide);
 				}
 			}
 
-			existingSlides.removeIf(
-					existingSlide -> updatedSlides.stream().noneMatch(updatedSlide -> updatedSlide.getId() != null
-							&& updatedSlide.getId().equals(existingSlide.getId())));
+			existingSlides = deleteSlides(existingSlides, existingSlides);
+
+			presentation.setSlides(existingSlides);
 
 			Presentation updatedPresentation = presentationRepository.save(presentation);
 			return updatedPresentation;
 		}
-
 		throw new UnauthorizedException(new ApiResponseDto(false, "You do not have permissions to edit that post."));
+	}
 
+	private Slide updateSlide(Slide existingSlide, SlideRequestDto updatedSlide) {
+		existingSlide.setTitle(updatedSlide.getTitle());
+		SlideType slideType = slideTypeRepository.findByName(SlideTypeName.valueOf(updatedSlide.getType()));
+		existingSlide.setType(slideType);
+		if (AppConstants.OPTIONS_SLIDES_TYPES.contains(slideType.getName())) {
+			List<Option> existingOptions = existingSlide.getOptions();
+			List<Option> updatedOptions = updatedSlide.getOptions();
+
+			// update existing option
+			for (Option updatedOption : updatedOptions) {
+				for (Option existingOption : existingOptions) {
+					if (existingOption.getId() != null && existingOption.getId().equals(updatedOption.getId())) {
+						existingOption.setOption(updatedOption.getOption());
+						break;
+					}
+				}
+			}
+
+			// delete option if not present in updatedOptions list
+			existingOptions = deleteOptions(existingOptions, updatedOptions);
+
+			// add new option if is not present in current existingOptions list
+			existingOptions = updateOptions(existingOptions, updatedOptions, existingSlide);
+
+			existingSlide.setOptions(existingOptions);
+		}
+		return existingSlide;
+	}
+
+	private List<Option> deleteOptions(List<Option> existingOptions, List<Option> updatedOptions) {
+		for (Option existingOption : existingOptions) {
+			if (existingOption.getId() != null
+					&& updatedOptions.stream().noneMatch(updatedOption -> updatedOption.getId() != null
+							&& updatedOption.getId().equals(existingOption.getId()))) {
+				existingOption.setSlide(null);
+				optionRepository.delete(existingOption);
+			}
+		}
+		existingOptions.removeIf(existingOption -> existingOption.getId() != null
+				&& updatedOptions.stream().noneMatch(updatedOption -> updatedOption.getId() != null
+						&& updatedOption.getId().equals(existingOption.getId())));
+		return existingOptions;
+	}
+
+	private List<Option> updateOptions(List<Option> existingOptions, List<Option> updatedOptions, Slide existingSlide) {
+		for (Option updatedOption : updatedOptions) {
+			if (updatedOption.getId() == null) {
+				Option newOption = new Option();
+				newOption.setOption(updatedOption.getOption());
+				newOption.setSlide(existingSlide);
+				existingOptions.add(newOption);
+				optionRepository.save(newOption);
+			}
+		}
+		return existingOptions;
+	}
+
+	private Slide createSlide(SlideRequestDto updatedSlide, Presentation presentation) {
+		SlideType slideType = slideTypeRepository.findByName(SlideTypeName.valueOf(updatedSlide.getType()));
+		Slide newSlide = new Slide();
+		newSlide.setTitle(updatedSlide.getTitle());
+		newSlide.setType(slideType);
+		newSlide.setPresentation(presentation);
+		if (AppConstants.OPTIONS_SLIDES_TYPES.contains(slideType.getName())) {
+			List<Option> options = new ArrayList<>();
+			Option option = new Option();
+			for (Option updatedOption : updatedSlide.getOptions()) {
+				Option newOption = new Option();
+				newOption.setOption(updatedOption.getOption());
+				newOption.setSlide(newSlide);
+				options.add(option);
+			}
+			newSlide.setOptions(options);
+		}
+		return newSlide;
+	}
+
+	private List<Slide> deleteSlides(List<Slide> existingSlides, List<Slide> updatedSlides) {
+		for (Slide existingSlide : existingSlides) {
+			if (existingSlide.getId() != null
+					&& updatedSlides.stream().noneMatch(updatedSlide -> updatedSlide.getId() != null
+							&& updatedSlide.getId().equals(existingSlide.getId()))) {
+				existingSlide.setPresentation(null);
+				slideRepository.delete(existingSlide);
+			}
+		}
+
+		existingSlides.removeIf(existingSlide -> existingSlide.getId() != null && updatedSlides.stream().noneMatch(
+				updatedSlide -> updatedSlide.getId() != null && updatedSlide.getId().equals(existingSlide.getId())));
+
+		return existingSlides;
 	}
 
 	@Override
@@ -224,11 +276,4 @@ public class PresentationServiceImpl implements PresentationService {
 
 		return codeGenerated;
 	}
-
-	private Option addNewOption(Option newOption, String optionText, Slide slide) {
-		newOption.setOption(optionText);
-		newOption.setSlide(slide);
-		return newOption;
-	}
-
 }
