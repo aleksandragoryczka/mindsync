@@ -152,6 +152,18 @@ public class PresentationServiceImpl implements PresentationService {
 		throw new UnauthorizedException(new ApiResponseDto(false, "You do not have permissions to edit that post."));
 	}
 
+	@Override
+	public ApiResponseDto deletePresentation(Long id, UserPrincipal currentUser) {
+		Presentation presentation = presentationRepository.findById(id).orElseThrow(
+				() -> new ResourceNotFoundException(AppConstants.PRESENTATION, AppConstants.ID, currentUser));
+		if (AppUtils.checkUserIsCurrentUserOrAdmin(presentation.getUser(), currentUser)) {
+			presentationRepository.deleteById(id);
+			return new ApiResponseDto(true, "Successfully deleted presentation");
+		}
+		ApiResponseDto apiResponse = new ApiResponseDto(false, "You do not have permissions to delete that post.");
+		throw new UnauthorizedException(apiResponse);
+	}
+
 	private Slide updateSlide(Slide existingSlide, SlideRequestDto updatedSlide) {
 		existingSlide.setTitle(updatedSlide.getTitle());
 		SlideType slideType = slideTypeRepository.findByName(SlideTypeName.valueOf(updatedSlide.getType()));
@@ -243,18 +255,6 @@ public class PresentationServiceImpl implements PresentationService {
 				updatedSlide -> updatedSlide.getId() != null && updatedSlide.getId().equals(existingSlide.getId())));
 
 		return existingSlides;
-	}
-
-	@Override
-	public ApiResponseDto deletePresentation(Long id, UserPrincipal currentUser) {
-		Presentation presentation = presentationRepository.findById(id).orElseThrow(
-				() -> new ResourceNotFoundException(AppConstants.PRESENTATION, AppConstants.ID, currentUser));
-		if (AppUtils.checkUserIsCurrentUserOrAdmin(presentation.getUser(), currentUser)) {
-			presentationRepository.deleteById(id);
-			return new ApiResponseDto(true, "Successfully deleted presentation");
-		}
-		ApiResponseDto apiResponse = new ApiResponseDto(false, "You do not have permissions to delete that post.");
-		throw new UnauthorizedException(apiResponse);
 	}
 
 	private String generateCode() {
