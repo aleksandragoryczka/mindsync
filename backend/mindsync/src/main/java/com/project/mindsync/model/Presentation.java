@@ -1,17 +1,13 @@
 package com.project.mindsync.model;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import org.springframework.data.annotation.CreatedDate;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.mindsync.model.audit.DateAudit;
 
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -41,7 +37,7 @@ public class Presentation extends DateAudit {
 	@JsonIgnore
 	private User user;
 
-	@OneToMany(mappedBy = "presentation", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "presentation", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	private List<Slide> slides;
 
 	@JsonIgnore
@@ -52,12 +48,16 @@ public class Presentation extends DateAudit {
 		return slides == null ? null : new ArrayList<>(slides);
 	}
 
-	public void setSlides(List<Slide> slides) {
+	public void addSlide(Slide slide) {
 		if (slides == null) {
-			this.slides = null;
-		} else {
-			this.slides = Collections.unmodifiableList(slides);
+			slides = new ArrayList<>();
 		}
+		slides.add(slide);
+		slide.setPresentation(this);
+	}
+
+	public void setSlides(List<Slide> slides) {
+		this.slides = slides;
 	}
 
 	public List<Show> getShows() {

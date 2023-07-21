@@ -9,9 +9,13 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "slide_types")
+@Getter
+@NoArgsConstructor
 public class SlideType {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,4 +23,8 @@ public class SlideType {
 
 	@Enumerated(EnumType.STRING)
 	private SlideTypeName name;
+
+	public SlideType(SlideTypeName name) {
+		this.name = name;
+	}
 }

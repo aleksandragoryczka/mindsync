@@ -1,7 +1,9 @@
 package com.project.mindsync.service.impl;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -15,18 +17,28 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.project.mindsync.dto.request.PresentationRequestDto;
+import com.project.mindsync.dto.request.SlideRequestDto;
 import com.project.mindsync.dto.response.ApiResponseDto;
 import com.project.mindsync.dto.response.PagedResponseDto;
 import com.project.mindsync.exception.ResourceNotFoundException;
 import com.project.mindsync.exception.UnauthorizedException;
+import com.project.mindsync.model.Option;
 import com.project.mindsync.model.Presentation;
+import com.project.mindsync.model.Slide;
+import com.project.mindsync.model.SlideType;
 import com.project.mindsync.model.User;
+import com.project.mindsync.model.enums.SlideTypeName;
+import com.project.mindsync.repository.OptionRepository;
 import com.project.mindsync.repository.PresentationRepository;
+import com.project.mindsync.repository.SlideRepository;
+import com.project.mindsync.repository.SlideTypeRepository;
 import com.project.mindsync.repository.UserRepository;
 import com.project.mindsync.security.UserPrincipal;
 import com.project.mindsync.service.PresentationService;
 import com.project.mindsync.utils.AppConstants;
 import com.project.mindsync.utils.AppUtils;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class PresentationServiceImpl implements PresentationService {
@@ -36,6 +48,15 @@ public class PresentationServiceImpl implements PresentationService {
 
 	@Autowired
 	private UserRepository userRepository;
+
+	@Autowired
+	private SlideTypeRepository slideTypeRepository;
+
+	@Autowired
+	private SlideRepository slideRepository;
+
+	@Autowired
+	private OptionRepository optionRepository;
 
 	@Override
 	public PagedResponseDto<Presentation> getUserPresentations(Long id, int page, int size) {
@@ -64,26 +85,112 @@ public class PresentationServiceImpl implements PresentationService {
 
 		Presentation presentation = new Presentation();
 		presentation.setTitle(presentationRequest.getTitle());
-		presentation.setSlides(presentationRequest.getSlides());
 		presentation.setUser(user);
 		presentation.setCode(generateCode());
-		Presentation newPresentation = presentationRepository.save(presentation);
-		return ResponseEntity.ok().body(newPresentation);
+
+		List<Slide> slides = new ArrayList<Slide>(presentationRequest.getSlides().size());
+
+		for (SlideRequestDto slideRequest : presentationRequest.getSlides()) {
+
+			SlideType slideType = slideTypeRepository.findByName(SlideTypeName.valueOf(slideRequest.getType()));
+			Slide newSlide = new Slide();
+			newSlide.setTitle(slideRequest.getTitle());
+			newSlide.setType(slideType);
+
+			if (AppConstants.OPTIONS_SLIDES_TYPES.contains(slideType.getName())) {
+				List<Option> options = new ArrayList<>();
+				for (Option option : slideRequest.getOptions()) {
+					Option newOption = new Option();
+					newOption.setOption(option.getOption());
+					newOption.setSlide(newSlide);
+					options.add(newOption);
+				}
+				newSlide.setOptions(options);
+			}
+
+			presentation.addSlide(newSlide);
+			slides.add(newSlide);
+		}
+
+		Presentation savedPresentation = presentationRepository.save(presentation);
+
+		return ResponseEntity.ok().body(savedPresentation);
 	}
 
 	@Override
+	@Transactional
 	public Presentation updatePresentation(Long id, PresentationRequestDto updatedPresentationRequest,
 			UserPrincipal currentUser) {
 		Presentation presentation = presentationRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException(AppConstants.PRESENTATION, AppConstants.ID, id));
 		if (AppUtils.checkUserIsCurrentUserOrAdmin(presentation.getUser(), currentUser)) {
 			presentation.setTitle(updatedPresentationRequest.getTitle());
-			presentation.setSlides(updatedPresentationRequest.getSlides());
-			// presentation.setShows(updatedPresentationRequest.);
-			return presentationRepository.save(presentation);
+
+			List<Slide> existingSlides = presentation.getSlides();
+			List<SlideRequestDto> updatedSlides = updatedPresentationRequest.getSlides();
+
+			for (SlideRequestDto updatedSlide : updatedSlides) {
+				if (updatedSlide.getId() != null) {
+					Slide existingSlide = existingSlides.stream()
+							.filter(slide -> slide.getId().equals(updatedSlide.getId())).findFirst()
+							.orElseThrow(() -> new ResourceNotFoundException(AppConstants.SLIDE, AppConstants.ID,
+									updatedSlide.getId()));
+					existingSlide.setTitle(updatedSlide.getTitle());
+					SlideType slideType = slideTypeRepository.findByName(SlideTypeName.valueOf(updatedSlide.getType()));
+					existingSlide.setType(slideType);
+
+					if (AppConstants.OPTIONS_SLIDES_TYPES.contains(slideType.getName())) {
+						List<Option> existingOptions = existingSlide.getOptions();
+						List<Option> updatedOptions = updatedSlide.getOptions();
+
+						// update existing option
+						for (Option updatedOption : updatedOptions) {
+							for (Option existingOption : existingOptions) {
+								if (existingOption.getId() != null
+										&& existingOption.getId().equals(updatedOption.getId())) {
+									existingOption.setOption(updatedOption.getOption());
+									break;
+								}
+							}
+						}
+
+						// remove options that are not in updateOptions list
+						existingOptions.removeIf(existingOption -> existingOption.getId() != null
+								&& updatedOptions.stream().noneMatch(updatedOption -> updatedOption.getId() != null
+										&& updatedOption.getId().equals(existingOption.getId())));
+
+					}
+				} else {
+					SlideType slideType = slideTypeRepository.findByName(SlideTypeName.valueOf(updatedSlide.getType()));
+					Slide newSlide = new Slide();
+					newSlide.setTitle(updatedSlide.getTitle());
+					newSlide.setType(slideType);
+					newSlide.setPresentation(presentation);
+					if (AppConstants.OPTIONS_SLIDES_TYPES.contains(slideType.getName())) {
+						List<Option> options = new ArrayList<>();
+						Option option = new Option();
+						for (Option updatedOption : updatedSlide.getOptions()) {
+							Option newOption = new Option();
+							newOption.setOption(updatedOption.getOption());
+							newOption.setSlide(newSlide);
+							options.add(option);
+						}
+						newSlide.setOptions(options);
+					}
+					presentation.addSlide(newSlide);
+				}
+			}
+
+			existingSlides.removeIf(
+					existingSlide -> updatedSlides.stream().noneMatch(updatedSlide -> updatedSlide.getId() != null
+							&& updatedSlide.getId().equals(existingSlide.getId())));
+
+			Presentation updatedPresentation = presentationRepository.save(presentation);
+			return updatedPresentation;
 		}
-		ApiResponseDto apiResponse = new ApiResponseDto(false, "You do not have permissions to edit that post.");
-		throw new UnauthorizedException(apiResponse);
+
+		throw new UnauthorizedException(new ApiResponseDto(false, "You do not have permissions to edit that post."));
+
 	}
 
 	@Override
@@ -116,6 +223,12 @@ public class PresentationServiceImpl implements PresentationService {
 		} while (codeExists);
 
 		return codeGenerated;
+	}
+
+	private Option addNewOption(Option newOption, String optionText, Slide slide) {
+		newOption.setOption(optionText);
+		newOption.setSlide(slide);
+		return newOption;
 	}
 
 }

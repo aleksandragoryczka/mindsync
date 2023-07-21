@@ -23,6 +23,10 @@ public class SlideServiceImpl implements SlideService {
 	@Autowired
 	private SlideRepository slideRepository;
 
+	//TODO: isGetSLide() is needed?
+	//TODO: update single pslide is needed?
+	
+
 	@Override
 	public PagedResponseDto<Slide> getAllSlidesByPresentation(Long presentationId, int page, int size) {
 		AppUtils.validatePageNumberAndSIze(page, size);
