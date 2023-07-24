@@ -16,6 +16,7 @@ import com.project.mindsync.dto.request.UserUpdatedRequestDto;
 import com.project.mindsync.dto.response.ApiResponseDto;
 import com.project.mindsync.dto.response.PagedResponseDto;
 import com.project.mindsync.dto.response.UserSummaryResponseDto;
+import com.project.mindsync.dto.response.UserWithRoleResponseDto;
 import com.project.mindsync.model.Presentation;
 import com.project.mindsync.model.User;
 import com.project.mindsync.security.CurrentUser;
@@ -41,6 +42,15 @@ public class UserController {
 		UserSummaryResponseDto userSummary = userService.getCurrentUser(currentUser);
 
 		return ResponseEntity.ok().body(userSummary);
+	}
+
+	@GetMapping("/all")
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<PagedResponseDto<UserWithRoleResponseDto>> getAllUsers(
+			@RequestParam(name = "page", required = false, defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
+			@RequestParam(name = "size", required = false, defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size) {
+		PagedResponseDto<UserWithRoleResponseDto> response = userService.getAllUsers(page, size);
+		return ResponseEntity.ok().body(response);
 	}
 
 	@GetMapping("/{id}/presentations")

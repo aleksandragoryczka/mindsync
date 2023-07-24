@@ -62,8 +62,8 @@ public class PresentationController {
 	@DeleteMapping("/{id}")
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	public ResponseEntity<ApiResponseDto> deletePresentation(@PathVariable(name = "id") Long id,
-			@CurrentUser UserPrincipal curremtUser) {
-		ApiResponseDto apiResponse = presentationService.deletePresentation(id, curremtUser);
+			@CurrentUser UserPrincipal currentUser) {
+		ApiResponseDto apiResponse = presentationService.deletePresentation(id, currentUser);
 		return ResponseEntity.ok().body(apiResponse);
 	}
 
