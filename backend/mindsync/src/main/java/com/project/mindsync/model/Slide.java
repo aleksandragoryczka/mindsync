@@ -3,12 +3,17 @@ package com.project.mindsync.model;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.mindsync.model.audit.DateAudit;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -49,13 +54,16 @@ public class Slide extends DateAudit {
 	@OneToMany(mappedBy = "slide", cascade = CascadeType.ALL)
 	private List<Option> options;
 
-	public SlideType getType() {
-		return type;
-	}
+	@Column(name = "display_time", length = 5)
+	private String displayTime = "20";
 
 	public Slide(String title, SlideType slideType) {
 		this.title = title;
 		this.type = slideType;
+	}
+
+	public Slide(Long id, String title, SlideType slideType, Presentation presentation) {
+
 	}
 
 	public List<Option> getOptions() {
@@ -66,17 +74,16 @@ public class Slide extends DateAudit {
 		this.options = options;
 	}
 
-	public void removeOption(Option option) {
-		options.remove(option);
-		option.setSlide(this);
+	public SlideType getType() {
+		return type;
 	}
 
-	public Slide(Long id, String title, SlideType slideType, Presentation presentation){
-		
+	public void setDisplayTime(String displayTime) {
+		if (displayTime == null) {
+			this.displayTime = "20";
+		} else {
+			this.displayTime = displayTime;
+		}
 	}
-	/*
-	 * public void setOptions(List<Option> options) { if (options == null) {
-	 * this.options = null; } else { this.options =
-	 * Collections.unmodifiableList(options); } }
-	 */
+
 }
