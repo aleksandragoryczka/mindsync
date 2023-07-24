@@ -4,6 +4,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -65,6 +66,22 @@ public class UserController {
 		ApiResponseDto apiResponse = userService.deleteUser(userId, currentUser);
 
 		return ResponseEntity.ok(apiResponse);
+	}
+
+	@PutMapping("/{id}/giveAdmin")
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<ApiResponseDto> giveAdmin(@PathVariable(name = "id") Long id) {
+		ApiResponseDto apiResponse = userService.giveAdmin(id);
+
+		return ResponseEntity.ok().body(apiResponse);
+	}
+
+	@PutMapping("/{id}/removeAdmin")
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<ApiResponseDto> removeAdmin(@PathVariable(name = "id") Long id) {
+		ApiResponseDto apiResponse = userService.removeAdmin(id);
+
+		return ResponseEntity.ok().body(apiResponse);
 	}
 
 }

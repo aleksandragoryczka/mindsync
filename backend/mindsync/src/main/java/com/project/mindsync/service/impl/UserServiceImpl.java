@@ -1,6 +1,10 @@
 package com.project.mindsync.service.impl;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -11,8 +15,10 @@ import com.project.mindsync.dto.request.UserUpdatedRequestDto;
 import com.project.mindsync.dto.response.ApiResponseDto;
 import com.project.mindsync.dto.response.UserSummaryResponseDto;
 import com.project.mindsync.exception.AccessDeniedException;
+import com.project.mindsync.exception.AppException;
 import com.project.mindsync.exception.ResourceNotFoundException;
 import com.project.mindsync.exception.UnauthorizedException;
+import com.project.mindsync.model.Role;
 import com.project.mindsync.model.User;
 import com.project.mindsync.model.enums.RoleName;
 import com.project.mindsync.repository.RoleRepository;
@@ -65,6 +71,31 @@ public class UserServiceImpl implements UserService {
 		}
 		throw new UnauthorizedException(
 				new ApiResponseDto(false, "You do not have permissions to update profile of user with Id: " + userId));
+	}
+
+	@Override
+	public ApiResponseDto giveAdmin(Long id) {
+		User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User", "Id", id));
+		Set<Role> roles = new HashSet<>();
+		roles.add(roleRepository.findByName(RoleName.ROLE_ADMIN)
+				.orElseThrow(() -> new AppException("User role is not set.")));
+		roles.add(roleRepository.findByName(RoleName.ROLE_USER)
+				.orElseThrow(() -> new AppException("User role is not set.")));
+		user.setRoles(roles);
+		userRepository.save(user);
+		return new ApiResponseDto(true, "ADMIN role gave to user with Id: " + user.getId());
+
+	}
+
+	@Override
+	public ApiResponseDto removeAdmin(Long id) {
+		User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User", "Id", id));
+		Set<Role> roles = new HashSet<>();
+		roles.add(roleRepository.findByName(RoleName.ROLE_USER)
+				.orElseThrow(() -> new AppException("User role is not set.")));
+		user.setRoles(roles);
+		userRepository.save(user);
+		return new ApiResponseDto(true, "ADMIN role remove for user with Id: " + user.getId());
 	}
 
 }

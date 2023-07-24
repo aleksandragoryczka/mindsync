@@ -12,4 +12,8 @@ public interface UserService {
 	ApiResponseDto deleteUser(Long userId, UserPrincipal currentUser);
 
 	User updateUser(UserUpdatedRequestDto newUser, Long userId, UserPrincipal currentUser);
+
+	ApiResponseDto giveAdmin(Long id);
+
+	ApiResponseDto removeAdmin(Long id);
 }
