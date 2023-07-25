@@ -3,6 +3,7 @@ package com.project.mindsync.service.impl;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,11 +15,14 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.project.mindsync.dto.request.ShowRequestDto;
 import com.project.mindsync.dto.response.ApiResponseDto;
 import com.project.mindsync.dto.response.PagedResponseDto;
+import com.project.mindsync.dto.response.ScreenshotResponseDto;
 import com.project.mindsync.dto.response.ShowResponseDto;
+import com.project.mindsync.dto.response.ShowWithScreenshotsResponseDto;
 import com.project.mindsync.exception.AppException;
 import com.project.mindsync.exception.ResourceNotFoundException;
 import com.project.mindsync.exception.UnauthorizedException;
@@ -27,6 +31,7 @@ import com.project.mindsync.model.Screenshot;
 import com.project.mindsync.model.Show;
 import com.project.mindsync.model.User;
 import com.project.mindsync.repository.PresentationRepository;
+import com.project.mindsync.repository.ScreenshotRepository;
 import com.project.mindsync.repository.ShowRepository;
 import com.project.mindsync.repository.UserRepository;
 import com.project.mindsync.security.JwtUtils;
@@ -46,7 +51,29 @@ public class ShowServiceImpl implements ShowService {
 	private ShowRepository showRepository;
 
 	@Autowired
-	private UserRepository userRepository;
+	private ScreenshotRepository screenshotRepository;
+
+	@Override
+	public PagedResponseDto<ShowWithScreenshotsResponseDto> getShowWithScreenshots(Long showId, int page, int size) {
+		AppUtils.validatePageNumberAndSIze(page, size);
+
+		Show show = showRepository.findById(showId)
+				.orElseThrow(() -> new ResourceNotFoundException(AppConstants.SHOW, AppConstants.ID, showId));
+
+		Pageable pageable = PageRequest.of(page, size, Sort.Direction.ASC, AppConstants.ID);
+		Page<Screenshot> screenshots = screenshotRepository.findByShowId(showId, pageable);
+		List<ScreenshotResponseDto> screenshotResponses = screenshots.getContent().stream()
+				.map(this::mapToScreenshotResponseDto).collect(Collectors.toList());
+		ShowWithScreenshotsResponseDto showWithScreenshotsResponse = new ShowWithScreenshotsResponseDto();
+		showWithScreenshotsResponse.setAttendeesNumber(show.getAttendeesNumber());
+		showWithScreenshotsResponse.setScreenshots(screenshotResponses);
+		showWithScreenshotsResponse.setCreatedAt(show.getCreatedAt().toString());
+		showWithScreenshotsResponse.setId(showId);
+
+		return new PagedResponseDto<ShowWithScreenshotsResponseDto>(List.of(showWithScreenshotsResponse),
+				screenshots.getNumber(), screenshots.getSize(), screenshots.getTotalElements(),
+				screenshots.getTotalPages(), screenshots.isLast());
+	}
 
 	@Override
 	public ResponseEntity<ShowResponseDto> addShow(ShowRequestDto showRequest, Long presentationId) {
@@ -97,16 +124,25 @@ public class ShowServiceImpl implements ShowService {
 	}
 
 	@Override
-	public ResponseEntity<ApiResponseDto> deleteShow(Long id, UserPrincipal currentUser) {
-		Show show = showRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException(AppConstants.SHOW, AppConstants.ID, id));
-		User user = userRepository.getUser(currentUser);
+	public ResponseEntity<ApiResponseDto> deleteShow(Long showId, UserPrincipal currentUser) {
+		Show show = showRepository.findById(showId)
+				.orElseThrow(() -> new ResourceNotFoundException(AppConstants.SHOW, AppConstants.ID, showId));
 		if (AppUtils.checkUserIsCurrentUserOrAdmin(show.getPresentation().getUser(), currentUser)) {
 			showRepository.delete(show);
-			return ResponseEntity.ok().body(new ApiResponseDto(true, "Successfully deleted Show with ID: " + id));
+			return ResponseEntity.ok().body(new ApiResponseDto(true, "Successfully deleted Show with ID: " + showId));
 		}
 		ApiResponseDto apiResponse = new ApiResponseDto(false, "You do not have permissions to delete that show.");
 		throw new UnauthorizedException(apiResponse);
 	}
 
+	private ScreenshotResponseDto mapToScreenshotResponseDto(Screenshot screenshot) {
+		ScreenshotResponseDto screenshotResponse = new ScreenshotResponseDto();
+		screenshotResponse.setId(screenshot.getId());
+		screenshotResponse.setPicture(screenshot.getPicture());
+		//TODO: is it necessary?
+		String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/screenshots/")
+				.path(screenshotResponse.getId().toString()).toUriString();
+		screenshotResponse.setUrl(fileDownloadUri);
+		return screenshotResponse;
+	}
 }
