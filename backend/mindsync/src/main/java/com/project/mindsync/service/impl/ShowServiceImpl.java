@@ -19,6 +19,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.project.mindsync.dto.request.ShowRequestDto;
 import com.project.mindsync.dto.response.ApiResponseDto;
+import com.project.mindsync.dto.response.ExcelFileResponseDto;
 import com.project.mindsync.dto.response.PagedResponseDto;
 import com.project.mindsync.dto.response.ScreenshotResponseDto;
 import com.project.mindsync.dto.response.ShowResponseDto;
@@ -73,6 +74,13 @@ public class ShowServiceImpl implements ShowService {
 		return new PagedResponseDto<ShowWithScreenshotsResponseDto>(List.of(showWithScreenshotsResponse),
 				screenshots.getNumber(), screenshots.getSize(), screenshots.getTotalElements(),
 				screenshots.getTotalPages(), screenshots.isLast());
+	}
+
+	@Override
+	public ResponseEntity<ExcelFileResponseDto> getExcelFile(Long showId) {
+		Show show = showRepository.findById(showId)
+				.orElseThrow(() -> new ResourceNotFoundException(AppConstants.SHOW, AppConstants.ID, showId));
+		return ResponseEntity.ok().body(new ExcelFileResponseDto(show.getExcelFile()));
 	}
 
 	@Override
@@ -139,7 +147,8 @@ public class ShowServiceImpl implements ShowService {
 		ScreenshotResponseDto screenshotResponse = new ScreenshotResponseDto();
 		screenshotResponse.setId(screenshot.getId());
 		screenshotResponse.setPicture(screenshot.getPicture());
-		//TODO: is it necessary?
+		// TODO: is it necessary? - byloby gdybym np. po kliknieciu na maly screenshot
+		// chciala go powiekszac - czy nie da sie tego dodac na forntendzie?
 		String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/screenshots/")
 				.path(screenshotResponse.getId().toString()).toUriString();
 		screenshotResponse.setUrl(fileDownloadUri);

@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.project.mindsync.dto.request.ShowRequestDto;
 import com.project.mindsync.dto.response.ApiResponseDto;
+import com.project.mindsync.dto.response.ExcelFileResponseDto;
 import com.project.mindsync.dto.response.PagedResponseDto;
 import com.project.mindsync.dto.response.ShowResponseDto;
 import com.project.mindsync.dto.response.ShowWithScreenshotsResponseDto;
@@ -41,6 +42,11 @@ public class ShowController {
 			@RequestParam(name = "size", required = false, defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size) {
 		PagedResponseDto<ShowWithScreenshotsResponseDto> response = showService.getShowWithScreenshots(id, page, size);
 		return ResponseEntity.ok().body(response);
+	}
+
+	@GetMapping("/{id}/excel")
+	public ResponseEntity<ExcelFileResponseDto> getExcelFile(@PathVariable(name = "id") Long id) {
+		return showService.getExcelFile(id);
 	}
 
 	@PostMapping("")
