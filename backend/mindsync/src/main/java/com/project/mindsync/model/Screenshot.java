@@ -1,5 +1,9 @@
 package com.project.mindsync.model;
 
+import jakarta.persistence.Column;
+
+import javax.persistence.Lob;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
@@ -8,18 +12,20 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Data;
 
 @Entity
 @Table(name = "screenshots")
+@Data
 public class Screenshot {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Lob
+	//@Lob
+	@Column(name = "picture", columnDefinition = "BYTEA")
 	private byte[] picture;
 
 	@ManyToOne(fetch = FetchType.EAGER)

@@ -25,13 +25,13 @@ import com.project.mindsync.service.AuthService;
 @Service
 public class AuthServiceImpl implements AuthService {
 	@Autowired
-	UserRepository userRepository;
+	private UserRepository userRepository;
 
 	@Autowired
-	RoleRepository roleRepository;
+	private RoleRepository roleRepository;
 
 	@Autowired
-	PasswordEncoder passwordEncoder;
+	private PasswordEncoder passwordEncoder;
 
 	@Autowired
 	private JwtUtils tokenProvider;
@@ -47,6 +47,7 @@ public class AuthServiceImpl implements AuthService {
 		}
 		User newUser = new User(registerRequest.getName(), registerRequest.getUsername(), registerRequest.getEmail(),
 				registerRequest.getPassword());
+		System.out.println("dupa");
 		newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
 
 		Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
