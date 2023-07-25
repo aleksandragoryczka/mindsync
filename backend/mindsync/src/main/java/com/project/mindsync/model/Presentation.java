@@ -45,12 +45,12 @@ public class Presentation extends DateAudit {
 	private List<Show> shows;
 
 	public List<Slide> getSlides() {
-		return slides == null ? null : new ArrayList<>(slides);
+		return slides == null ? null : new ArrayList<Slide>(slides);
 	}
 
 	public void addSlide(Slide slide) {
 		if (slides == null) {
-			slides = new ArrayList<>();
+			slides = new ArrayList<Slide>();
 		}
 		slides.add(slide);
 		slide.setPresentation(this);
@@ -61,7 +61,7 @@ public class Presentation extends DateAudit {
 	}
 
 	public List<Show> getShows() {
-		return shows == null ? null : new ArrayList<>(shows);
+		return shows == null ? null : new ArrayList<Show>(shows);
 	}
 
 	public void setShows(List<Show> shows) {

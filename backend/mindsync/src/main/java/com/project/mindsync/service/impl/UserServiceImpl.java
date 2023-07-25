@@ -85,7 +85,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public ApiResponseDto giveAdmin(Long id) {
 		User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User", "Id", id));
-		Set<Role> roles = new HashSet<>();
+		Set<Role> roles = new HashSet<Role>();
 		roles.add(roleRepository.findByName(RoleName.ROLE_ADMIN)
 				.orElseThrow(() -> new AppException("User role is not set.")));
 		roles.add(roleRepository.findByName(RoleName.ROLE_USER)
@@ -99,7 +99,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public ApiResponseDto removeAdmin(Long id) {
 		User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User", "Id", id));
-		Set<Role> roles = new HashSet<>();
+		Set<Role> roles = new HashSet<Role>();
 		roles.add(roleRepository.findByName(RoleName.ROLE_USER)
 				.orElseThrow(() -> new AppException("User role is not set.")));
 		user.setRoles(roles);

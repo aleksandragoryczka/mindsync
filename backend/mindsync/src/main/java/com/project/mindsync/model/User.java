@@ -45,7 +45,7 @@ public class User {
 
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-	private Set<Role> roles = new HashSet<>();
+	private Set<Role> roles = new HashSet<Role>();
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -62,7 +62,7 @@ public class User {
 	}
 
 	public List<Presentation> getPresentations() {
-		return presentations == null ? null : new ArrayList<>(presentations);
+		return presentations == null ? null : new ArrayList<Presentation>(presentations);
 	}
 
 	public void setPresentations(List<Presentation> presentations) {
@@ -74,7 +74,7 @@ public class User {
 	}
 
 	public Set<Role> getRoles() {
-		return roles == null ? null : new HashSet<>(roles);
+		return roles == null ? null : new HashSet<Role>(roles);
 	}
 
 	public void setRoles(Set<Role> roles) {

@@ -91,23 +91,7 @@ public class PresentationServiceImpl implements PresentationService {
 		List<Slide> slides = new ArrayList<Slide>(presentationRequest.getSlides().size());
 
 		for (SlideRequestDto slideRequest : presentationRequest.getSlides()) {
-
-			SlideType slideType = slideTypeRepository.findByName(SlideTypeName.valueOf(slideRequest.getType()));
-			Slide newSlide = new Slide();
-			newSlide.setTitle(slideRequest.getTitle());
-			newSlide.setType(slideType);
-			newSlide.setDisplayTime(slideRequest.getDisplayTime());
-
-			if (AppConstants.OPTIONS_SLIDES_TYPES.contains(slideType.getName())) {
-				List<Option> options = new ArrayList<>();
-				for (Option option : slideRequest.getOptions()) {
-					Option newOption = new Option();
-					newOption.setOption(option.getOption());
-					newOption.setSlide(newSlide);
-					options.add(newOption);
-				}
-				newSlide.setOptions(options);
-			}
+			Slide newSlide = createSlide(slideRequest, presentation);
 
 			presentation.addSlide(newSlide);
 			slides.add(newSlide);
@@ -232,7 +216,7 @@ public class PresentationServiceImpl implements PresentationService {
 		newSlide.setPresentation(presentation);
 		newSlide.setDisplayTime(updatedSlide.getDisplayTime());
 		if (AppConstants.OPTIONS_SLIDES_TYPES.contains(slideType.getName())) {
-			List<Option> options = new ArrayList<>();
+			List<Option> options = new ArrayList<Option>();
 			Option option = new Option();
 			for (Option updatedOption : updatedSlide.getOptions()) {
 				Option newOption = new Option();

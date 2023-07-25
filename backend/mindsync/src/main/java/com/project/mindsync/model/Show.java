@@ -63,7 +63,7 @@ public class Show extends DateAudit {
 	}
 
 	public List<Screenshot> getScreenshots() {
-		return screenshots == null ? null : new ArrayList<>(screenshots);
+		return screenshots == null ? null : new ArrayList<Screenshot>(screenshots);
 	}
 
 	public void setScreenshots(List<Screenshot> screenshots) {

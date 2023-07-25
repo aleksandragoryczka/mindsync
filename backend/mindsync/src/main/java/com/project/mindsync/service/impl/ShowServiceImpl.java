@@ -96,7 +96,7 @@ public class ShowServiceImpl implements ShowService {
 		} catch (IOException e) {
 			logger.error("Failed to add excel file: {}", e.getMessage());
 		}
-		List<Screenshot> screenshots = new ArrayList<>();
+		List<Screenshot> screenshots = new ArrayList<Screenshot>();
 		try {
 			for (MultipartFile screenshotFile : showRequest.getScreenshots()) {
 				Screenshot screenshot = new Screenshot();

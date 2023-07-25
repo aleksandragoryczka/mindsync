@@ -67,7 +67,7 @@ public class Slide extends DateAudit {
 	}
 
 	public List<Option> getOptions() {
-		return options == null ? null : new ArrayList<>(options);
+		return options == null ? null : new ArrayList<Option>(options);
 	}
 
 	public void setOptions(List<Option> options) {

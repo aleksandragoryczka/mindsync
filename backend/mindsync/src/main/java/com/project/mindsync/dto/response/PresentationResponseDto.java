@@ -21,7 +21,7 @@ public class PresentationResponseDto {
 	private List<Show> shows;
 
 	public List<Slide> getSlides() {
-		return slides == null ? null : new ArrayList<>(slides);
+		return slides == null ? null : new ArrayList<Slide>(slides);
 	}
 
 	public void setSlides(List<Slide> slides) {
@@ -33,7 +33,7 @@ public class PresentationResponseDto {
 	}
 
 	public List<Show> getShows() {
-		return shows == null ? null : new ArrayList<>(shows);
+		return shows == null ? null : new ArrayList<Show>(shows);
 	}
 
 	public void setShows(List<Show> shows) {
