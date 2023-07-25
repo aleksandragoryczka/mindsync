@@ -161,7 +161,8 @@ public class PresentationServiceImpl implements PresentationService {
 			presentationRepository.deleteById(id);
 			return new ApiResponseDto(true, "Successfully deleted presentation");
 		}
-		ApiResponseDto apiResponse = new ApiResponseDto(false, "You do not have permissions to delete that post.");
+		ApiResponseDto apiResponse = new ApiResponseDto(false,
+				"You do not have permissions to delete that presentation.");
 		throw new UnauthorizedException(apiResponse);
 	}
 

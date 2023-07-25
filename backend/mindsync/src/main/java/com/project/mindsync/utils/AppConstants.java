@@ -16,6 +16,7 @@ public class AppConstants {
 	public static final String CREATED_AT = "createdAt";
 	public static final String SLIDE = "slide";
 	public static final String NAME = "name";
+	public static final String SHOW = "show";
 	public static final List<SlideTypeName> OPTIONS_SLIDES_TYPES = Collections
 			.singletonList(SlideTypeName.MULTIPLE_CHOICE);
 }

@@ -16,9 +16,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.project.mindsync.dto.request.ShowRequestDto;
+import com.project.mindsync.dto.response.ApiResponseDto;
 import com.project.mindsync.dto.response.PagedResponseDto;
 import com.project.mindsync.dto.response.ShowResponseDto;
+import com.project.mindsync.exception.AppException;
 import com.project.mindsync.exception.ResourceNotFoundException;
+import com.project.mindsync.exception.UnauthorizedException;
 import com.project.mindsync.model.Presentation;
 import com.project.mindsync.model.Screenshot;
 import com.project.mindsync.model.Show;
@@ -41,6 +44,9 @@ public class ShowServiceImpl implements ShowService {
 
 	@Autowired
 	private ShowRepository showRepository;
+
+	@Autowired
+	private UserRepository userRepository;
 
 	@Override
 	public ResponseEntity<ShowResponseDto> addShow(ShowRequestDto showRequest, Long presentationId) {
@@ -88,6 +94,19 @@ public class ShowServiceImpl implements ShowService {
 		}
 		return new PagedResponseDto<ShowResponseDto>(showResponses, shows.getNumber(), shows.getSize(),
 				shows.getTotalElements(), shows.getTotalPages(), shows.isLast());
+	}
+
+	@Override
+	public ResponseEntity<ApiResponseDto> deleteShow(Long id, UserPrincipal currentUser) {
+		Show show = showRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException(AppConstants.SHOW, AppConstants.ID, id));
+		User user = userRepository.getUser(currentUser);
+		if (AppUtils.checkUserIsCurrentUserOrAdmin(show.getPresentation().getUser(), currentUser)) {
+			showRepository.delete(show);
+			return ResponseEntity.ok().body(new ApiResponseDto(true, "Successfully deleted Show with ID: " + id));
+		}
+		ApiResponseDto apiResponse = new ApiResponseDto(false, "You do not have permissions to delete that show.");
+		throw new UnauthorizedException(apiResponse);
 	}
 
 }

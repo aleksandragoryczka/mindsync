@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,7 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.project.mindsync.dto.request.ShowRequestDto;
+import com.project.mindsync.dto.response.ApiResponseDto;
 import com.project.mindsync.dto.response.ShowResponseDto;
+import com.project.mindsync.model.Show;
+import com.project.mindsync.security.CurrentUser;
+import com.project.mindsync.security.UserPrincipal;
 import com.project.mindsync.service.ShowService;
 
 @RestController
@@ -25,11 +30,23 @@ public class ShowController {
 	@Autowired
 	private ShowService showService;
 
+	@GetMapping("/{id}")
+	public ResponseEntity<Show> getShow(@PathVariable(name = "id") Long id) {
+		return showService.getShow(id);
+	}
+
 	@PostMapping("")
 	@PreAuthorize("hasRole('USER')")
 	public ResponseEntity<ShowResponseDto> addShow(
 			@RequestParam(name = "presentationId", required = true) Long presentationId,
 			@ModelAttribute @Valid ShowRequestDto showRequest) {
 		return showService.addShow(showRequest, presentationId);
+	}
+
+	@DeleteMapping("/{id}")
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+	public ResponseEntity<ApiResponseDto> deleteShow(@PathVariable(name = "id") Long id,
+			@CurrentUser UserPrincipal currentUser) {
+		return showService.deleteShow(id, currentUser);
 	}
 }
