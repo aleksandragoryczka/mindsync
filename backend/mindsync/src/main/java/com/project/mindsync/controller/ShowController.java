@@ -27,8 +27,9 @@ public class ShowController {
 
 	@PostMapping("")
 	@PreAuthorize("hasRole('USER')")
-	public ResponseEntity<ShowResponseDto> addShow(@ModelAttribute @Valid ShowRequestDto showRequest,
-			@RequestParam(name = "presentationId", required = true) Long presentationId) {
+	public ResponseEntity<ShowResponseDto> addShow(
+			@RequestParam(name = "presentationId", required = true) Long presentationId,
+			@ModelAttribute @Valid ShowRequestDto showRequest) {
 		return showService.addShow(showRequest, presentationId);
 	}
 }

@@ -8,6 +8,7 @@ import jakarta.persistence.Lob;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
+import com.project.mindsync.model.audit.DateAudit;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -29,7 +30,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Show {
+public class Show extends DateAudit {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -37,7 +38,7 @@ public class Show {
 	@Column(name = "attendees_number")
 	private String attendeesNumber;
 
-	//@Lob
+	// @Lob
 	@Column(name = "excel_file", columnDefinition = "BYTEA")
 	private byte[] excelFile;
 
