@@ -1,7 +1,5 @@
 package com.project.mindsync.repository;
 
-import java.util.Optional;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.project.mindsync.model.SlideType;

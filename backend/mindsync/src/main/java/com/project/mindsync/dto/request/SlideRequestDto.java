@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.project.mindsync.model.Option;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

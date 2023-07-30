@@ -1,11 +1,8 @@
 package com.project.mindsync.utils;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-
 import com.project.mindsync.exception.MindSyncException;
 import com.project.mindsync.model.User;
-import com.project.mindsync.model.enums.RoleName;
 import com.project.mindsync.security.UserPrincipal;
 
 public class AppUtils {

@@ -2,8 +2,6 @@ package com.project.mindsync.model;
 
 import jakarta.persistence.Column;
 
-import javax.persistence.Lob;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
@@ -24,7 +22,7 @@ public class Screenshot {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	//TODO: Add thumnail url ?
+	// TODO: Add thumnail url ?
 	@Column(name = "picture", columnDefinition = "BYTEA")
 	private byte[] picture;
 

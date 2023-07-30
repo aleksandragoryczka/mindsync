@@ -11,7 +11,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.project.mindsync.dto.response.PagedResponseDto;
-import com.project.mindsync.model.Presentation;
 import com.project.mindsync.model.Slide;
 import com.project.mindsync.repository.SlideRepository;
 import com.project.mindsync.service.SlideService;
