@@ -72,6 +72,33 @@
   width: 100%;
 }
 
-li.active {
+.presenation-dropdown {
+  position: absolute;
+  display: inline-block;
+}
+
+.dropdown-menu {
+  position: absolute;
+  background-color: $light-green;
+  min-width: 190px;
+  z-index: 1;
+  padding: 0;
+}
+
+.dropdown-menu li,
+.dropdown-menu li a {
+  color: $logo-color;
+  padding: 11px 10px;
+  text-decoration: none;
+  display: block;
+  font-size: 18px;
+}
+
+.presenation-dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+.nav-text-link:hover,
+.dropdown-menu li:hover {
   font-weight: 800;
 }
