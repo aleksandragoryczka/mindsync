@@ -1,1 +1,15 @@
 /* You can add global styles to this file, and also import other style files */
+@import '../../../libs/ui/src/lib/variables';
+@import '../../../libs/ui/src/lib/containers.scss';
+@import '../../../libs/ui/src/lib/utilities.scss';
+
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+  font-family: 'Open Sans';
+}
+body {
+  margin: 0;
+  background-color: $white;
+}

@@ -1,0 +1,77 @@
+@import '../../../../ui/src/lib/variables';
+
+.navigation-container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.content-container {
+  width: 100%;
+  min-width: 350px;
+  overflow-y: auto;
+  background-color: $white;
+}
+
+.navbar .container-fluid,
+.navbar,
+.navbar-expand-lg .navbar-collapse,
+.navbar-expand-lg .navbar-nav,
+.custom-navbar {
+  display: flex;
+  flex-direction: row;
+  background-color: $light-green;
+  color: $logo-color;
+}
+
+.mindsync-nav-brand {
+  margin: 5px 0 0 40px;
+}
+
+.navbar-light .navbar-nav .nav-link {
+  color: $logo-color;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 25px;
+  font-size: 24px;
+}
+
+.navbar {
+  width: 100%;
+  height: $navbar-height;
+}
+
+.nav-items-container {
+  height: 100%;
+  width: 95%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.nav-item-div {
+  display: flex;
+  flex-direction: row;
+  list-style-type: none;
+  width: 95%;
+  margin: 5px 30px 0 30px;
+}
+
+.nav-link {
+  text-decoration: none;
+  padding: 35px;
+}
+
+.nav-ng-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+li.active {
+  font-weight: 800;
+}
