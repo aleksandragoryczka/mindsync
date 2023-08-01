@@ -102,3 +102,27 @@
 .dropdown-menu li:hover {
   font-weight: 800;
 }
+
+.welcome-page-container {
+  display: flex;
+  align-items: center;
+  height: calc(100vh - $navbar-height);
+}
+
+.question-box-container {
+  width: 50%;
+}
+
+.question-box-img {
+  max-inline-size: 100%;
+  block-size: auto;
+}
+
+//TODO: DO ZMIANY - PO DODNAIU CONTAINEROW DO UTILITIES
+.welcome-page-text-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 50%;
+}

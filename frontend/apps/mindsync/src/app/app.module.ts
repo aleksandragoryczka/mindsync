@@ -4,8 +4,9 @@ import { AppComponent } from './app.component';
 import { UiModule } from '@project/ui';
 import { SharedModule } from '@project/shared';
 import { LayoutModule } from '@project/layout';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 
+const routes: Routes = [];
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -13,7 +14,7 @@ import { RouterModule } from '@angular/router';
     UiModule,
     SharedModule,
     LayoutModule,
-    RouterModule.forRoot([]),
+    RouterModule.forRoot(routes),
   ],
   providers: [],
   bootstrap: [AppComponent],

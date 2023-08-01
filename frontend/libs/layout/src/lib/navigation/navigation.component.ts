@@ -5,19 +5,16 @@ import { Component } from '@angular/core';
   templateUrl: './navigation.component.html',
   styleUrls: ['./navigation.component.scss'],
 })
-export class NavigationComponent  {
+export class NavigationComponent {
   isUserAuthenticated = true;
-  activeIndex = 1;
   isDropdownOpen = false;
 
   // constructor(private router: Router) {}
 
-  
-
   public get defaultMenu() {
     return [
       {
-        text: 'Join presentaion',
+        text: 'Join presentation',
         router_link: '#',
       },
       {
@@ -35,6 +32,7 @@ export class NavigationComponent  {
     ];
   }
 
+  //TODO: Add Admin Panel
   public get userMenu() {
     return [
       {

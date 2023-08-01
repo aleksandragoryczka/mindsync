@@ -26,6 +26,7 @@
                                             <li><a routerLink="#2">Create new</a></li>
                                         </ul>
                                     </div>
+                                    <mat-icon *ngIf="element.text === 'Presentations'">arrow_drop_down</mat-icon>
                                 </a>
                             </li>
                         </ng-container>
@@ -36,5 +37,15 @@
     </nav>
     <div class="content-container">
         <router-outlet></router-outlet>
+        <div class="welcome-page-container" *ngIf="isUserAuthenticated">
+            <div class="question-box-container">
+                <img class="question-box-img" alt="question-box" src="libs/ui/src/assets/images/question-box.png">
+            </div>
+            <div class="welcome-page-text-container">
+                <h1>Unlock Creativity, Connect Minds:</h1>
+                <h1>MindSync</h1>
+                <h1>Your Pathway to Collaborative Brillince!</h1>
+            </div>
+        </div>
     </div>
 </div>
