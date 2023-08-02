@@ -4,13 +4,14 @@
   font-weight: 600;
   font-size: x-large;
   color: $white;
-  padding: 9px 30px;
+  padding: 16px 30px;
   transition: 255ms;
   transform: translateY(0);
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  border: none;
   cursor: pointer;
 }
 
@@ -24,5 +25,6 @@
 
 .mindsync-btn:hover {
   transition: 255ms;
-  color: $logo-color;
+  color: $beige;
+  filter: drop-shadow(0 15px 15px rgba(0, 0, 0, 0.25));
 }

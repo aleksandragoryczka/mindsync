@@ -10,17 +10,18 @@
                     <div class="nav-item-div">
                         <ng-container *ngIf="isUserAuthenticated">
                             <li *ngFor="let element of defaultMenu; trackBy: trackByFn; let i = index" class="nav-item">
-                                <a class="nav-link" routerLink="{{ element.router_link }}"><span
-                                        class="nav-text-link">{{ element.text }}</span></a>
+                                <a class="nav-link" routerLink="{{ element.router_link }}"
+                                    (click)="openPopup(element.popup_name)">
+                                    <span class="nav-text-link">{{ element.text }}</span></a>
                             </li>
                         </ng-container>
                         <ng-container *ngIf="!isUserAuthenticated">
                             <li *ngFor="let element of userMenu; trackBy: trackByFn; let i = index" class="nav-item">
                                 <a class="nav-link" routerLink="{{ element.router_link }}"
-                                    (mouseenter)="openDropdown(element.text)" (mouseleave)="closeDropdown()">
+                                    (mouseenter)="openDropdown(element.text)">
                                     <span class="nav-text-link">{{ element.text }}</span>
                                     <div *ngIf="element.text === 'Presentations' && isDropdownOpen"
-                                        class="presenation-dropdown">
+                                        class="presenation-dropdown" (mouseleave)="closeDropdown()">
                                         <ul class="dropdown-menu">
                                             <li><a routerLink="#1">My presentations</a></li>
                                             <li><a routerLink="#2">Create new</a></li>
@@ -49,8 +50,8 @@
                             <h2>MindSync</h2>
                             <h2>Your Pathway to Collaborative Brillince!</h2>
                         </div>
-                        <div class="mindsync-btn mindsync-btn-secondary">Join presentation</div>
-                        <div class="mindsync-btn mindsync-btn-primary">Get Started</div>
+                        <button class="mindsync-btn mindsync-btn-primary">Join presentation</button>
+                        <button class="mindsync-btn mindsync-btn-secondary">Get Started</button>
                     </div>
                 </div>
             </div>
