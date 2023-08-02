@@ -1,0 +1,28 @@
+.mindsync-btn {
+  min-width: 80px;
+  min-height: 40px;
+  font-weight: 600;
+  font-size: x-large;
+  color: $white;
+  padding: 9px 30px;
+  transition: 255ms;
+  transform: translateY(0);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.mindsync-btn-primary {
+  background-color: $dark-green;
+}
+
+.mindsync-btn-secondary {
+  background-color: $double-dark-green;
+}
+
+.mindsync-btn:hover {
+  transition: 255ms;
+  color: $logo-color;
+}

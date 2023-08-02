@@ -10,7 +10,7 @@
 .content-container {
   width: 100%;
   min-width: 350px;
-  overflow-y: auto;
+  overflow-y: hidden;
   background-color: $white;
 }
 
@@ -40,7 +40,6 @@
 
 .navbar {
   width: 100%;
-  height: $navbar-height;
 }
 
 .nav-items-container {
@@ -106,23 +105,31 @@
 .welcome-page-container {
   display: flex;
   align-items: center;
+  justify-content: center;
   height: calc(100vh - $navbar-height);
 }
 
-.question-box-container {
-  width: 50%;
-}
-
 .question-box-img {
+  width: 750px;
+  height: auto;
+  min-width: 500px;
   max-inline-size: 100%;
   block-size: auto;
 }
 
-//TODO: DO ZMIANY - PO DODNAIU CONTAINEROW DO UTILITIES
 .welcome-page-text-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  width: 50%;
+  margin-bottom: 15px;
+}
+
+.mindsync-btn {
+  margin-bottom: 20px;
+}
+
+@media screen and (max-width: 1100px) {
+  .question-box-img {
+    width: 500px;
+  }
 }

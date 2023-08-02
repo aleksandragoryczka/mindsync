@@ -8,13 +8,13 @@
             <div class="nav-items-container">
                 <div class="navbar-nav">
                     <div class="nav-item-div">
-                        <ng-container *ngIf="!isUserAuthenticated">
+                        <ng-container *ngIf="isUserAuthenticated">
                             <li *ngFor="let element of defaultMenu; trackBy: trackByFn; let i = index" class="nav-item">
                                 <a class="nav-link" routerLink="{{ element.router_link }}"><span
                                         class="nav-text-link">{{ element.text }}</span></a>
                             </li>
                         </ng-container>
-                        <ng-container *ngIf="isUserAuthenticated">
+                        <ng-container *ngIf="!isUserAuthenticated">
                             <li *ngFor="let element of userMenu; trackBy: trackByFn; let i = index" class="nav-item">
                                 <a class="nav-link" routerLink="{{ element.router_link }}"
                                     (mouseenter)="openDropdown(element.text)" (mouseleave)="closeDropdown()">
@@ -36,16 +36,25 @@
         </div>
     </nav>
     <div class="content-container">
-        <router-outlet></router-outlet>
         <div class="welcome-page-container" *ngIf="isUserAuthenticated">
             <div class="question-box-container">
                 <img class="question-box-img" alt="question-box" src="libs/ui/src/assets/images/question-box.png">
             </div>
-            <div class="welcome-page-text-container">
-                <h1>Unlock Creativity, Connect Minds:</h1>
-                <h1>MindSync</h1>
-                <h1>Your Pathway to Collaborative Brillince!</h1>
+            <div class="mindsync-default-container">
+                <div class="mindsync-default-content-container">
+                    <div class="mindsync-default-content-heading">Heading</div>
+                    <div class="mindsync-secondary-default-content-data">
+                        <div class="welcome-page-text-container">
+                            <h2>Unlock Creativity, Connect Minds:</h2>
+                            <h2>MindSync</h2>
+                            <h2>Your Pathway to Collaborative Brillince!</h2>
+                        </div>
+                        <div class="mindsync-btn mindsync-btn-secondary">Join presentation</div>
+                        <div class="mindsync-btn mindsync-btn-primary">Get Started</div>
+                    </div>
+                </div>
             </div>
         </div>
+        <router-outlet></router-outlet>
     </div>
 </div>
