@@ -47,6 +47,16 @@
   color: $white;
 }
 
+.mindsync-popup-close-btn {
+  position: absolute;
+  right: -23px;
+  top: -23px;
+  margin-right: 30px;
+  margin-top: 30px;
+  cursor: pointer;
+  color: black;
+}
+
 @media screen and (max-width: 1100px) {
   .mindsync-default-container {
     align-items: unset;

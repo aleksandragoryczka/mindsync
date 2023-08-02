@@ -1,1 +1,59 @@
-<p>popup-with-inputs works!</p>
+<mat-dialog-content class="mindsync-default-container">
+    <div class="mindsync-default-content-container">
+        <div class="mindsync-popup-close-btn" (click)="closePopup()">
+            <mat-icon>close</mat-icon>
+        </div>
+        <div class="mindsync-default-content-heading">
+            {{ data.title }}
+        </div>
+        <div class="mindsync-default-content-data">
+            <ng-container [ngSwitch]="getTitle(data)">
+                <form *ngSwitchCase="'Sign In'" [formGroup]="loginForm" (ngSubmit)="onSubmitLogin()">
+                    <div class="form-group">
+                        <label><input matInput type="email" formControlName="email" class="upwork-input">Email</label>
+                        <label><input matInput type="password" formControlName="password"
+                                class="upwork-input">Password</label>
+                    </div>
+                    <button type="submit" class="mindsync-btn mindsync-btn-primary">Sign In</button>
+                </form>
+                <form *ngSwitchCase="'Register'" [formGroup]="registrationForm" (ngSubmit)="onSubmitRegistration()">
+                    <div class="form-group">
+                        <label><input matInput type="email" formControlName="email" class="upwork-input">Email</label>
+                        <label><input matInput type="text" formControlName="username"
+                                class="upwork-input">Username</label>
+                        <label><input matInput type="text" formControlName="name" class="upwork-input">Name</label>
+                        <label><input matInput type="password" formControlName="password"
+                                class="upwork-input">Password</label>
+                        <label><input matInput type="password" formControlName="repeatPassword"
+                                class="upwork-input">Repeat
+                            Password</label>
+                    </div>
+                    <button type="submit" class="mindsync-btn mindsync-btn-primary">Register</button>
+                </form>
+                <div *ngSwitchDefault>
+                    <p>kotek</p>
+                    <div *ngSwitchDefault class="mindsync-popup-inputs-container">
+                        <span> {{ data.description }} </span>
+                        <ng-container *ngFor="let input of getRecordValues(data.inputs); trackBy: trackByFn">
+                            <ng-container [ngSwitch]="input[1].type">
+                                <input *ngSwitchCase="'text'" type="text" class="mindsync-input"
+                                    [placeholder]="input[1].placeholder ?? ''" [(ngModel)]="input[1].value">
+                                <input *ngSwitchCase="'password'" type="password" class="mindsync-input"
+                                    [placeholder]="input[1].placeholder ?? ''" [(ngModel)]="input[1].value">
+                                <input *ngSwitchCase="'email'" type="email" class="mindsync-input"
+                                    [placeholder]="input[1].placeholder ?? ''" [(ngModel)]="input[1].value">
+                            </ng-container>
+                        </ng-container>
+                    </div>
+                    <div class="mindsync-popup-buttons-container">
+                        <div *ngFor="let button of data.buttons" class="mindsync-btn mindsync-btn-primary"
+                            [class]="button.type === primary ? 'mindsync-btn mindsync-btn-primary' : 'mindsync-btn-secondary'"
+                            (click)="buttonClick(button)">
+                            {{ button.text }}
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</mat-dialog-content>

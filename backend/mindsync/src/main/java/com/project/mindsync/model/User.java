@@ -27,15 +27,14 @@ public class User {
 	private Long id;
 
 	@NotBlank
-	@Size(min = 3, max = 40)
+	@Size(min = 3)
 	private String name;
 
 	@NotBlank
-	@Size(min = 3, max = 15)
+	@Size(min = 3)
 	private String username;
 
 	@NotBlank
-	@Size(max = 40)
 	@Email
 	private String email;
 

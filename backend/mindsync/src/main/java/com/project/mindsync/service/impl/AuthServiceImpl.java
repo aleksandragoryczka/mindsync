@@ -41,13 +41,11 @@ public class AuthServiceImpl implements AuthService {
 
 	@Override
 	public User registerUser(RegisterRequestDto registerRequest) {
-		if (userRepository.existsByUsername(registerRequest.getUsername())
-				|| userRepository.existsByEmail(registerRequest.getEmail())) {
+		if (userRepository.existsByEmail(registerRequest.getEmail())) {
 			return null;
 		}
 		User newUser = new User(registerRequest.getName(), registerRequest.getUsername(), registerRequest.getEmail(),
 				registerRequest.getPassword());
-		System.out.println("dupa");
 		newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
 
 		Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
@@ -61,10 +59,10 @@ public class AuthServiceImpl implements AuthService {
 	@Override
 	public JwtAuthenticationResponseDto signInUser(SignInRequestDto signInRequest) {
 		Authentication authentication = authenticationManager.authenticate(
-				new UsernamePasswordAuthenticationToken(signInRequest.getUsername(), signInRequest.getPassword()));
+				new UsernamePasswordAuthenticationToken(signInRequest.getEmail(), signInRequest.getPassword()));
 
 		SecurityContextHolder.getContext().setAuthentication(authentication);
-		String jwt = tokenProvider.generateTokenFromUsername(signInRequest.getUsername());
+		String jwt = tokenProvider.generateTokenFromEmail(signInRequest.getEmail());
 		return new JwtAuthenticationResponseDto(jwt);
 	}
 }

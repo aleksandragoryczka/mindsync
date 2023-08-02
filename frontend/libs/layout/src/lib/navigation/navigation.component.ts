@@ -3,7 +3,7 @@ import {
   ButtonTypes,
   InputPopupFullDataModel,
   InputPopupModel,
-} from '../../../../shared/src/lib/models/input-popup-data-model';
+} from '../../../../shared/src/lib/models/input-popup-data.model';
 import { MatDialog } from '@angular/material/dialog';
 import { PopupWithInputsComponent } from '../../../../ui/src/lib/popup-with-inputs/popup-with-inputs.component';
 
@@ -26,8 +26,8 @@ export class NavigationComponent {
     register: {
       ['Name']: { value: '', type: 'text', placeholder: 'Name' },
       ['Username']: { value: '', type: 'text', placeholder: 'Username' },
-      ['Email']: { value: '', type: 'text', placeholder: 'Email' },
-      ['Password']: { value: '', type: 'text', placeholder: 'Password' },
+      ['Email']: { value: '', type: 'email', placeholder: 'Email' },
+      ['Password']: { value: '', type: 'password', placeholder: 'Password' },
       ['Repeat password']: {
         value: '',
         type: 'text',
@@ -45,9 +45,6 @@ export class NavigationComponent {
         {
           type: ButtonTypes.PRIMARY,
           text: 'Sign In',
-          onClick: () => {
-            console.log('');
-          },
         },
         {
           type: ButtonTypes.SECONDARY,
@@ -66,9 +63,6 @@ export class NavigationComponent {
         {
           type: ButtonTypes.PRIMARY,
           text: 'Register',
-          onClick: () => {
-            console.log('');
-          },
         },
         {
           type: ButtonTypes.SECONDARY,
@@ -105,12 +99,12 @@ export class NavigationComponent {
       },
       {
         text: 'Register',
-        router_link: '#',
+        router_link: '',
         popup_name: 'register',
       },
       {
         text: 'Sign In',
-        router_link: '#',
+        router_link: '',
         popup_name: 'login',
       },
     ];
@@ -121,7 +115,7 @@ export class NavigationComponent {
     return [
       {
         text: 'Presentations',
-        router_link: '#',
+        router_link: '',
       },
       {
         text: 'Profile',

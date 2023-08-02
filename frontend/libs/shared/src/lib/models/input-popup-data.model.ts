@@ -1,6 +1,6 @@
 export interface InputPopupModel {
   type: string;
-  placeholder: string;
+  placeholder?: string;
   selectOptions?: SelectOptionPopupModel[];
   value?: number | string;
 }
@@ -18,12 +18,12 @@ export enum ButtonTypes {
 export interface ButtonPopupModel {
   type: ButtonTypes;
   text: string;
-  onClick: CallableFunction;
+  onClick?: CallableFunction;
 }
 
 export interface InputPopupFullDataModel {
   title: string;
-  description: string;
+  description?: string;
   buttons: ButtonPopupModel[];
   inputs: Record<string, InputPopupModel>;
 }

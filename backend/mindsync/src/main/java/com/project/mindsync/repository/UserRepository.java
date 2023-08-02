@@ -9,8 +9,6 @@ import com.project.mindsync.model.User;
 import com.project.mindsync.security.UserPrincipal;
 
 public interface UserRepository extends JpaRepository<User, Long> {
-	boolean existsByUsername(String username);
-
 	boolean existsByEmail(String email);
 
 	Optional<User> findByUsername(String username);
