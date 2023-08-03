@@ -80,7 +80,6 @@ export class NavigationComponent {
       const data = this.homepageInputPopupFullData[popup_name];
       this.dialog.open(PopupWithInputsComponent, {
         data: data,
-        panelClass: 'mindsync-popup',
       });
     }
   }

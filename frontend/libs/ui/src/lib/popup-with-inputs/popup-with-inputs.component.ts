@@ -63,7 +63,6 @@ export class PopupWithInputsComponent {
   }
 
   onSubmitLogin(): void {
-    console.log(this.loginForm.controls['email'].value);
     if (this.loginForm.invalid) return;
     const credentials: LoginModel = {
       email: this.loginForm.controls['email'].value,

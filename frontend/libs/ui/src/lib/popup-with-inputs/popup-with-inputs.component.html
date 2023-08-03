@@ -10,28 +10,26 @@
             <ng-container [ngSwitch]="getTitle(data)">
                 <form *ngSwitchCase="'Sign In'" [formGroup]="loginForm" (ngSubmit)="onSubmitLogin()">
                     <div class="form-group">
-                        <label><input matInput type="email" formControlName="email" class="upwork-input">Email</label>
+                        <label><input matInput type="email" formControlName="email" class="mindsync-input">Email</label>
                         <label><input matInput type="password" formControlName="password"
-                                class="upwork-input">Password</label>
+                                class="mindsync-input">Password</label>
+                        <button type="submit" class="mindsync-btn mindsync-btn-primary">Sign In</button>
                     </div>
-                    <button type="submit" class="mindsync-btn mindsync-btn-primary">Sign In</button>
                 </form>
                 <form *ngSwitchCase="'Register'" [formGroup]="registrationForm" (ngSubmit)="onSubmitRegistration()">
                     <div class="form-group">
-                        <label><input matInput type="email" formControlName="email" class="upwork-input">Email</label>
+                        <label><input matInput type="email" formControlName="email" class="mindsync-input">Email</label>
                         <label><input matInput type="text" formControlName="username"
-                                class="upwork-input">Username</label>
-                        <label><input matInput type="text" formControlName="name" class="upwork-input">Name</label>
+                                class="mindsync-input">Username</label>
+                        <label><input matInput type="text" formControlName="name" class="mindsync-input">Name</label>
                         <label><input matInput type="password" formControlName="password"
-                                class="upwork-input">Password</label>
-                        <label><input matInput type="password" formControlName="repeatPassword"
-                                class="upwork-input">Repeat
-                            Password</label>
+                                class="mindsync-input">Password</label>
+                        <input matInput type="password" formControlName="repeatPassword" placeholder="Repeat password"
+                            class="mindsync-input">
+                        <button type="submit" class="mindsync-btn mindsync-btn-primary">Register</button>
                     </div>
-                    <button type="submit" class="mindsync-btn mindsync-btn-primary">Register</button>
                 </form>
                 <div *ngSwitchDefault>
-                    <p>kotek</p>
                     <div *ngSwitchDefault class="mindsync-popup-inputs-container">
                         <span> {{ data.description }} </span>
                         <ng-container *ngFor="let input of getRecordValues(data.inputs); trackBy: trackByFn">

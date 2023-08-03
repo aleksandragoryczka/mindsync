@@ -28,3 +28,17 @@
   color: $beige;
   filter: drop-shadow(0 15px 15px rgba(0, 0, 0, 0.25));
 }
+
+.mindsync-input {
+  font-weight: 500;
+  border: 1px solid $dark-green;
+  outline-width: 0;
+  width: 100%;
+  height: 40px;
+  padding: 5px 5px 5px 10px;
+  background-color: $input-background;
+}
+
+.mindsync-input:focus-visible {
+  border: 2px solid $logo-color;
+}
