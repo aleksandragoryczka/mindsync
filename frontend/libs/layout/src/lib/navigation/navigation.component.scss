@@ -21,8 +21,8 @@
 .custom-navbar {
   display: flex;
   flex-direction: row;
-  background-color: $light-green;
-  color: $logo-color;
+  background-color: $dark-green;
+  color: $light-green;
 }
 
 .mindsync-nav-brand {
@@ -30,7 +30,7 @@
 }
 
 .navbar-light .navbar-nav .nav-link {
-  color: $logo-color;
+  color: $light-green;
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -78,7 +78,7 @@
 
 .dropdown-menu {
   position: absolute;
-  background-color: $light-green;
+  background-color: $dark-green;
   min-width: 190px;
   z-index: 1;
   padding: 0;
@@ -86,7 +86,7 @@
 
 .dropdown-menu li,
 .dropdown-menu li a {
-  color: $logo-color;
+  color: $light-green;
   padding: 11px 10px;
   text-decoration: none;
   display: block;

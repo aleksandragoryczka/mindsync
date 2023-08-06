@@ -1,7 +1,13 @@
-import { Component, Inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, Inject, OnInit } from '@angular/core';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { LoginModel } from '../../../../shared/src/lib/models/login.model';
+import Validation from '../../../../shared/src/lib/utils/validation';
 import {
   ButtonPopupModel,
   ButtonTypes,
@@ -14,34 +20,48 @@ import {
   templateUrl: './popup-with-inputs.component.html',
   styleUrls: ['./popup-with-inputs.component.scss'],
 })
-export class PopupWithInputsComponent {
+export class PopupWithInputsComponent implements OnInit {
   primary = ButtonTypes.PRIMARY;
-  loginForm: FormGroup;
-  registrationForm: FormGroup;
+  loginForm!: FormGroup;
+  registrationForm!: FormGroup;
+  submitted = false;
 
   constructor(
     public dialogRef: MatDialogRef<PopupWithInputsComponent>,
     @Inject(MAT_DIALOG_DATA) public data: InputPopupFullDataModel,
     private formBuilder: FormBuilder
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
       email: ['', Validators.required],
       password: ['', Validators.required],
     });
-    this.registrationForm = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
-      username: ['', [Validators.required, Validators.minLength(3)]],
-      name: ['', Validators.required, Validators.minLength(3)],
-      password: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(6),
-          Validators.maxLength(40),
+    this.registrationForm = this.formBuilder.group(
+      {
+        email: ['', [Validators.required, Validators.email]],
+        username: ['', [Validators.required, Validators.minLength(3)]],
+        name: ['', Validators.required, Validators.minLength(3)],
+        password: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(6),
+            Validators.maxLength(40),
+          ],
         ],
-      ],
-      repeatPassword: ['', Validators.required],
-    });
+        repeatPassword: ['', Validators.required],
+      },
+      { validators: [Validation.match('password', 'repeatPassword')] }
+    );
+  }
+
+  get rf(): { [key: string]: AbstractControl } {
+    return this.registrationForm.controls;
+  }
+
+  get lf(): { [key: string]: AbstractControl } {
+    return this.loginForm.controls;
   }
 
   closePopup(): void {
@@ -63,7 +83,9 @@ export class PopupWithInputsComponent {
   }
 
   onSubmitLogin(): void {
+    this.submitted = true;
     if (this.loginForm.invalid) return;
+
     const credentials: LoginModel = {
       email: this.loginForm.controls['email'].value,
       password: this.loginForm.controls['password'].value,
@@ -71,6 +93,7 @@ export class PopupWithInputsComponent {
   }
 
   onSubmitRegistration(): void {
+    this.submitted = true;
     if (this.registrationForm.valid) return;
   }
 

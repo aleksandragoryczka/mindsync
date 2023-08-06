@@ -10,22 +10,54 @@
             <ng-container [ngSwitch]="getTitle(data)">
                 <form *ngSwitchCase="'Sign In'" [formGroup]="loginForm" (ngSubmit)="onSubmitLogin()">
                     <div class="form-group">
-                        <label><input matInput type="email" formControlName="email" class="mindsync-input">Email</label>
-                        <label><input matInput type="password" formControlName="password"
-                                class="mindsync-input">Password</label>
-                        <button type="submit" class="mindsync-btn mindsync-btn-primary">Sign In</button>
+                        <input matInput type="email" formControlName="email" class="mindsync-input" placeholder="Email"
+                            [ngClass]="{ 'is-invalid': submitted && lf['email'].errors}">
+                        <div *ngIf="submitted && lf['email'].errors" class="invalid-feedback">
+                            <div *ngIf="lf['email'].errors['required']">Email is required</div>
+                        </div>
+                        <input matInput type="password" formControlName="password" class="mindsync-input"
+                            placeholder="Password" [ngClass]="{ 'is-invalid': submitted && lf['password'].errors}">
+                        <div *ngIf="submitted && lf['password'].errors" class="invalid-feedback">
+                            <div *ngIf="lf['password'].errors['required']">Password is required</div>
+                        </div>
+                        <button type="submit" class="mindsync-btn mindsync-btn-primary">Sign in</button>
                     </div>
                 </form>
                 <form *ngSwitchCase="'Register'" [formGroup]="registrationForm" (ngSubmit)="onSubmitRegistration()">
                     <div class="form-group">
-                        <label><input matInput type="email" formControlName="email" class="mindsync-input">Email</label>
-                        <label><input matInput type="text" formControlName="username"
-                                class="mindsync-input">Username</label>
-                        <label><input matInput type="text" formControlName="name" class="mindsync-input">Name</label>
-                        <label><input matInput type="password" formControlName="password"
-                                class="mindsync-input">Password</label>
+                        <input matInput type="email" formControlName="email" class="mindsync-input" placeholder="Email"
+                            [ngClass]="{ 'is-invalid': submitted && rf['email'].errors}">
+                        <div *ngIf="submitted && rf['email'].errors" class="invalid-feedback">
+                            <div *ngIf="rf['email'].errors['required']">Email is required</div>
+                            <div *ngIf="rf['email'].errors['email']">Email is invalid</div>
+                        </div>
+                        <input matInput type="text" formControlName="username" class="mindsync-input"
+                            placeholder="Username" [ngClass]="{ 'is-invalid': submitted && rf['username'].errors}">
+                        <div *ngIf="submitted && rf['username'].errors" class="invalid-feedback">
+                            <div *ngIf="rf['username'].errors['required']">Username is required</div>
+                            <div *ngIf="rf['username'].errors['minlength']">Username must be at least 3 characters</div>
+                        </div>
+                        <input matInput type="text" formControlName="name" class="mindsync-input" placeholder="Name"
+                            [ngClass]="{ 'is-invalid': submitted && rf['name'].errors}">
+                        <div *ngIf="submitted && rf['name'].errors" class="invalid-feedback">
+                            <div *ngIf="rf['name'].errors['required']">Name is required</div>
+                            <div *ngIf="rf['name'].errors['minlength']">Name must be at least 3 characters</div>
+                        </div>
+                        <input matInput type="password" formControlName="password" class="mindsync-input"
+                            placeholder="Password" [ngClass]="{ 'is-invalid': submitted && rf['password'].errors}">
+                        <div *ngIf="submitted && rf['password'].errors" class="invalid-feedback">
+                            <div *ngIf="rf['password'].errors['required']">Password is required</div>
+                            <div *ngIf="rf['password'].errors['minlength']">Password must be at least 6 characters</div>
+                            <div *ngIf="rf['password'].errors['maxlength']">Password must not exceed 40 characters</div>
+                        </div>
                         <input matInput type="password" formControlName="repeatPassword" placeholder="Repeat password"
-                            class="mindsync-input">
+                            class="mindsync-input"
+                            [ngClass]="{ 'is-invalid': submitted && rf['repeatPassword'].errors}">
+                        <div *ngIf="submitted && rf['repeatPassword'].errors" class="invalid-feedback">
+                            <div *ngIf="rf['repeatPassword'].errors['required']">Please repeat password</div>
+                            <div *ngIf="rf['repeatPassword'].errors['matching']">Passwords do not match
+                            </div>
+                        </div>
                         <button type="submit" class="mindsync-btn mindsync-btn-primary">Register</button>
                     </div>
                 </form>

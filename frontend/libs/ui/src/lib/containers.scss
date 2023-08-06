@@ -15,11 +15,11 @@
 
 .mindsync-default-content-container {
   min-width: 600px;
-  border: 4px solid $dark-green;
+  border: 3px solid $darker-green;
 }
 
 .mindsync-default-content-heading {
-  background-color: $dark-green;
+  background-color: $darker-green;
   padding: 20px;
   min-height: 60px;
   color: $white;
@@ -31,9 +31,14 @@
 }
 
 .mindsync-default-content-data {
-  background-color: $white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  background-color: $beige;
   padding: 20px;
   min-height: 300px;
+  color: $darker-brown;
 }
 
 .mindsync-secondary-default-content-data {
@@ -41,7 +46,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  background-color: $input-background;
+  background-color: $light-brown;
   padding: 10px;
   min-height: 300px;
   color: $white;
@@ -57,9 +62,12 @@
   color: $white;
 }
 
-//popups:
 .mdc-dialog .mdc-dialog__content {
   padding: 0 !important;
+}
+
+.mat-mdc-dialog-content {
+  max-height: 100vh !important;
 }
 
 @media screen and (max-width: 1100px) {

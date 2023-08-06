@@ -5,14 +5,9 @@
   padding: 5px;
 }
 
-label {
-  width: 100%;
-}
-
 .mindsync-default-content-container {
   min-width: 500px;
 }
-
 
 .mindsync-default-content-data {
   display: flex;
@@ -20,9 +15,5 @@ label {
   justify-content: space-between;
   align-items: center;
   gap: 15px;
-  min-height: 150px;
-}
-
-mat-form-field {
-  margin-bottom: -1.25em;
+  min-height: 250px;
 }

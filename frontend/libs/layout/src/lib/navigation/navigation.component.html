@@ -43,19 +43,20 @@
             </div>
             <div class="mindsync-default-container">
                 <div class="mindsync-default-content-container">
-                    <div class="mindsync-default-content-heading">Heading</div>
-                    <div class="mindsync-secondary-default-content-data">
+                    <div class="mindsync-default-content-heading"></div>
+                    <div class="mindsync-default-content-data">
                         <div class="welcome-page-text-container">
                             <h2>Unlock Creativity, Connect Minds:</h2>
                             <h2>MindSync</h2>
                             <h2>Your Pathway to Collaborative Brillince!</h2>
                         </div>
                         <button class="mindsync-btn mindsync-btn-primary">Join presentation</button>
-                        <button class="mindsync-btn mindsync-btn-secondary">Get Started</button>
+                        <button class="mindsync-btn mindsync-btn-secondary" (click)="openPopup('register')">Get
+                            Started</button>
                     </div>
                 </div>
             </div>
         </div>
-        <router-outlet></router-outlet>
     </div>
 </div>
+<router-outlet></router-outlet>
