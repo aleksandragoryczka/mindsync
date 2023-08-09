@@ -22,10 +22,10 @@ public class UserPrincipal implements UserDetails {
 	@JsonIgnore
 	private String password;
 
-	private Collection<? extends GrantedAuthority> authorities;
+	private Collection<GrantedAuthority> authorities;
 
 	public UserPrincipal(Long id, String name, String username, String email, String password,
-			Collection<? extends GrantedAuthority> authorities) {
+			Collection<GrantedAuthority> authorities) {
 		this.id = id;
 		this.name = name;
 		this.username = username;
@@ -54,7 +54,7 @@ public class UserPrincipal implements UserDetails {
 	}
 
 	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
+	public Collection<GrantedAuthority> getAuthorities() {
 		return authorities == null ? null : new ArrayList<>(authorities);
 	}
 

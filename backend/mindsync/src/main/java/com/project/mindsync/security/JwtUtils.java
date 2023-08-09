@@ -1,14 +1,21 @@
 package com.project.mindsync.security;
 
 import java.security.Key;
+import java.util.Collection;
 import java.util.Date;
+import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.WebUtils;
+
+import com.project.mindsync.model.Role;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -39,7 +46,7 @@ public class JwtUtils {
 	}
 
 	public ResponseCookie generateJwtCookie(UserPrincipal userPrincipal) {
-		String jwt = generateTokenFromEmail(userPrincipal.getEmail());
+		String jwt = generateTokenFromId(userPrincipal.getId(), userPrincipal.getAuthorities());
 		ResponseCookie cookie = ResponseCookie.from(jwtCookie, jwt).path("/api").maxAge(24 * 60 * 60).httpOnly(true)
 				.build();
 		return cookie;
@@ -70,8 +77,12 @@ public class JwtUtils {
 		return false;
 	}
 
-	public String generateTokenFromEmail(String email) {
-		return Jwts.builder().setSubject(email).setIssuedAt(new Date())
+	public String generateTokenFromId(Long id, Collection<GrantedAuthority> roles) {
+		UUID userUuid = UUID.randomUUID();
+		Claims claims = Jwts.claims().setSubject(userUuid.toString());
+		claims.put("id", id);
+		claims.put("roles", roles.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
+		return Jwts.builder().setClaims(claims).setIssuedAt(new Date())
 				.setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
 				.signWith(key(), SignatureAlgorithm.HS256).compact();
 	}

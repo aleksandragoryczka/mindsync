@@ -6,6 +6,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 @NgModule({
   imports: [
@@ -17,6 +18,6 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatDialogModule,
   ],
   exports: [NavigationComponent, RouterModule],
-  declarations: [NavigationComponent],
+  declarations: [NavigationComponent, DashboardComponent],
 })
 export class LayoutModule {}

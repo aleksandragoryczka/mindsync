@@ -8,12 +8,14 @@ import {
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { LoginModel } from '../../../../shared/src/lib/models/login.model';
 import Validation from '../../../../shared/src/lib/utils/validation';
+import { UserService } from '../../../../shared/src/lib/services/user.service';
 import {
   ButtonPopupModel,
   ButtonTypes,
   InputPopupFullDataModel,
   InputPopupModel,
 } from 'libs/shared/src/lib/models/input-popup-data.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'project-popup-with-inputs',
@@ -29,7 +31,9 @@ export class PopupWithInputsComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<PopupWithInputsComponent>,
     @Inject(MAT_DIALOG_DATA) public data: InputPopupFullDataModel,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private userService: UserService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -90,11 +94,21 @@ export class PopupWithInputsComponent implements OnInit {
       email: this.loginForm.controls['email'].value,
       password: this.loginForm.controls['password'].value,
     };
+
+    this.userService.login(credentials).subscribe(loggedIn => {
+      async () => {
+        if (loggedIn) {
+          await this.router.navigate([`/dashboard`]);
+          this.closePopup();
+        }
+      };
+    });
   }
 
   onSubmitRegistration(): void {
     this.submitted = true;
     if (this.registrationForm.valid) return;
+    //TODO: implement registration form
   }
 
   async buttonClick(button: ButtonPopupModel): Promise<void> {

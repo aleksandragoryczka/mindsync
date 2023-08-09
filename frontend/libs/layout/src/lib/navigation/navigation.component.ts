@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   ButtonTypes,
   InputPopupFullDataModel,
@@ -6,17 +6,24 @@ import {
 } from '../../../../shared/src/lib/models/input-popup-data.model';
 import { MatDialog } from '@angular/material/dialog';
 import { PopupWithInputsComponent } from '../../../../ui/src/lib/popup-with-inputs/popup-with-inputs.component';
+import { UserService } from '../../../../shared/src/lib/services/user.service';
 
 @Component({
   selector: 'project-navigation',
   templateUrl: './navigation.component.html',
   styleUrls: ['./navigation.component.scss'],
 })
-export class NavigationComponent {
-  isUserAuthenticated = true;
+export class NavigationComponent implements OnInit {
+  isUserAuthenticated = false;
   isDropdownOpen = false;
 
-  constructor(private dialog: MatDialog) {}
+  constructor(private dialog: MatDialog, public userService: UserService) {}
+
+  ngOnInit(): void {
+    this.userService.isAuthenticated$.subscribe(authenticated => {
+      this.isUserAuthenticated = false;
+    });
+  }
 
   homepageInputsPopup: Record<string, Record<string, InputPopupModel>> = {
     login: {
@@ -88,7 +95,7 @@ export class NavigationComponent {
     return [
       {
         text: 'Join presentation',
-        router_link: '#',
+        router_link: '',
         popup_name: null,
       },
       {
@@ -118,11 +125,11 @@ export class NavigationComponent {
       },
       {
         text: 'Profile',
-        router_link: '#',
+        router_link: '',
       },
       {
         text: 'Log Out',
-        router_link: '#',
+        router_link: '',
       },
     ];
   }

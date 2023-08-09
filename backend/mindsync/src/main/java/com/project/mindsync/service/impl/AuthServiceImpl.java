@@ -1,11 +1,14 @@
 package com.project.mindsync.service.impl;
 
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,6 +17,7 @@ import com.project.mindsync.dto.request.RegisterRequestDto;
 import com.project.mindsync.dto.request.SignInRequestDto;
 import com.project.mindsync.dto.response.JwtAuthenticationResponseDto;
 import com.project.mindsync.exception.AppException;
+import com.project.mindsync.exception.ResourceNotFoundException;
 import com.project.mindsync.model.Role;
 import com.project.mindsync.model.User;
 import com.project.mindsync.model.enums.RoleName;
@@ -21,6 +25,7 @@ import com.project.mindsync.repository.RoleRepository;
 import com.project.mindsync.repository.UserRepository;
 import com.project.mindsync.security.JwtUtils;
 import com.project.mindsync.service.AuthService;
+import com.project.mindsync.utils.AppConstants;
 
 @Service
 public class AuthServiceImpl implements AuthService {
@@ -62,7 +67,10 @@ public class AuthServiceImpl implements AuthService {
 				new UsernamePasswordAuthenticationToken(signInRequest.getEmail(), signInRequest.getPassword()));
 
 		SecurityContextHolder.getContext().setAuthentication(authentication);
-		String jwt = tokenProvider.generateTokenFromEmail(signInRequest.getEmail());
+		User user = userRepository.findByEmail(signInRequest.getEmail())
+				.orElseThrow(() -> new ResourceNotFoundException(AppConstants.USER, AppConstants.ID, authentication));
+		Set<GrantedAuthority> authorities = new HashSet<>(SecurityContextHolder.getContext().getAuthentication().getAuthorities());
+		String jwt = tokenProvider.generateTokenFromId(user.getId(), authorities);
 		return new JwtAuthenticationResponseDto(jwt);
 	}
 }
