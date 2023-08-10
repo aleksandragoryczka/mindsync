@@ -25,17 +25,16 @@ public class AuthController {
 	private AuthService authService;
 
 	@PostMapping("/register")
-	public ResponseEntity<ApiResponseDto> registerUser(@Valid @RequestBody RegisterRequestDto registerRequest) {
+	public ResponseEntity<User> registerUser(@Valid @RequestBody RegisterRequestDto registerRequest) {
 		User userRegistrated = authService.registerUser(registerRequest);
 		if (userRegistrated != null) {
 			// URI location =
 			// ServletUriComponentsBuilder.fromCurrentContextPath().path("/user/{id}").buildAndExpand(userRegistrated.getId()).toUri();
 			// TODO: po co to location ???
-			return ResponseEntity.ok().body(new ApiResponseDto(true, "User registered successfully!"));
+			return ResponseEntity.ok().body(userRegistrated);
 
 		}
-		return ResponseEntity.badRequest()
-				.body(new ApiResponseDto(false, "User with this email or username already exists"));
+		return ResponseEntity.badRequest().body(null);
 
 	}
 

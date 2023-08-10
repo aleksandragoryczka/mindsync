@@ -16,6 +16,7 @@ import {
   InputPopupModel,
 } from 'libs/shared/src/lib/models/input-popup-data.model';
 import { Router } from '@angular/router';
+import { RegisterModel } from 'libs/shared/src/lib/models/register.model';
 
 @Component({
   selector: 'project-popup-with-inputs',
@@ -96,19 +97,26 @@ export class PopupWithInputsComponent implements OnInit {
     };
 
     this.userService.login(credentials).subscribe(loggedIn => {
-      async () => {
-        if (loggedIn) {
-          await this.router.navigate([`/dashboard`]);
-          this.closePopup();
-        }
-      };
+      if (loggedIn) {
+        this.closePopup();
+        this.router.navigate([`/dashboard`]);
+      }
     });
   }
 
   onSubmitRegistration(): void {
     this.submitted = true;
-    if (this.registrationForm.valid) return;
-    //TODO: implement registration form
+    if (this.registrationForm.invalid) return;
+    const newUser: RegisterModel = {
+      email: this.registrationForm.controls['email'].value,
+      username: this.registrationForm.controls['username'].value,
+      name: this.registrationForm.controls['name'].value,
+      password: this.registrationForm.controls['password'].value,
+    };
+    this.userService.register(newUser).subscribe(user => {
+      if (user) console.log(user);
+      this.closePopup();
+    });
   }
 
   async buttonClick(button: ButtonPopupModel): Promise<void> {

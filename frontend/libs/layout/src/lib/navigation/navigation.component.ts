@@ -7,6 +7,7 @@ import {
 import { MatDialog } from '@angular/material/dialog';
 import { PopupWithInputsComponent } from '../../../../ui/src/lib/popup-with-inputs/popup-with-inputs.component';
 import { UserService } from '../../../../shared/src/lib/services/user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'project-navigation',
@@ -17,11 +18,16 @@ export class NavigationComponent implements OnInit {
   isUserAuthenticated = false;
   isDropdownOpen = false;
 
-  constructor(private dialog: MatDialog, public userService: UserService) {}
+  constructor(
+    private dialog: MatDialog,
+    public userService: UserService,
+    public router: Router
+  ) {}
 
   ngOnInit(): void {
     this.userService.isAuthenticated$.subscribe(authenticated => {
-      this.isUserAuthenticated = false;
+      console.log('authenitctaed: ' + authenticated);
+      this.isUserAuthenticated = authenticated;
     });
   }
 
@@ -132,6 +138,13 @@ export class NavigationComponent implements OnInit {
         router_link: '',
       },
     ];
+  }
+
+  async logOut(text: string): Promise<void> {
+    if (text === 'Log Out') {
+      this.userService.logOut();
+      await this.router.navigateByUrl('');
+    }
   }
 
   trackByFn(

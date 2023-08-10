@@ -8,6 +8,7 @@ import { Injectable } from '@angular/core';
 import { LoginModel } from '../models/login.model';
 import { environment } from '../../../../../apps/mindsync/src/environments/environment.development';
 import { Roles } from '../models/enums/roles.enum';
+import { RegisterModel } from '../models/register.model';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
@@ -53,6 +54,18 @@ export class UserService {
       );
   }
 
+  public register(registerModel: RegisterModel): Observable<User> {
+    return this.http.post<User>(
+      `${environment.apiUrl}/auth/register`,
+      registerModel
+    );
+  }
+
+  public logOut(): void {
+    this.tokenService.clearToken();
+    this.clearUser();
+  }
+
   private setUser(auth: AuthenticatedResponse): void {
     if (!auth) return;
     const decodedToken = this.jwtHelper.decodeToken(auth.accessToken);
@@ -69,5 +82,11 @@ export class UserService {
   private getRole(roles: string): Roles {
     if (roles == 'ROLE_ADMIN') return Roles.ROLE_ADMIN;
     return Roles.ROLE_USER;
+  }
+
+  private clearUser(): void {
+    this.user.next(null);
+    this.isAdmin.next(false);
+    this.isAuthenticated.next(false);
   }
 }

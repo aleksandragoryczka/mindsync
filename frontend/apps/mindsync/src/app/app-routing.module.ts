@@ -6,8 +6,14 @@ import { authGuard } from 'libs/shared/src/lib/guard/auth.guard';
 const routes: Routes = [
   {
     path: '',
-    canActivate: [authGuard],
-    children: [{ path: 'dashboard', component: DashboardComponent }],
+    //canActivate: [authGuard],
+    children: [
+      {
+        path: 'dashboard',
+        component: DashboardComponent,
+        canActivate: [authGuard],
+      },
+    ],
   },
 ];
 

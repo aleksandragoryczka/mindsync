@@ -11,17 +11,17 @@ import lombok.Setter;
 @Setter
 public class RegisterRequestDto {
 	@NotBlank
-	@Size(min = 3, max = 40)
-	private String name;
+	@Size(max = 40)
+	@Email
+	private String email;
 
 	@NotBlank
 	@Size(min = 3, max = 15)
 	private String username;
 
 	@NotBlank
-	@Size(max = 40)
-	@Email
-	private String email;
+	@Size(min = 3, max = 40)
+	private String name;
 
 	@NotBlank
 	@Size(min = 6, max = 40)
