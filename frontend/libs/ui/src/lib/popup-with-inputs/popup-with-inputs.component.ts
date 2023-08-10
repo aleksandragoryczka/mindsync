@@ -17,6 +17,7 @@ import {
 } from 'libs/shared/src/lib/models/input-popup-data.model';
 import { Router } from '@angular/router';
 import { RegisterModel } from 'libs/shared/src/lib/models/register.model';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'project-popup-with-inputs',
@@ -34,7 +35,8 @@ export class PopupWithInputsComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: InputPopupFullDataModel,
     private formBuilder: FormBuilder,
     private userService: UserService,
-    private router: Router
+    private router: Router,
+    private toastrService: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -114,8 +116,12 @@ export class PopupWithInputsComponent implements OnInit {
       password: this.registrationForm.controls['password'].value,
     };
     this.userService.register(newUser).subscribe(user => {
-      if (user) console.log(user);
-      this.closePopup();
+      if (user) {
+        this.closePopup();
+        this.toastrService.success(
+          'Registred successfully. Now you can sign in'
+        );
+      } else this.toastrService.error('Error durign registration. Try again');
     });
   }
 
