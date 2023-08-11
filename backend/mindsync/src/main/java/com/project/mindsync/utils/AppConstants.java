@@ -17,6 +17,14 @@ public class AppConstants {
 	public static final String SLIDE = "slide";
 	public static final String NAME = "name";
 	public static final String SHOW = "show";
+	public static final String VERIFICATION_CODE = "VerificationCode";
 	public static final List<SlideTypeName> OPTIONS_SLIDES_TYPES = Collections
 			.singletonList(SlideTypeName.MULTIPLE_CHOICE);
+	public static final String MAIL_SENDER = "MindSync";
+	public static final String MAIL_SUBJECT = "Please verify your Account";
+	public static final String MAIL_CONTENT = "Dear [[name]],<br>"
+            + "Please click the link below to verify your Account:<br>"
+            + "<h3><a href=\"[[URL]]\" target=\"_self\">VERIFY</a></h3>"
+            + "Thank you,<br>"
+			+ MAIL_SENDER;
 }

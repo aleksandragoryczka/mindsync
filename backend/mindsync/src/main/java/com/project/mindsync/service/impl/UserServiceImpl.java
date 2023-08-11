@@ -123,5 +123,4 @@ public class UserServiceImpl implements UserService {
 				.collect(Collectors.toList());
 		return new UserWithRoleResponseDto(user.getName(), user.getUsername(), user.getEmail(), roleNames);
 	}
-
 }

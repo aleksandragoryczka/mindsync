@@ -1,4 +1,4 @@
-import { BehaviorSubject, Observable, map } from 'rxjs';
+import { BehaviorSubject, Observable, map, tap } from 'rxjs';
 import { User } from '../models/user.model';
 import { HttpClient } from '@angular/common/http';
 import { TokenService } from './token.service';
@@ -32,13 +32,13 @@ export class UserService {
     }
   }
 
-  public isUserAuthenticated(): boolean {
+  isUserAuthenticated(): boolean {
     const token = this.tokenService.getToken();
     if (!!token && !this.jwtHelper.isTokenExpired(token)) return true;
     return false;
   }
 
-  public login(loginModel: LoginModel): Observable<boolean> {
+  login(loginModel: LoginModel): Observable<boolean> {
     return this.http
       .post<AuthenticatedResponse>(
         `${environment.apiUrl}/auth/signin`,
@@ -54,16 +54,22 @@ export class UserService {
       );
   }
 
-  public register(registerModel: RegisterModel): Observable<User> {
+  register(registerModel: RegisterModel): Observable<User> {
     return this.http.post<User>(
       `${environment.apiUrl}/auth/register`,
       registerModel
     );
   }
 
-  public logOut(): void {
+  logOut(): void {
     this.tokenService.clearToken();
     this.clearUser();
+  }
+
+  verifyUser(code: string): Observable<boolean> {
+    return this.http.get<boolean>(
+      `${environment.apiUrl}/auth/verify?code=${code}`
+    );
   }
 
   private setUser(auth: AuthenticatedResponse): void {

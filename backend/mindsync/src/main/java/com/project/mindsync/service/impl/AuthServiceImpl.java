@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,6 +27,10 @@ import com.project.mindsync.repository.UserRepository;
 import com.project.mindsync.security.JwtUtils;
 import com.project.mindsync.service.AuthService;
 import com.project.mindsync.utils.AppConstants;
+
+
+import jakarta.servlet.http.HttpServletRequest;
+import net.bytebuddy.utility.RandomString;
 
 @Service
 public class AuthServiceImpl implements AuthService {
@@ -57,7 +62,12 @@ public class AuthServiceImpl implements AuthService {
 				.orElseThrow(() -> new AppException("User Role is not set."));
 		newUser.setRoles(Collections.singleton(userRole));
 
+		String randomVerificationCode = RandomString.make(64);
+		newUser.setVerificationCode(randomVerificationCode);
+		newUser.setEnabled(false);
+
 		userRepository.save(newUser);
+
 		return newUser;
 	}
 
@@ -68,10 +78,24 @@ public class AuthServiceImpl implements AuthService {
 		//		new UsernamePasswordAuthenticationToken(signInRequest.getEmail(), signInRequest.getPassword()));
 
 		//SecurityContextHolder.getContext().setAuthentication(authentication);
-		User user = userRepository.findByEmail(signInRequest.getEmail())
-				.orElseThrow(() -> new ResourceNotFoundException(AppConstants.USER, AppConstants.ID, "x"));
-		Set<GrantedAuthority> authorities = new HashSet<>(SecurityContextHolder.getContext().getAuthentication().getAuthorities());
+		User user = userRepository.findByEmail(signInRequest.getEmail()).orElseThrow(
+				() -> new ResourceNotFoundException(AppConstants.USER, AppConstants.ID, signInRequest.getEmail()));
+		Set<GrantedAuthority> authorities = new HashSet<>(
+				SecurityContextHolder.getContext().getAuthentication().getAuthorities());
 		String jwt = tokenProvider.generateTokenFromId(user.getId(), authorities);
 		return new JwtAuthenticationResponseDto(jwt);
+	}
+	
+	@Override
+	public boolean verifyUser(String verificationCode) {
+		User user = userRepository.findByVerificationCode(verificationCode);
+		if (user == null || user.isEnabled()) {
+			return false;
+		} else {
+			user.setVerificationCode(null);
+			user.setEnabled(true);
+			userRepository.save(user);
+			return true;
+		}
 	}
 }

@@ -5,15 +5,15 @@ import { AuthenticatedResponse } from '../models/authenticated-response.model';
 export class TokenService {
   private static tokenFieldName = 'accessToken';
 
-  public setToken(authResponse: AuthenticatedResponse): void {
+  setToken(authResponse: AuthenticatedResponse): void {
     localStorage.setItem(TokenService.tokenFieldName, authResponse.accessToken);
   }
 
-  public getToken(): string | null {
+  getToken(): string | null {
     return localStorage.getItem(TokenService.tokenFieldName);
   }
 
-  public clearToken(): void {
+  clearToken(): void {
     localStorage.removeItem(TokenService.tokenFieldName);
   }
 }

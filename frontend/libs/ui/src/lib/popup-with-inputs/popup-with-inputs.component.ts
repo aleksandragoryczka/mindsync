@@ -115,13 +115,21 @@ export class PopupWithInputsComponent implements OnInit {
       name: this.registrationForm.controls['name'].value,
       password: this.registrationForm.controls['password'].value,
     };
+    this.closePopup();
     this.userService.register(newUser).subscribe(user => {
       if (user) {
-        this.closePopup();
         this.toastrService.success(
-          'Registred successfully. Now you can sign in'
-        );
-      } else this.toastrService.error('Error durign registration. Try again');
+          'Now please check your email to verify your account',
+          'You have registred successfully.',
+          { timeOut: 5000 }
+        ); /*
+        this.userService.verifyUser(user.verificationCode);
+        console.log('isVerified: ' + this.userService.isVerified$);
+        this.toastrService.success(
+          'Now you can Sign in',
+          'Your Account is verified'
+        );*/
+      } else this.toastrService.error('Error during registration. Try again');
     });
   }
 

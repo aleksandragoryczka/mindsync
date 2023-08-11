@@ -17,8 +17,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "users", uniqueConstraints = { @UniqueConstraint(columnNames = { "username" }),
-		@UniqueConstraint(columnNames = { "email" }) })
+@Table(name = "users", uniqueConstraints = { @UniqueConstraint(columnNames = {"verification_code", "username", "email"}) })
 @Setter
 @Getter
 public class User {
@@ -42,9 +41,10 @@ public class User {
 	@Size(min = 6, max = 40)
 	private String password;
 
-	@Column(name = "verification_code", length = 8)
+	@Column(name = "verification_code", length = 64, nullable = true)
 	private String verificationCode;
 
+	@Column(name="enabled")
 	private boolean enabled;
 
 	@ManyToMany(fetch = FetchType.LAZY)

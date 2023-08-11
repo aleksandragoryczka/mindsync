@@ -7,7 +7,8 @@ import {
 import { MatDialog } from '@angular/material/dialog';
 import { PopupWithInputsComponent } from '../../../../ui/src/lib/popup-with-inputs/popup-with-inputs.component';
 import { UserService } from '../../../../shared/src/lib/services/user.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'project-navigation',
@@ -21,13 +22,17 @@ export class NavigationComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
     public userService: UserService,
-    public router: Router
+    public router: Router,
+    private activatedRoute: ActivatedRoute,
+    private toastrService: ToastrService
   ) {}
 
   ngOnInit(): void {
     this.userService.isAuthenticated$.subscribe(authenticated => {
       this.isUserAuthenticated = authenticated;
     });
+    console.log('dypa');
+    this.verifyUser();
   }
 
   homepageInputsPopup: Record<string, Record<string, InputPopupModel>> = {
@@ -99,11 +104,6 @@ export class NavigationComponent implements OnInit {
   get defaultMenu() {
     return [
       {
-        text: 'Join presentation',
-        router_link: '',
-        popup_name: null,
-      },
-      {
         text: 'Register',
         router_link: '',
         popup_name: 'register',
@@ -112,6 +112,11 @@ export class NavigationComponent implements OnInit {
         text: 'Sign In',
         router_link: '',
         popup_name: 'login',
+      },
+      {
+        text: 'Join presentation',
+        router_link: '',
+        popup_name: null,
       },
     ];
   }
@@ -154,5 +159,22 @@ export class NavigationComponent implements OnInit {
 
   closeDropdown(): void {
     this.isDropdownOpen = false;
+  }
+
+  private verifyUser(): void {
+    const verificationCode = this.activatedRoute.snapshot.queryParams['code'];
+    console.log(verificationCode);
+    if (verificationCode) {
+      this.userService
+        .verifyUser(verificationCode)
+        .subscribe((verified: boolean) => {
+          if (verified) {
+            this.toastrService.success(
+              'Now you can Sign in',
+              'Your Account is verified'
+            );
+          }
+        });
+    }
   }
 }
