@@ -18,6 +18,7 @@ import { ToastrService } from 'ngx-toastr';
 export class NavigationComponent implements OnInit {
   isUserAuthenticated = false;
   isDropdownOpen = false;
+  userMenu: { text: string; router_link: string }[] = [];
 
   constructor(
     private dialog: MatDialog,
@@ -30,8 +31,8 @@ export class NavigationComponent implements OnInit {
   ngOnInit(): void {
     this.userService.isAuthenticated$.subscribe(authenticated => {
       this.isUserAuthenticated = authenticated;
+      this.updateUserMenu();
     });
-    console.log('dypa');
     this.verifyUser();
   }
 
@@ -121,24 +122,6 @@ export class NavigationComponent implements OnInit {
     ];
   }
 
-  //TODO: Add Admin Panel
-  get userMenu() {
-    return [
-      {
-        text: 'Presentations',
-        router_link: '',
-      },
-      {
-        text: 'Profile',
-        router_link: '',
-      },
-      {
-        text: 'Log Out',
-        router_link: '',
-      },
-    ];
-  }
-
   async logOut(text: string): Promise<void> {
     if (text === 'Log Out') {
       this.userService.logOut();
@@ -163,7 +146,6 @@ export class NavigationComponent implements OnInit {
 
   private verifyUser(): void {
     const verificationCode = this.activatedRoute.snapshot.queryParams['code'];
-    console.log(verificationCode);
     if (verificationCode) {
       this.userService
         .verifyUser(verificationCode)
@@ -176,5 +158,32 @@ export class NavigationComponent implements OnInit {
           }
         });
     }
+  }
+
+  private updateUserMenu(): void {
+    const menu = [
+      {
+        text: 'Presentations',
+        router_link: '',
+      },
+      {
+        text: 'Profile',
+        router_link: '',
+      },
+      {
+        text: 'Log Out',
+        router_link: '',
+      },
+    ];
+
+    this.userService.isAdmin$.subscribe(admin => {
+      if (admin) {
+        const adminMenu = [...menu];
+        adminMenu.splice(2, 0, { text: 'Admin Panel', router_link: '' });
+        this.userMenu = adminMenu;
+      } else {
+        this.userMenu = menu;
+      }
+    });
   }
 }

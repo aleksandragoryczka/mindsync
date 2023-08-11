@@ -21,6 +21,9 @@ public class EmailServiceImpl implements EmailService {
 	@Value("{spring.mail.username}")
 	private String fromAddress;
 
+	@Value("{client.api.url}")
+	private String clientApiUrl;
+
 	private JavaMailSender mailSender;
 
 	public EmailServiceImpl(JavaMailSender mailSender) {
@@ -35,7 +38,7 @@ public class EmailServiceImpl implements EmailService {
 		helper.setTo(user.getEmail());
 		helper.setSubject(AppConstants.MAIL_SUBJECT);
 		String contenet = AppConstants.MAIL_CONTENT.replace("[[name]]", user.getName());
-		String verifyURL = "http://localhost:4200/verify?code=" + user.getVerificationCode();
+		String verifyURL = clientApiUrl + "/verify?code=" + user.getVerificationCode();
 		contenet = contenet.replace("[[URL]]", verifyURL);
 		helper.setText(contenet, true);
 		mailSender.send(message);

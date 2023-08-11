@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -64,8 +63,8 @@ public class AuthServiceImpl implements AuthService {
 
 		String randomVerificationCode = RandomString.make(64);
 		newUser.setVerificationCode(randomVerificationCode);
-		newUser.setEnabled(false);
-
+		//newUser.setEnabled(false); TODO: to be uncommented
+		newUser.setEnabled(true);
 		userRepository.save(newUser);
 
 		return newUser;
@@ -74,12 +73,13 @@ public class AuthServiceImpl implements AuthService {
 	@Override
 	public JwtAuthenticationResponseDto signInUser(SignInRequestDto signInRequest) {
 		//TODO: to be uncommented, not need to enter correct password
-		//Authentication authentication = authenticationManager.authenticate(
-		//		new UsernamePasswordAuthenticationToken(signInRequest.getEmail(), signInRequest.getPassword()));
+		Authentication authentication = authenticationManager.authenticate(
+				new UsernamePasswordAuthenticationToken(signInRequest.getEmail(), signInRequest.getPassword()));
 
-		//SecurityContextHolder.getContext().setAuthentication(authentication);
+		SecurityContextHolder.getContext().setAuthentication(authentication);
 		User user = userRepository.findByEmail(signInRequest.getEmail()).orElseThrow(
 				() -> new ResourceNotFoundException(AppConstants.USER, AppConstants.ID, signInRequest.getEmail()));
+		if (!user.isEnabled()) return null;
 		Set<GrantedAuthority> authorities = new HashSet<>(
 				SecurityContextHolder.getContext().getAuthentication().getAuthorities());
 		String jwt = tokenProvider.generateTokenFromId(user.getId(), authorities);

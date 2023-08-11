@@ -1,4 +1,4 @@
-import { BehaviorSubject, Observable, map, tap } from 'rxjs';
+import { BehaviorSubject, Observable, map } from 'rxjs';
 import { User } from '../models/user.model';
 import { HttpClient } from '@angular/common/http';
 import { TokenService } from './token.service';

@@ -7,10 +7,8 @@ export const authGuard = async () => {
   const router = inject(Router);
 
   if (!userService.isUserAuthenticated()) {
-    console.log('NIE JEST');
     await router.navigateByUrl('');
     return false;
   }
-  console.log('JEST');
   return true;
 };

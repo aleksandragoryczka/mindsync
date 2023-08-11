@@ -99,9 +99,13 @@ export class PopupWithInputsComponent implements OnInit {
     };
 
     this.userService.login(credentials).subscribe(loggedIn => {
-      if (loggedIn) {
+      if (loggedIn !== null) {
         this.closePopup();
         this.router.navigate([`/dashboard`]);
+      } else {
+        this.toastrService.error(
+          'Your account is not verified. Please check your mail box'
+        );
       }
     });
   }
@@ -122,13 +126,7 @@ export class PopupWithInputsComponent implements OnInit {
           'Now please check your email to verify your account',
           'You have registred successfully.',
           { timeOut: 5000 }
-        ); /*
-        this.userService.verifyUser(user.verificationCode);
-        console.log('isVerified: ' + this.userService.isVerified$);
-        this.toastrService.success(
-          'Now you can Sign in',
-          'Your Account is verified'
-        );*/
+        );
       } else this.toastrService.error('Error during registration. Try again');
     });
   }
