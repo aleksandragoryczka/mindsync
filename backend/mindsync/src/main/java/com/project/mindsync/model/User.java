@@ -42,6 +42,11 @@ public class User {
 	@Size(min = 6, max = 40)
 	private String password;
 
+	@Column(name = "verification_code", length = 8)
+	private String verificationCode;
+
+	private boolean enabled;
+
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles = new HashSet<Role>();

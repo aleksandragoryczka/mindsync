@@ -22,23 +22,28 @@ public class UserPrincipal implements UserDetails {
 	@JsonIgnore
 	private String password;
 
+	private String verificationCode;
+	private boolean isEnabled;
+
 	private Collection<GrantedAuthority> authorities;
 
 	public UserPrincipal(Long id, String name, String username, String email, String password,
-			Collection<GrantedAuthority> authorities) {
+			Collection<GrantedAuthority> authorities, String verificationCode, boolean isEnabled) {
 		this.id = id;
 		this.name = name;
 		this.username = username;
 		this.email = email;
 		this.password = password;
 		this.authorities = authorities;
+		this.verificationCode = verificationCode;
+		this.isEnabled = isEnabled;
 	}
 
 	public static UserPrincipal create(User user) {
 		List<GrantedAuthority> authorities = user.getRoles().stream()
 				.map(role -> new SimpleGrantedAuthority(role.getName().name())).collect(Collectors.toList());
 		return new UserPrincipal(user.getId(), user.getName(), user.getUsername(), user.getEmail(), user.getPassword(),
-				authorities);
+				authorities, user.getVerificationCode(), user.isEnabled());
 	}
 
 	public Long getId() {
@@ -85,6 +90,6 @@ public class UserPrincipal implements UserDetails {
 
 	@Override
 	public boolean isEnabled() {
-		return true;
+		return this.isEnabled;
 	}
 }
