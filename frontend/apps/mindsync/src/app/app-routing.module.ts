@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { DashboardComponent } from 'libs/layout/src/lib/dashboard/dashboard.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 import { authGuard } from 'libs/shared/src/lib/guard/auth.guard';
 
 const routes: Routes = [
@@ -11,6 +11,7 @@ const routes: Routes = [
       {
         path: 'dashboard',
         component: DashboardComponent,
+        //TODO: not better - youtube film - ABOUT GUARDS - CanActivateChild Route Guard in Angular | Angular Routing | Angular 13+
         canActivate: [authGuard],
       },
     ],

@@ -26,7 +26,6 @@ export class NavigationComponent implements OnInit {
 
   ngOnInit(): void {
     this.userService.isAuthenticated$.subscribe(authenticated => {
-      console.log('authenitctaed: ' + authenticated);
       this.isUserAuthenticated = authenticated;
     });
   }
@@ -101,11 +100,6 @@ export class NavigationComponent implements OnInit {
     return [
       {
         text: 'Join presentation',
-        router_link: '',
-        popup_name: null,
-      },
-      {
-        text: 'Home',
         router_link: '',
         popup_name: null,
       },

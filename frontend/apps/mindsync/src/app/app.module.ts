@@ -8,13 +8,14 @@ import { JwtModule } from '@auth0/angular-jwt';
 import { environment } from '../environments/environment.development';
 import { AppRoutingModule } from './app-routing.module';
 import { ToastrModule } from 'ngx-toastr';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
 }
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, DashboardComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
