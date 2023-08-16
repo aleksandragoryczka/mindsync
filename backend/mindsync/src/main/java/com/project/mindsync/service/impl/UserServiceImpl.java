@@ -106,7 +106,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public PagedResponseDto<UserWithRoleResponseDto> getAllUsers(int page, int size) {
-		AppUtils.validatePageNumberAndSIze(page, size);
+		AppUtils.validatePageNumberAndSize(page, size);
 		Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, AppConstants.NAME);
 
 		Page<User> users = userRepository.findAll(pageable);

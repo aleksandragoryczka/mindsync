@@ -6,7 +6,7 @@ import com.project.mindsync.model.User;
 import com.project.mindsync.security.UserPrincipal;
 
 public class AppUtils {
-	public static void validatePageNumberAndSIze(int page, int size) {
+	public static void validatePageNumberAndSize(int page, int size) {
 		if (page < 0) {
 			throw new MindSyncException(HttpStatus.BAD_REQUEST, "Page number cannot be negative number.");
 		}

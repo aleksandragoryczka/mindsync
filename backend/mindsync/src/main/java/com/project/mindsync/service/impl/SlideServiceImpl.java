@@ -28,7 +28,7 @@ public class SlideServiceImpl implements SlideService {
 
 	@Override
 	public PagedResponseDto<Slide> getAllSlidesByPresentation(Long presentationId, int page, int size) {
-		AppUtils.validatePageNumberAndSIze(page, size);
+		AppUtils.validatePageNumberAndSize(page, size);
 
 		Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, AppConstants.CREATED_AT);
 		Page<Slide> slides = slideRepository.findByPresentationId(presentationId, pageable);

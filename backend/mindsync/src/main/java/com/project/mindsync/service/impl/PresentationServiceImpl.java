@@ -58,8 +58,8 @@ public class PresentationServiceImpl implements PresentationService {
 
 	@Override
 	public PagedResponseDto<Presentation> getUserPresentations(Long id, int page, int size) {
-		User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User", "id", id));
-		AppUtils.validatePageNumberAndSIze(page, size);
+		User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(AppConstants.USER, AppConstants.ID, id));
+		AppUtils.validatePageNumberAndSize(page, size);
 		Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, AppConstants.CREATED_AT);
 		Page<Presentation> presentatations = presentationRepository.findByUserId(user.getId(), pageable);
 
@@ -73,7 +73,7 @@ public class PresentationServiceImpl implements PresentationService {
 	@Override
 	public Presentation getPresentation(Long id) {
 		return presentationRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("Presentation", "Id", id));
+				.orElseThrow(() -> new ResourceNotFoundException(AppConstants.PRESENTATION, AppConstants.ID, id));
 	}
 
 	@Override
@@ -83,6 +83,8 @@ public class PresentationServiceImpl implements PresentationService {
 
 		Presentation presentation = new Presentation();
 		presentation.setTitle(presentationRequest.getTitle());
+		presentation.setThumbnailUrl(presentationRequest.getThumbnailUrl());
+
 		presentation.setUser(user);
 		presentation.setCode(generateCode());
 
@@ -96,7 +98,6 @@ public class PresentationServiceImpl implements PresentationService {
 		}
 
 		Presentation savedPresentation = presentationRepository.save(presentation);
-
 		return ResponseEntity.ok().body(savedPresentation);
 	}
 
@@ -108,7 +109,7 @@ public class PresentationServiceImpl implements PresentationService {
 				.orElseThrow(() -> new ResourceNotFoundException(AppConstants.PRESENTATION, AppConstants.ID, id));
 		if (AppUtils.checkUserIsCurrentUserOrAdmin(presentation.getUser(), currentUser)) {
 			presentation.setTitle(updatedPresentationRequest.getTitle());
-
+			presentation.setThumbnailUrl(updatedPresentationRequest.getThumbnailUrl());
 			List<Slide> existingSlides = presentation.getSlides();
 			List<SlideRequestDto> updatedSlides = updatedPresentationRequest.getSlides();
 
@@ -215,12 +216,11 @@ public class PresentationServiceImpl implements PresentationService {
 		newSlide.setDisplayTime(updatedSlide.getDisplayTime());
 		if (AppConstants.OPTIONS_SLIDES_TYPES.contains(slideType.getName())) {
 			List<Option> options = new ArrayList<Option>();
-			Option option = new Option();
 			for (Option updatedOption : updatedSlide.getOptions()) {
 				Option newOption = new Option();
 				newOption.setOption(updatedOption.getOption());
 				newOption.setSlide(newSlide);
-				options.add(option);
+				options.add(newOption);
 			}
 			newSlide.setOptions(options);
 		}

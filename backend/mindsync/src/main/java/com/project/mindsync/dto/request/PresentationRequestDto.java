@@ -9,5 +9,6 @@ import lombok.Data;
 public class PresentationRequestDto {
 	private String title;
 	private Instant createdAt;
+	private String thumbnailUrl;
 	private List<SlideRequestDto> slides;
 }

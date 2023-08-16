@@ -44,7 +44,7 @@ public class User {
 	@Column(name = "verification_code", length = 64, nullable = true)
 	private String verificationCode;
 
-	@Column(name="enabled")
+	@Column(name="enabled", nullable = false)
 	private boolean enabled;
 
 	@ManyToMany(fetch = FetchType.LAZY)

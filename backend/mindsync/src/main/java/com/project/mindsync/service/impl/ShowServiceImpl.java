@@ -52,7 +52,7 @@ public class ShowServiceImpl implements ShowService {
 
 	@Override
 	public PagedResponseDto<ShowWithScreenshotsResponseDto> getShowWithScreenshots(Long showId, int page, int size) {
-		AppUtils.validatePageNumberAndSIze(page, size);
+		AppUtils.validatePageNumberAndSize(page, size);
 
 		Show show = showRepository.findById(showId)
 				.orElseThrow(() -> new ResourceNotFoundException(AppConstants.SHOW, AppConstants.ID, showId));
@@ -112,7 +112,7 @@ public class ShowServiceImpl implements ShowService {
 
 	@Override
 	public PagedResponseDto<ShowResponseDto> getAllShowsByPresentation(Long presentationId, int page, int size) {
-		AppUtils.validatePageNumberAndSIze(page, size);
+		AppUtils.validatePageNumberAndSize(page, size);
 
 		Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, AppConstants.CREATED_AT);
 

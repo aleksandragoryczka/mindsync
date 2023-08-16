@@ -28,7 +28,7 @@ public class UserPrincipal implements UserDetails {
 	private Collection<GrantedAuthority> authorities;
 
 	public UserPrincipal(Long id, String name, String username, String email, String password,
-			Collection<GrantedAuthority> authorities, String verificationCode, boolean isEnabled) {
+			Collection<GrantedAuthority> authorities, String verificationCode) {
 		this.id = id;
 		this.name = name;
 		this.username = username;
@@ -36,14 +36,15 @@ public class UserPrincipal implements UserDetails {
 		this.password = password;
 		this.authorities = authorities;
 		this.verificationCode = verificationCode;
-		this.isEnabled = isEnabled;
+		//TODO: to be changed!!!! true to isEnb=abled and add that argument to constructor arguments
+		this.isEnabled = true;
 	}
 
 	public static UserPrincipal create(User user) {
 		List<GrantedAuthority> authorities = user.getRoles().stream()
 				.map(role -> new SimpleGrantedAuthority(role.getName().name())).collect(Collectors.toList());
 		return new UserPrincipal(user.getId(), user.getName(), user.getUsername(), user.getEmail(), user.getPassword(),
-				authorities, user.getVerificationCode(), user.isEnabled());
+				authorities, user.getVerificationCode());
 	}
 
 	public Long getId() {
@@ -90,6 +91,6 @@ public class UserPrincipal implements UserDetails {
 
 	@Override
 	public boolean isEnabled() {
-		return this.isEnabled;
+		return true;
 	}
 }
