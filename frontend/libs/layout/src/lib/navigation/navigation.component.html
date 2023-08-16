@@ -1,6 +1,5 @@
 <div class="navigation-container">
     <nav class="navbar navbar-expand-lg navbar-light custom-navbar">
-        <!--TODO: *ngIf to add! - jesli zautntyfikowany i jesli nie -->
         <a class="mindsync-nav-brand" routerLink="">
             <img alt="logo" src="libs/ui/src/assets/images/logo.svg" height="80px">
         </a>
@@ -37,6 +36,7 @@
         </div>
     </nav>
     <div class="content-container">
+        <router-outlet></router-outlet>
         <div class="welcome-page-container" *ngIf="!isUserAuthenticated">
             <div class="question-box-container">
                 <img class="question-box-img" alt="question-box" src="libs/ui/src/assets/images/question-box.png">
@@ -59,4 +59,3 @@
         </div>
     </div>
 </div>
-<router-outlet></router-outlet>
