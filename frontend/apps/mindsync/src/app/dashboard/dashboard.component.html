@@ -1,11 +1,8 @@
 <div class="mindsync-default-container">
-    dupa
-    <div class="shared-card-grid" *ngFor="let presentation of (listOfPresentations$ | async) ?? []">
-        <p>{{presentation.title}}</p>
-        <project-shared-card [data]="presentation">
-
-        </project-shared-card>
-    </div>
-
+    <ngx-slick-carousel class="carousel-container" #clickModal="slick-carousel" [config]="slideConfig">
+        <div ngxSlickItem *ngFor="let presentation of (listOfPresentations$ | async) ?? []" class="shared-card">
+            <project-shared-card [data]="presentation"></project-shared-card>
+        </div>
+    </ngx-slick-carousel>
 
 </div>

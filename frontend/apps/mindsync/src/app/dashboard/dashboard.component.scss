@@ -1,0 +1,36 @@
+@import '../../../../../libs/ui/src/lib/variables';
+
+.mindsync-default-container {
+  padding: 80px;
+}
+
+.carousel-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 100%;
+  width: 100%;
+}
+
+.shared-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+::ng-deep .slick-prev:before,
+::ng-deep .slick-next:before {
+  color: $darker-brown;
+  opacity: 1;
+  font-size: 50px;
+}
+
+::ng-deep .slick-prev {
+  left: 0;
+}
+
+::ng-deep .slick-next {
+  right: 0;
+  width: auto;
+}

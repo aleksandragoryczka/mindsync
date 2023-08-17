@@ -9,6 +9,8 @@ import { environment } from '../environments/environment.development';
 import { AppRoutingModule } from './app-routing.module';
 import { ToastrModule } from 'ngx-toastr';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { MatIconModule } from '@angular/material/icon';
+import { SlickCarouselModule } from 'ngx-slick-carousel';
 
 export function tokenGetter() {
   return localStorage.getItem('Access-Token');
@@ -22,6 +24,8 @@ export function tokenGetter() {
     UiModule,
     SharedModule,
     LayoutModule,
+    MatIconModule,
+    SlickCarouselModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,

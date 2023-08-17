@@ -24,8 +24,15 @@
             "output": "libs/ui/src/assets/images"
           }
         ],
-        "styles": ["apps/mindsync/src/styles.scss"],
-        "scripts": []
+        "styles": [
+          "apps/mindsync/src/styles.scss",
+          "node_modules/slick-carousel/slick/slick.scss",
+          "node_modules/slick-carousel/slick/slick-theme.scss"
+        ],
+        "scripts": [
+          "node_modules/jquery/dist/jquery.min.js",
+          "node_modules/slick-carousel/slick/slick.min.js"
+        ]
       },
       "configurations": {
         "production": {
