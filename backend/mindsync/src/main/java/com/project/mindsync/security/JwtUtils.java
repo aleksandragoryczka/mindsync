@@ -14,6 +14,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.WebUtils;
 
+import com.project.mindsync.utils.AppConstants;
+
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -43,7 +45,8 @@ public class JwtUtils {
 	}
 
 	public ResponseCookie generateJwtCookie(UserPrincipal userPrincipal) {
-		String jwt = generateTokenFromId(userPrincipal.getId(), userPrincipal.getAuthorities());
+		String jwt = generateTokenFromId(userPrincipal.getId(),
+				(Collection<GrantedAuthority>) userPrincipal.getAuthorities());
 		ResponseCookie cookie = ResponseCookie.from(jwtCookie, jwt).path("/api").maxAge(24 * 60 * 60).httpOnly(true)
 				.build();
 		return cookie;
@@ -54,8 +57,14 @@ public class JwtUtils {
 		return cookie;
 	}
 
-	public String getUsernameFromJwtToken(String token) {
-		return Jwts.parserBuilder().setSigningKey(key()).build().parseClaimsJws(token).getBody().getSubject();
+	public Long getIdFromJwtToken(String token) {
+		try {
+			return ((Claims) Jwts.parserBuilder().setSigningKey(key()).build().parseClaimsJws(token).getBody())
+					.get(AppConstants.USER_ID_CLAIM, Long.class);
+		} catch (JwtException e) {
+			logger.error("Invalid JWT token, ", e);
+		}
+		return null;
 	}
 
 	public boolean validateJwtToken(String authToken) {
@@ -77,7 +86,7 @@ public class JwtUtils {
 	public String generateTokenFromId(Long id, Collection<GrantedAuthority> roles) {
 		UUID userUuid = UUID.randomUUID();
 		Claims claims = Jwts.claims().setSubject(userUuid.toString());
-		claims.put("id", id);
+		claims.put(AppConstants.USER_ID_CLAIM, id);
 		claims.put("roles", roles.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
 		return Jwts.builder().setClaims(claims).setIssuedAt(new Date())
 				.setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))

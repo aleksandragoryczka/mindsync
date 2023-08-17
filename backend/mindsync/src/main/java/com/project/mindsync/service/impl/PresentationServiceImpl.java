@@ -57,11 +57,10 @@ public class PresentationServiceImpl implements PresentationService {
 	private OptionRepository optionRepository;
 
 	@Override
-	public PagedResponseDto<Presentation> getUserPresentations(Long id, int page, int size) {
-		User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(AppConstants.USER, AppConstants.ID, id));
+	public PagedResponseDto<Presentation> getUserPresentations(UserPrincipal currentUser, int page, int size) {
 		AppUtils.validatePageNumberAndSize(page, size);
 		Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, AppConstants.CREATED_AT);
-		Page<Presentation> presentatations = presentationRepository.findByUserId(user.getId(), pageable);
+		Page<Presentation> presentatations = presentationRepository.findByUserId(currentUser.getId(), pageable);
 
 		List<Presentation> content = presentatations.getNumberOfElements() == 0 ? Collections.emptyList()
 				: presentatations.getContent();

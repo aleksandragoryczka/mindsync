@@ -16,7 +16,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 	//TODO: zmienić 3 na currentUser.getId()
 	default User getUser(UserPrincipal currentUser) {
-		return findById((long) 1)
-				.orElseThrow(() -> new ResourceNotFoundException("User", "Id", currentUser.getId()));
+		return findById(currentUser.getId())
+				.orElseThrow(() -> new ResourceNotFoundException("User", "Id", currentUser.getUsername()));
 	}
 }

@@ -4,6 +4,8 @@ import { PopupWithInputsComponent } from './popup-with-inputs/popup-with-inputs.
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SharedCardComponent } from './shared-card/shared-card.component';
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
   imports: [
@@ -12,8 +14,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatIconModule,
     FormsModule,
     ReactiveFormsModule,
+    MatCardModule,
   ],
-  declarations: [PopupWithInputsComponent],
-  exports: [],
+  declarations: [PopupWithInputsComponent, SharedCardComponent],
+  exports: [SharedCardComponent],
 })
 export class UiModule {}

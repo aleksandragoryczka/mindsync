@@ -3,15 +3,13 @@ package com.project.mindsync.model;
 import com.project.mindsync.model.enums.RoleName;
 
 import jakarta.persistence.*;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Table(name = "roles")
-@Getter
-@Setter
 @NoArgsConstructor
+@Data
 public class Role {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

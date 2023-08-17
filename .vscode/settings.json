@@ -27,7 +27,8 @@
   "java.format.settings.url": ".vscode/java-formatter.xml",
   "[java]": {
     "editor.detectIndentation": true,
-    "editor.insertSpaces": false
+    "editor.insertSpaces": false,
+    "editor.defaultFormatter": "redhat.java"
   },
   "java.configuration.updateBuildConfiguration": "interactive",
   "java.compile.nullAnalysis.mode": "automatic"

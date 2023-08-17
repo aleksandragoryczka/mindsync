@@ -3,7 +3,7 @@ import { AuthenticatedResponse } from '../models/authenticated-response.model';
 
 @Injectable({ providedIn: 'root' })
 export class TokenService {
-  private static tokenFieldName = 'accessToken';
+  private static tokenFieldName = 'Access-Token';
 
   setToken(authResponse: AuthenticatedResponse): void {
     localStorage.setItem(TokenService.tokenFieldName, authResponse.accessToken);

@@ -2,7 +2,6 @@ package com.project.mindsync.service.impl;
 
 import java.io.UnsupportedEncodingException;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;

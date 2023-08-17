@@ -22,8 +22,7 @@ public class AppConstants {
 	public static final String MAIL_SENDER = "MindSync";
 	public static final String MAIL_SUBJECT = "Please verify your Account";
 	public static final String MAIL_CONTENT = "Dear [[name]],<br>"
-            + "Please click the link below to verify your Account:<br>"
-            + "<h3><a href=\"[[URL]]\" target=\"_self\">VERIFY</a></h3>"
-            + "Thank you,<br>"
-			+ MAIL_SENDER;
+			+ "Please click the link below to verify your Account:<br>"
+			+ "<h3><a href=\"[[URL]]\" target=\"_self\">VERIFY</a></h3>" + "Thank you,<br>" + MAIL_SENDER;
+	public static final String USER_ID_CLAIM = "id";
 }

@@ -48,8 +48,8 @@ public class AuthController {
 	}
 
 	@PostMapping("/signin")
-	public ResponseEntity<JwtAuthenticationResponseDto> signInUser(@Valid @RequestBody SignInRequestDto signInRequest) {
-		return ResponseEntity.ok().body(authService.signInUser(signInRequest));
+	public ResponseEntity<JwtAuthenticationResponseDto> signInUser(HttpServletRequest request, @Valid @RequestBody SignInRequestDto signInRequest) {
+		return ResponseEntity.ok().body(authService.signInUser(request, signInRequest));
 	}
 
 	@GetMapping("/verify")

@@ -11,7 +11,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
 export function tokenGetter() {
-  return localStorage.getItem('access_token');
+  return localStorage.getItem('Access-Token');
 }
 
 @NgModule({

@@ -71,15 +71,15 @@ public class AuthServiceImpl implements AuthService {
 	}
 
 	@Override
-	public JwtAuthenticationResponseDto signInUser(SignInRequestDto signInRequest) {
-		//TODO: to be uncommented, not need to enter correct password
+	public JwtAuthenticationResponseDto signInUser(HttpServletRequest request, SignInRequestDto signInRequest) {
 		Authentication authentication = authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(signInRequest.getEmail(), signInRequest.getPassword()));
-
 		SecurityContextHolder.getContext().setAuthentication(authentication);
+
 		User user = userRepository.findByEmail(signInRequest.getEmail()).orElseThrow(
-				() -> new ResourceNotFoundException(AppConstants.USER, AppConstants.ID, signInRequest.getEmail()));
-		if (!user.isEnabled()) return null;
+			() -> new ResourceNotFoundException(AppConstants.USER, AppConstants.ID, signInRequest.getEmail()));
+		if (!user.isEnabled())
+			return null;
 		Set<GrantedAuthority> authorities = new HashSet<>(
 				SecurityContextHolder.getContext().getAuthentication().getAuthorities());
 		String jwt = tokenProvider.generateTokenFromId(user.getId(), authorities);

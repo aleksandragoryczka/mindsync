@@ -1,1 +1,11 @@
-<p>dashboard works!</p>
+<div class="mindsync-default-container">
+    dupa
+    <div class="shared-card-grid" *ngFor="let presentation of (listOfPresentations$ | async) ?? []">
+        <p>{{presentation.title}}</p>
+        <project-shared-card [data]="presentation">
+
+        </project-shared-card>
+    </div>
+
+
+</div>

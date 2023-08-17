@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserSummaryResponseDto getCurrentUser(UserPrincipal currentUser) {
-		return new UserSummaryResponseDto(currentUser.getName(), currentUser.getUsername(), currentUser.getEmail());
+		return new UserSummaryResponseDto(currentUser.getUsername(), currentUser.getUsername(), currentUser.getEmail());
 	}
 
 	@Override
