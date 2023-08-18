@@ -11,50 +11,17 @@ import { PaginatedResult } from 'libs/shared/src/lib/models/paginated-result.mod
 })
 export class DashboardComponent {
   currentPage$ = new BehaviorSubject<number>(0);
-  totalNumberOfPages = 1;
-  pageSize = 4;
   listOfPresentations$: Observable<PresentationModel[]> =
     this.loadPresentations();
 
   constructor(private presentationService: PresentationService) {}
 
-  getVisiblePresentations(
-    presentations: PresentationModel[],
-    page: number
-  ): PresentationModel[] {
-    const startIndex = page * this.pageSize;
-    return presentations.slice(startIndex, startIndex + this.pageSize);
-  }
-
-  nextPage(): void {
-    if (this.currentPage$.value < this.totalNumberOfPages - 1) {
-      this.currentPage$.next(this.currentPage$.value + 1);
-    }
-  }
-  previousPage(): void {
-    if (this.currentPage$.value > 1) {
-      this.currentPage$.next(this.currentPage$.value - 1);
-    }
-  }
-
-  trackByPresentationId(
-    index: number,
-    presentation: PresentationModel
-  ): string {
-    return presentation.id || '1';
-  }
-
   private loadPresentations(): Observable<PresentationModel[]> {
-    console.log('current page value: ' + this.currentPage$.value);
     return this.currentPage$.pipe(
       switchMap(currentPage =>
         this.presentationService.getPresentationsForUser(currentPage)
       ),
       map((res: PaginatedResult<PresentationModel>) => {
-        console.log(res);
-        this.totalNumberOfPages = res.totalPages;
-        //if (res.totalPages === 0 && this.currentPage$.value - 1 >= 0)
-        // this.currentPage$.next(this.currentPage$.value - 1);
         return res.content;
       })
     );
@@ -63,9 +30,9 @@ export class DashboardComponent {
   slideConfig = {
     slidesToShow: 4,
     slidesToScroll: 4,
-    autoplay: false,
+    autoplay: true,
     arrows: true,
-    autoplaySpeed: 3500,
+    autoplaySpeed: 3400,
     infinite: true,
     responsive: [
       {
@@ -73,8 +40,6 @@ export class DashboardComponent {
         settings: {
           slidesToShow: 3,
           slidesToScroll: 3,
-          //infinite: true,
-          //dots: true,
         },
       },
       {
