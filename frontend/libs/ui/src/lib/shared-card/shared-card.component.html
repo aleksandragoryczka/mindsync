@@ -1,15 +1,20 @@
 <div class="card-wrapper">
     <mat-card class="card">
         <mat-card-header>
-            <mat-card-title> {{ data.title }} </mat-card-title>
-            <mat-card-subtitle> {{ data.code }} </mat-card-subtitle>
-            <mat-card-subtitle> {{ data.createdAt }} </mat-card-subtitle>
+            <mat-card-title> {{ stringFormater.reduceString(data.title) }} </mat-card-title>
+            <mat-card-subtitle>Code: {{ data.code }} </mat-card-subtitle>
+            <mat-card-subtitle>Created at: {{ stringFormater.getDateFromISOString(data.createdAt ?? '') }}
+            </mat-card-subtitle>
         </mat-card-header>
         <img mat-card-image [src]="data.thumbnailUrl" alt=" {{ data.title }} ">
         <mat-card-actions>
-            <div class="mindsync-btn mindsync-btn-secondary" (click)="showPresentationButton()">
+            <div class="mindsync-btn mindsync-btn-primary" (click)="showPresentationButton()">
                 <mat-icon>open_in_new</mat-icon>
                 Details
+            </div>
+            <div class="mindsync-btn mindsync-btn-secondary" (click)="showPresentationButton()">
+                <mat-icon>open_in_new</mat-icon>
+                Shows
             </div>
         </mat-card-actions>
     </mat-card>

@@ -1,36 +1,37 @@
 @import '../../../../../libs/ui/src/lib/variables';
 
 .mindsync-default-container {
-  padding: 80px;
+  height: 100%;
 }
 
 .carousel-container {
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
-  max-width: 100%;
-  width: 100%;
+  //justify-content: space-between;
+  //max-width: 100%;
 }
 
-.shared-card {
+.slick-slider {
+  width: 90%;
+}
+
+.shared-cards {
   display: flex;
   align-items: center;
-  justify-content: center;
+  //width: 50%;
+  gap: 40px;
 }
 
 ::ng-deep .slick-prev:before,
 ::ng-deep .slick-next:before {
-  color: $darker-brown;
+  color: $dark-brown;
   opacity: 1;
-  font-size: 50px;
+  font-size: 44px;
+  // z-index: 1;
 }
 
-::ng-deep .slick-prev {
-  left: 0;
-}
-
-::ng-deep .slick-next {
-  right: 0;
-  width: auto;
+.slick-slide {
+  display: flex;
+  flex-direction: column;
 }

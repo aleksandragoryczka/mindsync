@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { PresentationModel } from '../../../../shared/src/lib/models/presentation.model';
+import StringFormater from '../../../../shared/src/lib/utils/string-formater';
 
 @Component({
   selector: 'project-shared-card',
@@ -8,6 +9,7 @@ import { PresentationModel } from '../../../../shared/src/lib/models/presentatio
 })
 export class SharedCardComponent {
   @Input() data!: PresentationModel;
+  stringFormater = StringFormater;
 
   showPresentationButton() {
     console.log('');

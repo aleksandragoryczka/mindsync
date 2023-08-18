@@ -1,6 +1,6 @@
 <div class="mindsync-default-container">
     <ngx-slick-carousel class="carousel-container" #clickModal="slick-carousel" [config]="slideConfig">
-        <div ngxSlickItem *ngFor="let presentation of (listOfPresentations$ | async) ?? []" class="shared-card">
+        <div ngxSlickItem *ngFor="let presentation of (listOfPresentations$ | async) ?? []" class="shared-cards">
             <project-shared-card [data]="presentation"></project-shared-card>
         </div>
     </ngx-slick-carousel>
