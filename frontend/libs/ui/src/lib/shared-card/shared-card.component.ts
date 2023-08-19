@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { PresentationModel } from '../../../../shared/src/lib/models/presentation.model';
 import StringFormater from '../../../../shared/src/lib/utils/string-formater';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'project-shared-card',
@@ -11,7 +12,13 @@ export class SharedCardComponent {
   @Input() data!: PresentationModel;
   stringFormater = StringFormater;
 
-  showPresentationButton() {
-    console.log('');
+  constructor(private router: Router) {}
+
+  async getDetailsButton(): Promise<void> {
+    await this.router.navigate([`/presentation/${this.data.id}`]);
+  }
+
+  async getShowsButton() {
+    await this.router.navigate([`/presentation/${this.data.id}/shows`]);
   }
 }

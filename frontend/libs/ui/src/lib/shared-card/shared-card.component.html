@@ -8,11 +8,11 @@
         </mat-card-header>
         <img mat-card-image [src]="data.thumbnailUrl" alt=" {{ data.title }} ">
         <mat-card-actions>
-            <div class="mindsync-btn mindsync-btn-primary" (click)="showPresentationButton()">
+            <div class="mindsync-btn mindsync-btn-primary" (click)="getDetailsButton()">
                 <mat-icon>open_in_new</mat-icon>
                 Details
             </div>
-            <div class="mindsync-btn mindsync-btn-secondary" (click)="showPresentationButton()">
+            <div class="mindsync-btn mindsync-btn-secondary" (click)="getShowsButton()">
                 <mat-icon>slideshow</mat-icon>
                 Shows
             </div>

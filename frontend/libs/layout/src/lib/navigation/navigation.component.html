@@ -8,18 +8,23 @@
                 <div class="navbar-nav">
                     <div class="nav-item-div">
                         <ng-container *ngIf="isUserAuthenticated">
-                            <li *ngFor="let element of userMenu; trackBy: trackByFn; let i = index" class="nav-item">
-                                <a class="nav-link" class="presentation-dropdown" routerLink="{{ element.router_link }}"
-                                    (mouseenter)="openDropdown(element.text)" (click)="logOut(element.text)">
+                            <li *ngFor="let element of userMenu" class="nav-item">
+                                <a *ngIf="element.text === 'Presentations'" class="nav-link"
+                                    class="presentation-dropdown" (mouseenter)="openDropdown(element.text)">
                                     <span class="nav-text-link">{{ element.text }}<mat-icon
                                             *ngIf="element.text === 'Presentations'">arrow_drop_down</mat-icon></span>
-                                    <div *ngIf="element.text === 'Presentations' && isDropdownOpen"
-                                        (mouseleave)="closeDropdown()">
+                                    <div *ngIf="isDropdownOpen" (mouseleave)="closeDropdown()">
                                         <ul class="dropdown-menu">
-                                            <li><a routerLink="">My presentations</a></li>
-                                            <li><a routerLink="">Create new</a></li>
+                                            <li><a routerLink="/dashboard">My presentations</a></li>
+                                            <li><a routerLink="/new">Create new</a>
+                                            </li>
                                         </ul>
                                     </div>
+                                </a>
+                                <a *ngIf="element.text !== 'Presentations'" class="nav-link"
+                                    class="presentation-dropdown" routerLink="{{ element.router_link }}"
+                                    (click)="logOut(element.text)">
+                                    <span class="nav-text-link">{{ element.text }}</span>
                                 </a>
                             </li>
                         </ng-container>
@@ -36,7 +41,6 @@
         </div>
     </nav>
     <div class="content-container">
-        <router-outlet></router-outlet>
         <div class="welcome-page-container" *ngIf="!isUserAuthenticated">
             <div class="question-box-container">
                 <img class="question-box-img" alt="question-box" src="libs/ui/src/assets/images/question-box.png">
@@ -58,4 +62,5 @@
             </div>
         </div>
     </div>
+    <router-outlet></router-outlet>
 </div>

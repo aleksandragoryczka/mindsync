@@ -18,7 +18,7 @@ import { ToastrService } from 'ngx-toastr';
 export class NavigationComponent implements OnInit {
   isUserAuthenticated = false;
   isDropdownOpen = false;
-  userMenu: { text: string; router_link: string }[] = [];
+  userMenu: { text: string; router_link?: string }[] = [];
 
   constructor(
     private dialog: MatDialog,
@@ -160,11 +160,21 @@ export class NavigationComponent implements OnInit {
     }
   }
 
+  presentationsUpdateRouterLink(
+    element: {
+      text: string;
+      router_link: string;
+    },
+    newRouterLink: string
+  ) {
+    element.router_link = newRouterLink;
+    console.log(element.router_link);
+  }
+
   private updateUserMenu(): void {
     const menu = [
       {
         text: 'Presentations',
-        router_link: '',
       },
       {
         text: 'Profile',
@@ -177,6 +187,7 @@ export class NavigationComponent implements OnInit {
     ];
 
     this.userService.isAdmin$.subscribe(admin => {
+      console.log(admin);
       if (admin) {
         const adminMenu = [...menu];
         adminMenu.splice(2, 0, { text: 'Admin Panel', router_link: '' });

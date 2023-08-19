@@ -13,7 +13,6 @@ export class PresentationService {
     page = 0,
     size = 30
   ): Observable<PaginatedResult<PresentationModel>> {
-    console.log('kot');
     return this.http.get<PaginatedResult<PresentationModel>>(
       `${environment.apiUrl}/user/presentations?page=${page}&size=${size}`
     );
