@@ -1,1 +1,13 @@
-<p>shows works!</p>
+<div class="mindsync-default-container">
+    <div class="mindsync-default-content-container">
+        <div class="mindsync-default-content-heading">
+            Shows
+        </div>
+        <div class="mindsync-default-content-data">
+            <project-shared-table [caption]="caption" [headers]="headers" [data]="(listOfShows$ | async) ?? []"
+                [currentPage]="(currentPage$ | async) ?? 1" [totalNumberOfPages]="totalShowsNumberOfPages"
+                [rowsPerPage]="rowsPerPage" (nextPageEvent)="setPage($event)"
+                (prevPageEvent)="setPage($event)"></project-shared-table>
+        </div>
+    </div>
+</div>

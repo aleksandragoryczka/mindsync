@@ -7,6 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedCardComponent } from './shared-card/shared-card.component';
 import { MatCardModule } from '@angular/material/card';
 import { SharedTableComponent } from './shared-table/shared-table.component';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   imports: [
@@ -16,12 +17,13 @@ import { SharedTableComponent } from './shared-table/shared-table.component';
     FormsModule,
     ReactiveFormsModule,
     MatCardModule,
+    NgbTooltipModule,
   ],
   declarations: [
     PopupWithInputsComponent,
     SharedCardComponent,
     SharedTableComponent,
   ],
-  exports: [SharedCardComponent],
+  exports: [SharedCardComponent, SharedTableComponent],
 })
 export class UiModule {}

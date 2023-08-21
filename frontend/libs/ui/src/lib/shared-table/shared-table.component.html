@@ -1,11 +1,11 @@
-<!--<div class="mindsync-table-wrapper mt-2">
+<div class="mindsync-table-wrapper">
     <table class="mindsync-table">
         <caption>
             {{
             caption
             }}
         </caption>
-        <thead class="minsync-table-header">
+        <thead class="mindsync-table-header">
             <tr>
                 <th>No.</th>
                 <th *ngFor="let header of headers">{{ header }}</th>
@@ -13,7 +13,7 @@
         </thead>
         <tbody class="mindsync-table-body">
             <tr *ngFor="let row of data; let i = index">
-                <td>{{ getStartRowIndex() + i }}.</td>
+                <td>{{ sharedNavigation.getStartRowIndex(currentPage, rowsPerPage) + i }}.</td>
                 <td *ngFor="let col of row?.cols">{{ col }}</td>
                 <td>
                     <ng-container *ngFor="let action of row?.actions">
@@ -27,10 +27,12 @@
         </tbody>
     </table>
     <div class="mindsync-table-foot">
-        <mat-icon class="midnsync-icon" (click)="prevPage()">chevron_left</mat-icon>
+        <mat-icon class="mindsync-icon"
+            (click)="sharedNavigation.prevPage(currentPage, prevPageEvent)">chevron_left</mat-icon>
         {{ currentPage + 1 }}
         of
         {{ totalNumberOfPages }}
-        <mat-icon class="midnsync-icon" (click)="nextPage()">chevron_right</mat-icon>
+        <mat-icon class="mindsync-icon"
+            (click)="sharedNavigation.nextPage(currentPage, nextPageEvent, totalNumberOfPages)">chevron_right</mat-icon>
     </div>
-</div>-->
+</div>

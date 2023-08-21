@@ -19,7 +19,7 @@ export class PresentationService {
   getPresentationsWithShows(
     id: string,
     page = 0,
-    size = 10
+    size = 5
   ): Observable<PresentationWithShows> {
     return this.http.get<PresentationWithShows>(
       `${environment.apiUrl}/presentation/${id}/shows?page=${

@@ -3,7 +3,6 @@ import { BehaviorSubject, Observable, map, switchMap } from 'rxjs';
 import { SharedTableData } from '../../../../../libs/shared/src/lib/models/shared-table-data.model';
 import { PresentationService } from '../../../../../libs/shared/src/lib/services/presentation.service';
 import { ActivatedRoute } from '@angular/router';
-import { PaginatedResult } from 'libs/shared/src/lib/models/paginated-result.model';
 import { PresentationWithShows } from 'libs/shared/src/lib/models/presentation-with-shows.model';
 import StringFormater from 'libs/shared/src/lib/utils/string-formater';
 
@@ -15,10 +14,10 @@ import StringFormater from 'libs/shared/src/lib/utils/string-formater';
 export class ShowsComponent implements OnInit {
   presentationId = '';
   totalShowsNumberOfPages = 1;
+  rowsPerPage = 10;
   caption = '';
   headers = ['Attendees Number', 'Created At'];
   currentPage$ = new BehaviorSubject<number>(0);
-  //stringFormater = StringFormater;
   listOfShows$: Observable<SharedTableData[]> = this.loadShows();
 
   constructor(
@@ -29,15 +28,26 @@ export class ShowsComponent implements OnInit {
   ngOnInit(): void {
     const id = this.activatedRoute.snapshot.paramMap.get('id');
     if (id != null) this.presentationId = id;
-    this.loadShows().subscribe();
+    this.presentationId = '1'; //to be deleted
+    //this.loadShows().subscribe();
   }
 
-  private loadShows() {
+  setPage(pageNumber: number): void {
+    this.currentPage$.next(pageNumber);
+  }
+
+  private loadShows(): Observable<SharedTableData[]> {
     return this.currentPage$.pipe(
       switchMap(currentPage =>
-        this.presentationService.getPresentationsWithShows('1', currentPage)
+        this.presentationService.getPresentationsWithShows(
+          this.presentationId,
+          currentPage
+        )
       ),
       map((res: PresentationWithShows) => {
+        this.totalShowsNumberOfPages = res.shows.totalPages ?? 1;
+        if (res.shows.content.length === 0 && this.currentPage$.value - 1 >= 0)
+          this.currentPage$.next(this.currentPage$.value - 1);
         return this.mapData(res);
       })
     );
@@ -45,8 +55,7 @@ export class ShowsComponent implements OnInit {
 
   private mapData(data: PresentationWithShows): SharedTableData[] {
     const shows = data.shows.content;
-    this.totalShowsNumberOfPages = data.shows.totalPages ?? 1;
-    this.caption = data.title ?? '';
+    this.rowsPerPage = data.shows.size ?? 10;
     const results: SharedTableData[] = [];
     shows.forEach(show => {
       const result: SharedTableData = {
@@ -56,12 +65,12 @@ export class ShowsComponent implements OnInit {
         ],
         actions: [
           {
-            icon: 'delete',
+            icon: 'slideshow',
             func: (arg: string) => {
               console.log(arg);
             },
             arg: show,
-            tooltip: 'delete',
+            tooltip: 'Show screenshots',
           },
           {
             icon: 'cloud_download',
@@ -69,12 +78,21 @@ export class ShowsComponent implements OnInit {
               console.log(arg);
             },
             arg: show,
-            tooltip: 'sssss',
+            tooltip: 'Download summary',
+          },
+          {
+            icon: 'delete',
+            func: (arg: string) => {
+              console.log(arg);
+            },
+            arg: show,
+            tooltip: 'Delete',
           },
         ],
       };
       results.push(result);
     });
+    console.log(results);
     return results;
   }
 }

@@ -1,24 +1,22 @@
 @import '../variables';
 
-.midnsync-table-wrapper {
+.mindsync-table-wrapper {
   padding: 1rem;
-  border: 1px solid;
-  border-radius: 10px;
-  background-color: $white;
+  //border: 1px solid;
 
   .mindsync-table-foot {
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    padding-top: 1rem;
+    padding-top: 4rem;
   }
 }
 
 .mindsync-table {
   width: 100%;
 
-  .midnsync-table-header {
+  .mindsync-table-header {
     border-bottom: 1px solid;
 
     th {
@@ -44,6 +42,7 @@
       padding-left: 1rem;
       padding-top: 0.5rem;
       padding-bottom: 0.5rem;
+      font-size: larger;
       justify-content: center;
       align-items: center;
       text-align: center;
@@ -65,10 +64,14 @@
   }
 }
 
-.midnsync-icon {
+.mindsync-icon {
   transition: transform 0.2s;
   &:hover {
     cursor: pointer;
     transform: scale(1.2);
   }
+}
+
+.mat-icon {
+  vertical-align: middle;
 }
