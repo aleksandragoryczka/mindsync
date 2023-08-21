@@ -22,9 +22,7 @@ export class PresentationService {
     size = 5
   ): Observable<PresentationWithShows> {
     return this.http.get<PresentationWithShows>(
-      `${environment.apiUrl}/presentation/${id}/shows?page=${
-        page * size
-      }&size=${size}`
+      `${environment.apiUrl}/presentation/${id}/shows?page=${page}&size=${size}`
     );
   }
 }

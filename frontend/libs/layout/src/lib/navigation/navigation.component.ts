@@ -59,37 +59,11 @@ export class NavigationComponent implements OnInit {
       title: 'Sign In',
       description: '',
       inputs: this.homepageInputsPopup['login'],
-      buttons: [
-        {
-          type: ButtonTypes.PRIMARY,
-          text: 'Sign In',
-        },
-        {
-          type: ButtonTypes.SECONDARY,
-          text: 'Cancel',
-          onClick: () => {
-            console.log('');
-          },
-        },
-      ],
     },
     register: {
       title: 'Register',
       description: '',
       inputs: this.homepageInputsPopup['register'],
-      buttons: [
-        {
-          type: ButtonTypes.PRIMARY,
-          text: 'Register',
-        },
-        {
-          type: ButtonTypes.SECONDARY,
-          text: 'Cancel',
-          onClick: () => {
-            console.log('');
-          },
-        },
-      ],
     },
   };
 

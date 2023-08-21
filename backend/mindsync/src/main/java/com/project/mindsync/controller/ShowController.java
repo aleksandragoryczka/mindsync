@@ -3,6 +3,8 @@ package com.project.mindsync.controller;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -16,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.project.mindsync.dto.request.ShowRequestDto;
 import com.project.mindsync.dto.response.ApiResponseDto;
-import com.project.mindsync.dto.response.ExcelFileResponseDto;
 import com.project.mindsync.dto.response.PagedResponseDto;
 import com.project.mindsync.dto.response.ShowResponseDto;
 import com.project.mindsync.dto.response.ShowWithScreenshotsResponseDto;
@@ -42,8 +43,10 @@ public class ShowController {
 	}
 
 	@GetMapping("/{id}/excel")
-	public ResponseEntity<ExcelFileResponseDto> getExcelFile(@PathVariable(name = "id") Long id) {
-		return showService.getExcelFile(id);
+	public ResponseEntity<byte[]> getExcelFile(@PathVariable(name = "id") Long id) {
+		byte[] excelContent = showService.getExcelFile(id);
+		return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment")
+				.contentType(MediaType.parseMediaType("multipart/form-data")).body(excelContent);
 	}
 
 	@PostMapping("")

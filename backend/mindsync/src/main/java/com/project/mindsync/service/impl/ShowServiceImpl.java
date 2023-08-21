@@ -19,7 +19,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.project.mindsync.dto.request.ShowRequestDto;
 import com.project.mindsync.dto.response.ApiResponseDto;
-import com.project.mindsync.dto.response.ExcelFileResponseDto;
 import com.project.mindsync.dto.response.PagedResponseDto;
 import com.project.mindsync.dto.response.ScreenshotResponseDto;
 import com.project.mindsync.dto.response.ShowResponseDto;
@@ -73,10 +72,10 @@ public class ShowServiceImpl implements ShowService {
 	}
 
 	@Override
-	public ResponseEntity<ExcelFileResponseDto> getExcelFile(Long showId) {
+	public byte[] getExcelFile(Long showId) {
 		Show show = showRepository.findById(showId)
 				.orElseThrow(() -> new ResourceNotFoundException(AppConstants.SHOW, AppConstants.ID, showId));
-		return ResponseEntity.ok().body(new ExcelFileResponseDto(show.getExcelFile()));
+		return show.getExcelFile();
 	}
 
 	@Override
