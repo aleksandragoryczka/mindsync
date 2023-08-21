@@ -6,6 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedCardComponent } from './shared-card/shared-card.component';
 import { MatCardModule } from '@angular/material/card';
+import { SharedTableComponent } from './shared-table/shared-table.component';
 
 @NgModule({
   imports: [
@@ -16,7 +17,11 @@ import { MatCardModule } from '@angular/material/card';
     ReactiveFormsModule,
     MatCardModule,
   ],
-  declarations: [PopupWithInputsComponent, SharedCardComponent],
+  declarations: [
+    PopupWithInputsComponent,
+    SharedCardComponent,
+    SharedTableComponent,
+  ],
   exports: [SharedCardComponent],
 })
 export class UiModule {}

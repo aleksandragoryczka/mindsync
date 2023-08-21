@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.project.mindsync.dto.request.PresentationRequestDto;
 import com.project.mindsync.dto.response.ApiResponseDto;
 import com.project.mindsync.dto.response.PagedResponseDto;
+import com.project.mindsync.dto.response.PresentationWithShowsResponseDto;
 import com.project.mindsync.dto.response.ShowResponseDto;
 import com.project.mindsync.model.Presentation;
 import com.project.mindsync.model.Slide;
@@ -58,7 +59,7 @@ public class PresentationController {
 
 	@PutMapping("/{id}")
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-	public ResponseEntity<Presentation> updatePresentaion(@PathVariable(name = "id") Long id,
+	public ResponseEntity<Presentation> updatePresentation(@PathVariable(name = "id") Long id,
 			@Valid @RequestBody PresentationRequestDto updatedPresentationRequest,
 			@CurrentUser UserPrincipal currentUser) {
 		Presentation presentation = presentationService.updatePresentation(id, updatedPresentationRequest, currentUser);
@@ -82,12 +83,11 @@ public class PresentationController {
 		return ResponseEntity.ok().body(slides);
 	}
 
-	@GetMapping("{id}/shows")
-	public ResponseEntity<PagedResponseDto<ShowResponseDto>> getAllShowsByPresentation(
-			@PathVariable(name = "id") Long id,
+	@GetMapping("/{id}/shows")
+	public ResponseEntity<PresentationWithShowsResponseDto> getPresentationWithShows(@PathVariable(name = "id") Long id,
 			@RequestParam(name = "page", required = false, defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
 			@RequestParam(name = "size", required = false, defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size) {
-		PagedResponseDto<ShowResponseDto> shows = showService.getAllShowsByPresentation(id, page, size);
-		return ResponseEntity.ok().body(shows);
+		PresentationWithShowsResponseDto response = presentationService.getPresentationWithShows(id, page, size);
+		return ResponseEntity.ok().body(response);
 	}
 }

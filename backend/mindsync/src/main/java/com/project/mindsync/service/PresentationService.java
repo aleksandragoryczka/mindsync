@@ -4,6 +4,7 @@ import org.springframework.http.ResponseEntity;
 import com.project.mindsync.dto.request.PresentationRequestDto;
 import com.project.mindsync.dto.response.ApiResponseDto;
 import com.project.mindsync.dto.response.PagedResponseDto;
+import com.project.mindsync.dto.response.PresentationWithShowsResponseDto;
 import com.project.mindsync.model.Presentation;
 import com.project.mindsync.security.UserPrincipal;
 
@@ -18,4 +19,6 @@ public interface PresentationService {
 			UserPrincipal currentUser);
 
 	ApiResponseDto deletePresentation(Long id, UserPrincipal currentUser);
+
+	PresentationWithShowsResponseDto getPresentationWithShows(Long presentationId, int page, int size);
 }

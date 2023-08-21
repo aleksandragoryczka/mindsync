@@ -160,17 +160,6 @@ export class NavigationComponent implements OnInit {
     }
   }
 
-  presentationsUpdateRouterLink(
-    element: {
-      text: string;
-      router_link: string;
-    },
-    newRouterLink: string
-  ) {
-    element.router_link = newRouterLink;
-    console.log(element.router_link);
-  }
-
   private updateUserMenu(): void {
     const menu = [
       {
@@ -187,7 +176,6 @@ export class NavigationComponent implements OnInit {
     ];
 
     this.userService.isAdmin$.subscribe(admin => {
-      console.log(admin);
       if (admin) {
         const adminMenu = [...menu];
         adminMenu.splice(2, 0, { text: 'Admin Panel', router_link: '' });

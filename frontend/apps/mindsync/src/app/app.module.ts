@@ -12,6 +12,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { MatIconModule } from '@angular/material/icon';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { PresentationDetailsComponent } from './presentation-details/presentation-details.component';
+import { ShowsComponent } from './shows/shows.component';
 
 export function tokenGetter() {
   return localStorage.getItem('Access-Token');
@@ -22,6 +23,7 @@ export function tokenGetter() {
     AppComponent,
     DashboardComponent,
     PresentationDetailsComponent,
+    ShowsComponent,
   ],
   imports: [
     BrowserModule,

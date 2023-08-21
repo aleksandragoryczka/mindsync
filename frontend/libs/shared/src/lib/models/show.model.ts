@@ -1,4 +1,5 @@
 export interface ShowModel {
-    id?: string;
-    //TODO: to be implemented
+  id?: string;
+  attendeesNumber: string;
+  createdAt: string;
 }

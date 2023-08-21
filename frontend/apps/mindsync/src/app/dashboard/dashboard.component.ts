@@ -17,14 +17,9 @@ export class DashboardComponent {
   constructor(private presentationService: PresentationService) {}
 
   private loadPresentations(): Observable<PresentationModel[]> {
-    return this.currentPage$.pipe(
-      switchMap(currentPage =>
-        this.presentationService.getPresentationsForUser(currentPage)
-      ),
-      map((res: PaginatedResult<PresentationModel>) => {
-        return res.content;
-      })
-    );
+    return this.presentationService
+      .getPresentationsForUser()
+      .pipe(map((res: PaginatedResult<PresentationModel>) => res.content));
   }
 
   slideConfig = {

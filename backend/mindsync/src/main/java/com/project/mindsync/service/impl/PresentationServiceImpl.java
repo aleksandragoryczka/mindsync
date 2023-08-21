@@ -18,16 +18,20 @@ import com.project.mindsync.dto.request.PresentationRequestDto;
 import com.project.mindsync.dto.request.SlideRequestDto;
 import com.project.mindsync.dto.response.ApiResponseDto;
 import com.project.mindsync.dto.response.PagedResponseDto;
+import com.project.mindsync.dto.response.PresentationWithShowsResponseDto;
+import com.project.mindsync.dto.response.ShowResponseDto;
 import com.project.mindsync.exception.ResourceNotFoundException;
 import com.project.mindsync.exception.UnauthorizedException;
 import com.project.mindsync.model.Option;
 import com.project.mindsync.model.Presentation;
+import com.project.mindsync.model.Show;
 import com.project.mindsync.model.Slide;
 import com.project.mindsync.model.SlideType;
 import com.project.mindsync.model.User;
 import com.project.mindsync.model.enums.SlideTypeName;
 import com.project.mindsync.repository.OptionRepository;
 import com.project.mindsync.repository.PresentationRepository;
+import com.project.mindsync.repository.ShowRepository;
 import com.project.mindsync.repository.SlideRepository;
 import com.project.mindsync.repository.SlideTypeRepository;
 import com.project.mindsync.repository.UserRepository;
@@ -55,6 +59,31 @@ public class PresentationServiceImpl implements PresentationService {
 
 	@Autowired
 	private OptionRepository optionRepository;
+
+	@Autowired
+	ShowRepository showRepository;
+
+	@Override
+	public PresentationWithShowsResponseDto getPresentationWithShows(Long presentationId, int page, int size) {
+		AppUtils.validatePageNumberAndSize(page, size);
+		Presentation presentation = presentationRepository.findById(presentationId).orElseThrow(
+				() -> new ResourceNotFoundException(AppConstants.PRESENTATION, AppConstants.ID, presentationId));
+		Pageable pageable = PageRequest.of(page, size, Sort.Direction.ASC, AppConstants.ID);
+		Page<Show> shows = showRepository.findByPresentationId(presentationId, pageable);
+		List<ShowResponseDto> showsResponses = shows.getContent().stream().map(this::mapToShowResponseDto)
+				.collect(Collectors.toList());
+		PagedResponseDto<ShowResponseDto> pagedShowsResponse = new PagedResponseDto<ShowResponseDto>(showsResponses,
+				shows.getNumber(), shows.getSize(), shows.getTotalElements(), shows.getTotalPages(), shows.isLast());
+		PresentationWithShowsResponseDto presentationWithShowsResponse = new PresentationWithShowsResponseDto();
+		presentationWithShowsResponse.setId(presentationId);
+		presentationWithShowsResponse.setTitle(presentation.getTitle());
+		presentationWithShowsResponse.setShows(pagedShowsResponse);
+		return presentationWithShowsResponse;
+		// return new
+		// PagedResponseDto<PresentationWithShowsResponseDto>(List.of(presentationWithShowsResponse),
+		// shows.getNumber(), shows.getSize(), shows.getTotalElements(),
+		// shows.getTotalPages(), shows.isLast());
+	}
 
 	@Override
 	public PagedResponseDto<Presentation> getUserPresentations(UserPrincipal currentUser, int page, int size) {
@@ -260,5 +289,13 @@ public class PresentationServiceImpl implements PresentationService {
 		} while (codeExists);
 
 		return codeGenerated;
+	}
+
+	private ShowResponseDto mapToShowResponseDto(Show show) {
+		ShowResponseDto showResponse = new ShowResponseDto();
+		showResponse.setId(show.getId());
+		showResponse.setAttendeesNumber(show.getAttendeesNumber());
+		showResponse.setCreatedAt(show.getCreatedAt().toString());
+		return showResponse;
 	}
 }
