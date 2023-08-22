@@ -13,6 +13,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { PresentationDetailsComponent } from './presentation-details/presentation-details.component';
 import { ShowsComponent } from './shows/shows.component';
+import { ScreenshotsComponent } from './shows/screenshots/screenshots.component';
 
 export function tokenGetter() {
   return localStorage.getItem('Access-Token');
@@ -24,6 +25,7 @@ export function tokenGetter() {
     DashboardComponent,
     PresentationDetailsComponent,
     ShowsComponent,
+    ScreenshotsComponent,
   ],
   imports: [
     BrowserModule,

@@ -19,8 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.project.mindsync.dto.request.ShowRequestDto;
 import com.project.mindsync.dto.response.ApiResponseDto;
 import com.project.mindsync.dto.response.PagedResponseDto;
+import com.project.mindsync.dto.response.ScreenshotResponseDto;
 import com.project.mindsync.dto.response.ShowResponseDto;
 import com.project.mindsync.dto.response.ShowWithScreenshotsResponseDto;
+import com.project.mindsync.model.Screenshot;
 import com.project.mindsync.security.CurrentUser;
 import com.project.mindsync.security.UserPrincipal;
 import com.project.mindsync.service.ShowService;
@@ -39,6 +41,15 @@ public class ShowController {
 			@RequestParam(name = "page", required = false, defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
 			@RequestParam(name = "size", required = false, defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size) {
 		PagedResponseDto<ShowWithScreenshotsResponseDto> response = showService.getShowWithScreenshots(id, page, size);
+		return ResponseEntity.ok().body(response);
+	}
+
+	@GetMapping("/{id}/screenshots")
+	public ResponseEntity<PagedResponseDto<ScreenshotResponseDto>> getScreenshotsByShowId(
+			@PathVariable(name = "id") Long id,
+			@RequestParam(name = "page", required = false, defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
+			@RequestParam(name = "size", required = false, defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size) {
+		PagedResponseDto<ScreenshotResponseDto> response = showService.getScreenshotsByShowId(id, page, size);
 		return ResponseEntity.ok().body(response);
 	}
 

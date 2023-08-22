@@ -16,7 +16,8 @@ import { PopupWithInputsComponent } from 'libs/ui/src/lib/popup-with-inputs/popu
 import { ShowService } from '../../../../../libs/shared/src/lib/services/show.service';
 import { ToastrService } from 'ngx-toastr';
 import { saveAs } from 'file-saver';
-import { ShowModel } from 'libs/shared/src/lib/models/show.model';
+import { ScreenshotsComponent } from './screenshots/screenshots.component';
+import { ScreenshotModel } from 'libs/shared/src/lib/models/screenshot.model';
 
 @Component({
   selector: 'project-shows',
@@ -62,12 +63,20 @@ export class ShowsComponent implements OnInit {
   }
 
   private downloadExcelFile(showId: string, presentationTitle: string): void {
-    this.showService.getExcelFile(showId).subscribe(response => {
-      const blob = new Blob([response], {
-        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-      });
-      saveAs(blob, presentationTitle);
-    });
+    this.showService.getExcelFile(showId).subscribe(
+      response => {
+        const blob = new Blob([response], {
+          type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        });
+        saveAs(blob, presentationTitle);
+      },
+      error => {
+        this.toastrService.error(
+          'An error occured while downloading the summary Excel file',
+          'Error'
+        );
+      }
+    );
   }
 
   private openDeleteOrganizationPopup(id: string): void {
@@ -111,6 +120,20 @@ export class ShowsComponent implements OnInit {
     );
   }
 
+  openScreenshotsShowPreview(id: string): void {
+    this.showService.getScreenshotsByShowId(id).subscribe(response => {
+      const mappedScreenshots: ScreenshotModel[] = response.content.map(
+        screenshot => {
+          return {
+            id: screenshot.id,
+            picture: screenshot.picture,
+          };
+        }
+      );
+      this.dialog.open(ScreenshotsComponent, { data: mappedScreenshots });
+    });
+  }
+
   private mapData(data: PresentationWithShows): SharedTableData[] {
     const shows = data.shows.content;
     this.rowsPerPage = data.shows.size ?? 10;
@@ -125,9 +148,9 @@ export class ShowsComponent implements OnInit {
           {
             icon: 'slideshow',
             func: (arg: string) => {
-              console.log(arg);
+              this.openScreenshotsShowPreview(arg);
             },
-            arg: show,
+            arg: show?.id,
             tooltip: 'Screenshots preview',
           },
           {
@@ -136,7 +159,7 @@ export class ShowsComponent implements OnInit {
               this.downloadExcelFile(arg.showId, arg.presentationTitle);
             },
             arg: { showId: show.id, presentationTitle: data.title },
-            tooltip: 'Download summary',
+            tooltip: 'Download show summary',
           },
           {
             icon: 'delete',

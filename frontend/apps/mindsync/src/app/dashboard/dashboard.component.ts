@@ -10,7 +10,7 @@ import { PaginatedResult } from 'libs/shared/src/lib/models/paginated-result.mod
   styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent {
-  currentPage$ = new BehaviorSubject<number>(0);
+  //currentPage$ = new BehaviorSubject<number>(0);
   listOfPresentations$: Observable<PresentationModel[]> =
     this.loadPresentations();
 

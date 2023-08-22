@@ -2,6 +2,7 @@ package com.project.mindsync.service.impl;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -69,6 +70,19 @@ public class ShowServiceImpl implements ShowService {
 		return new PagedResponseDto<ShowWithScreenshotsResponseDto>(List.of(showWithScreenshotsResponse),
 				screenshots.getNumber(), screenshots.getSize(), screenshots.getTotalElements(),
 				screenshots.getTotalPages(), screenshots.isLast());
+	}
+
+	@Override
+	public PagedResponseDto<ScreenshotResponseDto> getScreenshotsByShowId(Long showId, int page, int size) {
+		AppUtils.validatePageNumberAndSize(page, size);
+		Pageable pageable = PageRequest.of(page, size, Sort.Direction.ASC, AppConstants.ID);
+		Page<Screenshot> screenshots = screenshotRepository.findByShowId(showId, pageable);
+		List<ScreenshotResponseDto> screenshotResponses = screenshots.getContent().stream()
+				.map(this::mapToScreenshotResponseDto).collect(Collectors.toList());
+
+		return new PagedResponseDto<ScreenshotResponseDto>(screenshotResponses, screenshots.getNumber(),
+				screenshots.getSize(), screenshots.getTotalElements(), screenshots.getTotalPages(),
+				screenshots.isLast());
 	}
 
 	@Override
@@ -144,9 +158,9 @@ public class ShowServiceImpl implements ShowService {
 		screenshotResponse.setPicture(screenshot.getPicture());
 		// TODO: is it necessary? - byloby gdybym np. po kliknieciu na maly screenshot
 		// chciala go powiekszac - czy nie da sie tego dodac na forntendzie?
-		String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/screenshots/")
-				.path(screenshotResponse.getId().toString()).toUriString();
-		screenshotResponse.setUrl(fileDownloadUri);
+		//String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/screenshots/")
+		//		.path(screenshotResponse.getId().toString()).toUriString();
+		//screenshotResponse.setUrl(fileDownloadUri);
 		return screenshotResponse;
 	}
 }

@@ -1,0 +1,24 @@
+<div class="mindsync-default-container">
+    <div class="mindsync-default-content-container">
+        <div class="mindsync-default-content-heading">
+            <div class="mindsync-popup-close-btn" (click)="closePopup()">
+                <mat-icon>close</mat-icon>
+            </div>
+        </div>
+        <div class="mindsync-default-content-data">
+            <button class="mindsync-btn mindsync-btn-secondary" (click)="downloadScreenshots()"> Download
+                all</button>
+            <img [src]="'data:image/png;base64, ' + data[currentImageIndex].picture"
+                alt="Screenshot {{ data[currentImageIndex].id }}">
+            <div class="foot">
+                <mat-icon class="mindsync-icon" (click)="prevImage()">chevron_left</mat-icon>
+                {{ currentImageIndex + 1 }}
+                of
+                {{ data.length }}
+                <mat-icon class="mindsync-icon" (click)="nextImage()">chevron_right</mat-icon>
+            </div>
+        </div>
+
+    </div>
+
+</div>

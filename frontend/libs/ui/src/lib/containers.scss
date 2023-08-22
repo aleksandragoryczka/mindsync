@@ -56,8 +56,8 @@
   position: absolute;
   right: -23px;
   top: -23px;
-  margin-right: 30px;
-  margin-top: 30px;
+  margin-right: 40px;
+  margin-top: 40px;
   cursor: pointer;
   color: $white;
 }
@@ -68,6 +68,11 @@
 
 .mat-mdc-dialog-content {
   max-height: 100vh !important;
+}
+
+.mat-mdc-dialog-container .mdc-dialog__surface {
+  box-shadow: none !important;
+  background-color: transparent !important;
 }
 
 @media screen and (max-width: 1100px) {
