@@ -18,6 +18,7 @@ import { ToastrService } from 'ngx-toastr';
 import { saveAs } from 'file-saver';
 import { ScreenshotsComponent } from './screenshots/screenshots.component';
 import { ScreenshotModel } from 'libs/shared/src/lib/models/screenshot.model';
+import { TooltipTexts } from '../../../../../libs/shared/src/lib/models/enums/tooltips-texts.enum';
 
 @Component({
   selector: 'project-shows',
@@ -151,7 +152,7 @@ export class ShowsComponent implements OnInit {
               this.openScreenshotsShowPreview(arg);
             },
             arg: show?.id,
-            tooltip: 'Screenshots preview',
+            tooltip: TooltipTexts.screenshotsPreview,
           },
           {
             icon: 'cloud_download',
@@ -159,7 +160,7 @@ export class ShowsComponent implements OnInit {
               this.downloadExcelFile(arg.showId, arg.presentationTitle);
             },
             arg: { showId: show.id, presentationTitle: data.title },
-            tooltip: 'Download show summary',
+            tooltip: TooltipTexts.downloadShowSummary,
           },
           {
             icon: 'delete',
@@ -167,7 +168,7 @@ export class ShowsComponent implements OnInit {
               this.openDeleteOrganizationPopup(arg);
             },
             arg: show?.id,
-            tooltip: 'Delete',
+            tooltip: TooltipTexts.delete,
           },
         ],
       };
