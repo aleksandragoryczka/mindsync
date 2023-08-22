@@ -14,6 +14,8 @@ import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { PresentationDetailsComponent } from './presentation-details/presentation-details.component';
 import { ShowsComponent } from './shows/shows.component';
 import { ScreenshotsComponent } from './shows/screenshots/screenshots.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { LoadingInterceptor } from '../../../../libs/shared/src/lib/interceptor/loading.interceptor';
 
 export function tokenGetter() {
   return localStorage.getItem('Access-Token');
@@ -51,7 +53,9 @@ export function tokenGetter() {
       progressAnimation: 'decreasing',
     }),
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -22,7 +22,6 @@ import com.project.mindsync.dto.response.PagedResponseDto;
 import com.project.mindsync.dto.response.ScreenshotResponseDto;
 import com.project.mindsync.dto.response.ShowResponseDto;
 import com.project.mindsync.dto.response.ShowWithScreenshotsResponseDto;
-import com.project.mindsync.model.Screenshot;
 import com.project.mindsync.security.CurrentUser;
 import com.project.mindsync.security.UserPrincipal;
 import com.project.mindsync.service.ShowService;

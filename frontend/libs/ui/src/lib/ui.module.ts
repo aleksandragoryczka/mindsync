@@ -8,6 +8,7 @@ import { SharedCardComponent } from './shared-card/shared-card.component';
 import { MatCardModule } from '@angular/material/card';
 import { SharedTableComponent } from './shared-table/shared-table.component';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { SpinnerComponent } from './spinner/spinner.component';
 
 @NgModule({
   imports: [
@@ -23,7 +24,8 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
     PopupWithInputsComponent,
     SharedCardComponent,
     SharedTableComponent,
+    SpinnerComponent,
   ],
-  exports: [SharedCardComponent, SharedTableComponent],
+  exports: [SharedCardComponent, SharedTableComponent, SpinnerComponent],
 })
 export class UiModule {}

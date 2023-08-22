@@ -30,7 +30,8 @@ public class EmailServiceImpl implements EmailService {
 	}
 
 	@Override
-	public void sendVerificationEmail(User user, HttpServletRequest httpServletRequest) throws UnsupportedEncodingException, MessagingException {
+	public void sendVerificationEmail(User user, HttpServletRequest httpServletRequest)
+			throws UnsupportedEncodingException, MessagingException {
 		MimeMessage message = mailSender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(message);
 		helper.setFrom(fromAddress, AppConstants.MAIL_SENDER);
@@ -43,10 +44,4 @@ public class EmailServiceImpl implements EmailService {
 		mailSender.send(message);
 	}
 
-	private String getSiteURL(HttpServletRequest httpServletRequest) {
-		String siteURL = httpServletRequest.getRequestURL().toString();
-		return siteURL.replace(httpServletRequest.getServletPath(), "");
-	}
-
-	
 }

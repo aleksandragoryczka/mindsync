@@ -25,7 +25,6 @@ import com.project.mindsync.model.Slide;
 import com.project.mindsync.security.CurrentUser;
 import com.project.mindsync.security.UserPrincipal;
 import com.project.mindsync.service.PresentationService;
-import com.project.mindsync.service.ShowService;
 import com.project.mindsync.service.SlideService;
 import com.project.mindsync.utils.AppConstants;
 
@@ -38,9 +37,6 @@ public class PresentationController {
 
 	@Autowired
 	private SlideService slideService;
-
-	@Autowired
-	private ShowService showService;
 
 	@GetMapping("/{id}")
 	public ResponseEntity<Presentation> getPresentation(@PathVariable(name = "id") Long id) {
