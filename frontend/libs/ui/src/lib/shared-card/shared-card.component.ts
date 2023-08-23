@@ -23,6 +23,8 @@ export class SharedCardComponent {
   }
 
   async getShowsButton() {
-    await this.router.navigate([`/${this.data.id}/shows`]);
+    await this.router.navigate([`/${this.data.id}/shows`], {
+      queryParams: { title: this.data.title },
+    });
   }
 }

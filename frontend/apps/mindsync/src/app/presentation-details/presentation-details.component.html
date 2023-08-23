@@ -1,7 +1,31 @@
 <div class="mindsync-default-container">
-    <ngx-slick-carousel class="carousel-container" #clickModal="slick-carousel" [config]="slideConfig">
-        <div ngxSlickItem *ngFor="let presentation of slides" class="shared-cards">
-            <h1>1</h1>
+    <div class="mindsync-default-content-container">
+        <div class="mindsync-default-content-heading">
+            Presentation title
         </div>
-    </ngx-slick-carousel>
+        <div class="mindsync-default-content-data">
+            <div class="container-navigation">
+                <div class="container-details">
+                    <div class="details-section">
+                        <p>Code: </p>
+                        <p>123456</p>
+                    </div>
+                    <div class="details-section">
+                        <p>Created At: </p>
+                        <p>23-03-2023</p>
+                    </div>
+                </div>
+                <button class="mindsync-btn mindsync-btn-primary">Add slide</button>
+            </div>
+            <div class="mindsync-default-container">
+                <ngx-slick-carousel class="carousel-container" #clickModal="slick-carousel" [config]="slideConfig">
+                    <div ngxSlickItem *ngFor="let presentation of slides" class="shared-cards">
+                        {{presentation}}
+                    </div>
+                </ngx-slick-carousel>
+            </div>
+
+        </div>
+    </div>
+
 </div>

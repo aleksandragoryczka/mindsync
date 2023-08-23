@@ -27,6 +27,7 @@ import { TooltipTexts } from '../../../../../libs/shared/src/lib/models/enums/to
 })
 export class ShowsComponent implements OnInit {
   presentationId = '';
+  presentationTitle = '';
   totalShowsNumberOfPages = 1;
   rowsPerPage = 10;
   caption = '';
@@ -44,6 +45,8 @@ export class ShowsComponent implements OnInit {
 
   ngOnInit(): void {
     const id = this.activatedRoute.snapshot.paramMap.get('id');
+    this.presentationTitle =
+      this.activatedRoute.snapshot.queryParamMap.get('title') ?? '';
     if (id != null) this.presentationId = id;
     this.presentationId = '1'; //to be deleted
     //this.loadShows().subscribe();

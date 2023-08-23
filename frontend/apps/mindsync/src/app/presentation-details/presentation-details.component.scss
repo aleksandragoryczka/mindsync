@@ -1,0 +1,49 @@
+@import '../../../../../libs/ui/src/lib/_variables.scss';
+
+
+.mindsync-default-content-data {
+  padding: 20px 40px;
+}
+
+.container-navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.container-details {
+  display: flex;
+  gap: 70px;
+}
+
+.details-section {
+  display: flex;
+  align-items: center;
+}
+
+p {
+  font-size: larger;
+  font-weight: 700;
+  margin-right: 10px;
+}
+
+::ng-deep .slick-prev:before,
+::ng-deep .slick-next:before {
+  color: $dark-brown;
+  opacity: 1;
+}
+
+.mindsync-default-container {
+  width: 100%;
+}
+
+.carousel-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.slick-slider {
+  width: 90%;
+}

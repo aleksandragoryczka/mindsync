@@ -1,7 +1,7 @@
 <div class="mindsync-default-container">
     <div class="mindsync-default-content-container">
         <div class="mindsync-default-content-heading">
-            Shows
+            Shows of the {{ presentationTitle }}
         </div>
         <div class="mindsync-default-content-data">
             <project-shared-table [caption]="caption" [headers]="headers" [data]="(listOfShows$ | async) ?? []"
