@@ -10,7 +10,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { ToastrModule } from 'ngx-toastr';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { MatIconModule } from '@angular/material/icon';
-import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { PresentationDetailsComponent } from './presentation-details/presentation-details.component';
 import { ShowsComponent } from './shows/shows.component';
 import { ScreenshotsComponent } from './shows/screenshots/screenshots.component';
@@ -36,7 +35,6 @@ export function tokenGetter() {
     SharedModule,
     LayoutModule,
     MatIconModule,
-    SlickCarouselModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,

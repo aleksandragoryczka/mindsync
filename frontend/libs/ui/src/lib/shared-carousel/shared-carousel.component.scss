@@ -1,0 +1,29 @@
+@import '../../../../../libs/ui/src/lib/_variables.scss';
+
+::ng-deep .slick-prev:before,
+::ng-deep .slick-next:before {
+  color: $dark-brown;
+  opacity: 1;
+}
+
+.mindsync-default-container {
+  width: 100%;
+
+  //align-items: center;
+}
+
+.carousel-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.slick-slider {
+  width: 90%;
+}
+
+.shared-cards {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}

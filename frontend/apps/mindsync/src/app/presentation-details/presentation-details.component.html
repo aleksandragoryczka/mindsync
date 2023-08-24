@@ -15,14 +15,14 @@
                         <p>23-03-2023</p>
                     </div>
                 </div>
-                <button class="mindsync-btn mindsync-btn-primary">Add slide</button>
+                <div class="buttons-container">
+                    <button class="mindsync-btn mindsync-btn-secondary">Delete</button>
+                    <button class="mindsync-btn mindsync-btn-primary">Add slide</button>
+                </div>
             </div>
-            <div class="mindsync-default-container">
-                <ngx-slick-carousel class="carousel-container" #clickModal="slick-carousel" [config]="slideConfig">
-                    <div ngxSlickItem *ngFor="let presentation of slides" class="shared-cards">
-                        {{presentation}}
-                    </div>
-                </ngx-slick-carousel>
+            <div class="carousel-main-container">
+                <project-shared-carousel [slideConfig]="slideConfig" [data]="slides"
+                    [slideType]="'noned'"></project-shared-carousel>
             </div>
 
         </div>

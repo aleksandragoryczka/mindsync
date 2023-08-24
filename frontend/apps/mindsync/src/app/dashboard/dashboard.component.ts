@@ -14,7 +14,9 @@ export class DashboardComponent {
   listOfPresentations$: Observable<PresentationModel[]> =
     this.loadPresentations();
 
-  constructor(private presentationService: PresentationService) {}
+  constructor(private presentationService: PresentationService) {
+    //this.listOfPresentations$.subscribe(data => console.log(data));
+  }
 
   private loadPresentations(): Observable<PresentationModel[]> {
     return this.presentationService

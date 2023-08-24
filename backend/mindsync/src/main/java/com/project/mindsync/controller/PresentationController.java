@@ -78,6 +78,9 @@ public class PresentationController {
 		return ResponseEntity.ok().body(slides);
 	}
 
+	//@GetMapping("/{id}/slides")
+	//public ResponseEntity<PresentationWithShowsResponseDto>
+
 	@GetMapping("/{id}/shows")
 	public ResponseEntity<PresentationWithShowsResponseDto> getPresentationWithShows(@PathVariable(name = "id") Long id,
 			@RequestParam(name = "page", required = false, defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,

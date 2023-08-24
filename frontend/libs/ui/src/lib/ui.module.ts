@@ -9,6 +9,8 @@ import { MatCardModule } from '@angular/material/card';
 import { SharedTableComponent } from './shared-table/shared-table.component';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { SpinnerComponent } from './spinner/spinner.component';
+import { SharedCarouselComponent } from './shared-carousel/shared-carousel.component';
+import { SlickCarouselModule } from 'ngx-slick-carousel';
 
 @NgModule({
   imports: [
@@ -19,13 +21,20 @@ import { SpinnerComponent } from './spinner/spinner.component';
     ReactiveFormsModule,
     MatCardModule,
     NgbTooltipModule,
+    SlickCarouselModule,
   ],
   declarations: [
     PopupWithInputsComponent,
     SharedCardComponent,
     SharedTableComponent,
     SpinnerComponent,
+    SharedCarouselComponent,
   ],
-  exports: [SharedCardComponent, SharedTableComponent, SpinnerComponent],
+  exports: [
+    SharedCardComponent,
+    SharedTableComponent,
+    SpinnerComponent,
+    SharedCarouselComponent,
+  ],
 })
 export class UiModule {}
