@@ -1,1 +1,43 @@
-<p>profile-popup works!</p>
+<mat-dialog-content class="mindsync-default-container">
+    <div class="mindsync-default-content-container">
+        <div class="mindsync-popup-close-btn" (click)="closePopup()">
+            <mat-icon>close</mat-icon>
+        </div>
+        <div class="mindsync-default-content-heading">
+            Change password
+        </div>
+        <div class="mindsync-default-content-data">
+            <form [formGroup]="updatePasswordForm" (ngSubmit)="onSubmitUpdatePassword()">
+                <div class="form-group">
+                    <input matInput type="password" formControlName="currentPassword" class="mindsync-input"
+                        placeholder="Current password"
+                        [ngClass]="{ 'is-invalid': submitted && f['currentPassword'].errors}">
+                    <div *ngIf="submitted && f['currentPassword'].errors" class="invalid-feedback">
+                        <div *ngIf="f['currentPassword'].errors['required']">Current password is required</div>
+                    </div>
+                    <input matInput type="password" formControlName="password" placeholder="New password"
+                        class="mindsync-input" [ngClass]="{ 'is-invalid': submitted && f['password'].errors}">
+                    <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
+                        <div *ngIf="f['password'].errors['required']">New password is required</div>
+                        <div *ngIf="f['password'].errors['minlength']">New password must be at least 6 characters</div>
+                        <div *ngIf="f['password'].errors['maxlength']">New password must not exceed 40 characters</div>
+                    </div>
+                    <input matInput type="password" formControlName="repeatPassword" placeholder="Repeat new password"
+                        class="mindsync-input" [ngClass]="{ 'is-invalid': submitted && f['repeatPassword'].errors}">
+                    <div *ngIf="submitted && f['repeatPassword'].errors" class="invalid-feedback">
+                        <div *ngIf="f['repeatPassword'].errors['required']">Please repeat new password</div>
+                        <div *ngIf="f['repeatPassword'].errors['matching']">Passwords do not match
+                        </div>
+                    </div>
+                    <div class="d-flex flex-column justify-content-center">
+                        <button type="submit" class="mindsync-btn mindsync-btn-primary profile-popup-btn">Change
+                            password</button>
+                        <button type="reset" (click)="closePopup()"
+                            class="mindsync-btn mindsync-btn-secondary profile-popup-btn">Cancel</button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</mat-dialog-content>

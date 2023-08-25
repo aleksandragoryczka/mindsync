@@ -43,6 +43,12 @@
                             <div *ngIf="rf['name'].errors['required']">Name is required</div>
                             <div *ngIf="rf['name'].errors['minlength']">Name must be at least 3 characters</div>
                         </div>
+                        <input matInput type="text" formControlName="surname" class="mindsync-input" placeholder="Surname"
+                            [ngClass]="{ 'is-invalid': submitted && rf['surname'].errors}">
+                        <div *ngIf="submitted && rf['surname'].errors" class="invalid-feedback">
+                            <div *ngIf="rf['surname'].errors['required']">Surname is required</div>
+                            <div *ngIf="rf['surname'].errors['minlength']">Surname must be at least 3 characters</div>
+                        </div>
                         <input matInput type="password" formControlName="password" class="mindsync-input"
                             placeholder="Password" [ngClass]="{ 'is-invalid': submitted && rf['password'].errors}">
                         <div *ngIf="submitted && rf['password'].errors" class="invalid-feedback">

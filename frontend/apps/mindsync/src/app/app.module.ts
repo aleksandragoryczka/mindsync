@@ -19,6 +19,8 @@ import { ProfileComponent } from './profile/profile.component';
 import { AdminPanelComponent } from './admin-panel/admin-panel.component';
 import { ProfilePopupComponent } from './profile/profile-popup/profile-popup.component';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
+import { MatDialogModule } from '@angular/material/dialog';
+import { ReactiveFormsModule } from '@angular/forms';
 
 export function tokenGetter() {
   return localStorage.getItem('Access-Token');
@@ -43,6 +45,8 @@ export function tokenGetter() {
     LayoutModule,
     MatIconModule,
     SlickCarouselModule,
+    MatDialogModule,
+    ReactiveFormsModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,

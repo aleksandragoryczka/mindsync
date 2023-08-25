@@ -22,9 +22,7 @@
             <div class="d-flex">
                 <button class="mindsync-btn mindsync-btn-primary profile-btn" (click)="openEditDataPopup()">Edit
                     data</button>
-                <button class="mindsync-btn mindsync-btn-primary profile-btn">Change password</button>
-                <button *ngIf="admin" class="mindsync-btn mindsync-btn-secondary profile-btn"
-                    routerLink="/admin-panel">Remove admin</button>
+                <button class="mindsync-btn mindsync-btn-primary profile-btn" (click)="openChangePasswordPopup()">Change password</button>
             </div>
         </div>
     </div>

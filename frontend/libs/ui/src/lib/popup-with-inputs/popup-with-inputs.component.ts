@@ -49,6 +49,7 @@ export class PopupWithInputsComponent implements OnInit {
         email: ['', [Validators.required, Validators.email]],
         username: ['', [Validators.required, Validators.minLength(3)]],
         name: ['', Validators.required, Validators.minLength(3)],
+        surname: ['', Validators.required, Validators.minLength(3)],
         password: [
           '',
           [
@@ -117,6 +118,7 @@ export class PopupWithInputsComponent implements OnInit {
       email: this.registrationForm.controls['email'].value,
       username: this.registrationForm.controls['username'].value,
       name: this.registrationForm.controls['name'].value,
+      surname: this.registrationForm.controls['surname'].value,
       password: this.registrationForm.controls['password'].value,
     };
     this.closePopup();
@@ -133,6 +135,6 @@ export class PopupWithInputsComponent implements OnInit {
 
   async buttonClick(button: ButtonPopupModel): Promise<void> {
     if (button.onClick != null) await button.onClick();
-    this.closePopup();
+    else this.closePopup();
   }
 }

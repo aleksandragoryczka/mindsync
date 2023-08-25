@@ -9,6 +9,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class UserWithRoleResponseDto {
 	private String name;
+	private String surname;
 	private String username;
 	private String email;
 	private List<String> roles;

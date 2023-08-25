@@ -10,6 +10,7 @@ import { environment } from '../../../../../apps/mindsync/src/environments/envir
 import { Roles } from '../models/enums/roles.enum';
 import { RegisterModel } from '../models/register.model';
 import { UpdatedUserModel } from '../models/updated-user.model';
+import { UpdatedPasswordModel } from '../models/updated-password.model';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
@@ -81,6 +82,16 @@ export class UserService {
     return this.http.put<User>(
       `${environment.apiUrl}/user/${userId}`,
       updatedUser
+    );
+  }
+
+  updatePassword(
+    updatedPasswordModel: UpdatedPasswordModel,
+    userId: string
+  ): Observable<boolean> {
+    return this.http.put<boolean>(
+      `${environment.apiUrl}/user/${userId}/password`,
+      updatedPasswordModel
     );
   }
 

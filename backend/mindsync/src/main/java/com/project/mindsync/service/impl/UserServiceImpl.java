@@ -14,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.project.mindsync.dto.request.PasswordUpdatedRequestDto;
 import com.project.mindsync.dto.request.UserUpdatedRequestDto;
 import com.project.mindsync.dto.response.ApiResponseDto;
 import com.project.mindsync.dto.response.PagedResponseDto;
@@ -48,8 +49,8 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserSummaryResponseDto getCurrentUser(UserPrincipal currentUser) {
-		return new UserSummaryResponseDto(currentUser.getId(), currentUser.getUsername(), currentUser.getUsername(),
-				currentUser.getEmail());
+		return new UserSummaryResponseDto(currentUser.getId(), currentUser.getName(), currentUser.getSurname(),
+				currentUser.getUsername(), currentUser.getEmail());
 	}
 
 	@Override
@@ -69,19 +70,39 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	public User updateUser(UserUpdatedRequestDto newUser, Long userId, UserPrincipal currentUser) {
 		User user = userRepository.findById(userId)
-				.orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));
+				.orElseThrow(() -> new ResourceNotFoundException(AppConstants.USER, AppConstants.ID, userId));
 		if (AppUtils.checkUserIsCurrentUserOrAdmin(user, currentUser)) {
 			if (newUser.getName() != null && !newUser.getName().isEmpty())
 				user.setName(newUser.getName());
+			if (newUser.getSurname() != null && !newUser.getSurname().isEmpty())
+				user.setSurname(newUser.getSurname());
 			if (newUser.getUsername() != null && !newUser.getUsername().isEmpty())
 				user.setUsername(newUser.getUsername());
-			if (newUser.getPassword() != null && !newUser.getPassword().isEmpty())
-				user.setPassword(passwordEncoder.encode(newUser.getPassword()));
+			// if (newUser.getPassword() != null && !newUser.getPassword().isEmpty())
+			// user.setPassword(passwordEncoder.encode(newUser.getPassword()));
 
 			return userRepository.save(user);
 		}
 		throw new UnauthorizedException(
 				new ApiResponseDto(false, "You do not have permissions to update profile of user with Id: " + userId));
+	}
+
+	@Override
+	@Transactional
+	public boolean updateUserPassword(PasswordUpdatedRequestDto updatedPassword, Long userId,
+			UserPrincipal currentUser) {
+		User user = userRepository.findById(userId)
+				.orElseThrow(() -> new ResourceNotFoundException(AppConstants.USER, AppConstants.ID, userId));
+		if (AppUtils.checkUserIsCurrentUserOrAdmin(user, currentUser)) {
+			if (updatedPassword.getNewPassword() != null
+					&& passwordEncoder.matches(updatedPassword.getOldPassword(), user.getPassword())) {
+				user.setPassword(passwordEncoder.encode(updatedPassword.getNewPassword()));
+				userRepository.save(user);
+				return true;
+			}
+			return false;
+		}
+		return false;
 	}
 
 	@Override
@@ -126,6 +147,7 @@ public class UserServiceImpl implements UserService {
 	private UserWithRoleResponseDto mapUserToUserWithRoleResponseDto(User user) {
 		List<String> roleNames = user.getRoles().stream().map(role -> role.getName().toString())
 				.collect(Collectors.toList());
-		return new UserWithRoleResponseDto(user.getName(), user.getUsername(), user.getEmail(), roleNames);
+		return new UserWithRoleResponseDto(user.getName(), user.getSurname(), user.getUsername(), user.getEmail(),
+				roleNames);
 	}
 }

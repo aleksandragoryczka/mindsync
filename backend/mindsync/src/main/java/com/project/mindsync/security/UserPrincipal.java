@@ -23,14 +23,14 @@ public class UserPrincipal implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-        Set<Role> roles = user.getRoles();
-        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-         
-        for (Role role : roles) {
-            authorities.add(new SimpleGrantedAuthority(role.getName().name()));
-        }
-        return authorities;
-    }
+		Set<Role> roles = user.getRoles();
+		List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+
+		for (Role role : roles) {
+			authorities.add(new SimpleGrantedAuthority(role.getName().name()));
+		}
+		return authorities;
+	}
 
 	@Override
 	public boolean isAccountNonExpired() {
@@ -68,5 +68,13 @@ public class UserPrincipal implements UserDetails {
 
 	public String getEmail() {
 		return this.user.getEmail();
+	}
+
+	public String getName() {
+		return this.user.getName();
+	}
+
+	public String getSurname() {
+		return this.user.getSurname();
 	}
 }

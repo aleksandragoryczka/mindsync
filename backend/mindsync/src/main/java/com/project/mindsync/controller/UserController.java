@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.project.mindsync.dto.request.PasswordUpdatedRequestDto;
 import com.project.mindsync.dto.request.UserUpdatedRequestDto;
 import com.project.mindsync.dto.response.ApiResponseDto;
 import com.project.mindsync.dto.response.PagedResponseDto;
@@ -70,6 +71,12 @@ public class UserController {
 		User updatedUser = userService.updateUser(newUser, id, currentUser);
 
 		return ResponseEntity.ok().body(updatedUser);
+	}
+
+	@PutMapping("/{id}/password")
+	public ResponseEntity<Boolean> updatePassword(@Valid @RequestBody PasswordUpdatedRequestDto passwordUpdated, @PathVariable(value = "id") Long id, @CurrentUser UserPrincipal currentUser){
+		boolean isPasswordUpdated = userService.updateUserPassword(passwordUpdated, id, currentUser);
+		return ResponseEntity.ok().body(isPasswordUpdated);
 	}
 
 	@DeleteMapping("/{id}")
