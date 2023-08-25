@@ -4,13 +4,16 @@ import { PopupWithInputsComponent } from './popup-with-inputs/popup-with-inputs.
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { SharedCardComponent } from './shared-card/shared-card.component';
 import { MatCardModule } from '@angular/material/card';
 import { SharedTableComponent } from './shared-table/shared-table.component';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { SharedCarouselComponent } from './shared-carousel/shared-carousel.component';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
+import { ViewDirective } from './view.directive';
+import { CarouselSlideComponent } from './carousel-slide/carousel-slide.component';
+import { CarouselDynamicElementComponent } from './shared-carousel/carousel-dynamic-element/carousel-dynamic-element.component';
+import { CardSlideComponent } from './carousel-slide/card-slide/card-slide.component';
 
 @NgModule({
   imports: [
@@ -25,16 +28,20 @@ import { SlickCarouselModule } from 'ngx-slick-carousel';
   ],
   declarations: [
     PopupWithInputsComponent,
-    SharedCardComponent,
+    CardSlideComponent,
     SharedTableComponent,
     SpinnerComponent,
     SharedCarouselComponent,
+    CarouselDynamicElementComponent,
+    ViewDirective,
+    CarouselSlideComponent,
   ],
   exports: [
-    SharedCardComponent,
+    CardSlideComponent,
     SharedTableComponent,
     SpinnerComponent,
     SharedCarouselComponent,
+    CarouselDynamicElementComponent,
   ],
 })
 export class UiModule {}

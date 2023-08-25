@@ -9,6 +9,7 @@ import { LoginModel } from '../models/login.model';
 import { environment } from '../../../../../apps/mindsync/src/environments/environment.development';
 import { Roles } from '../models/enums/roles.enum';
 import { RegisterModel } from '../models/register.model';
+import { UpdatedUserModel } from '../models/updated-user.model';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
@@ -69,6 +70,17 @@ export class UserService {
   verifyUser(code: string): Observable<boolean> {
     return this.http.get<boolean>(
       `${environment.apiUrl}/auth/verify?code=${code}`
+    );
+  }
+
+  getUserDetails(): Observable<User> {
+    return this.http.get<User>(`${environment.apiUrl}/user`);
+  }
+
+  updateUser(updatedUser: UpdatedUserModel, userId: string): Observable<User> {
+    return this.http.put<User>(
+      `${environment.apiUrl}/user/${userId}`,
+      updatedUser
     );
   }
 

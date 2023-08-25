@@ -141,7 +141,7 @@ export class NavigationComponent implements OnInit {
       },
       {
         text: 'Profile',
-        router_link: '',
+        router_link: '/profile',
       },
       {
         text: 'Log Out',
@@ -152,7 +152,10 @@ export class NavigationComponent implements OnInit {
     this.userService.isAdmin$.subscribe(admin => {
       if (admin) {
         const adminMenu = [...menu];
-        adminMenu.splice(2, 0, { text: 'Admin Panel', router_link: '' });
+        adminMenu.splice(2, 0, {
+          text: 'Admin Panel',
+          router_link: '/admin-panel',
+        });
         this.userMenu = adminMenu;
       } else {
         this.userMenu = menu;

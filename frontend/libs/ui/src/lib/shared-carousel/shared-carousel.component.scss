@@ -3,27 +3,18 @@
 ::ng-deep .slick-prev:before,
 ::ng-deep .slick-next:before {
   color: $dark-brown;
+  font-size: 30px;
   opacity: 1;
 }
 
-.mindsync-default-container {
-  width: 100%;
-
-  //align-items: center;
-}
-
-.carousel-container {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
 .slick-slider {
-  width: 90%;
+  width: 90vw;
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
 }
 
-.shared-cards {
+.shared-slide {
   display: flex;
-  align-items: center;
-  gap: 40px;
+  justify-content: center;
 }

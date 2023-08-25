@@ -10,13 +10,10 @@ import { PaginatedResult } from 'libs/shared/src/lib/models/paginated-result.mod
   styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent {
-  //currentPage$ = new BehaviorSubject<number>(0);
   listOfPresentations$: Observable<PresentationModel[]> =
     this.loadPresentations();
 
-  constructor(private presentationService: PresentationService) {
-    //this.listOfPresentations$.subscribe(data => console.log(data));
-  }
+  constructor(private presentationService: PresentationService) {}
 
   private loadPresentations(): Observable<PresentationModel[]> {
     return this.presentationService

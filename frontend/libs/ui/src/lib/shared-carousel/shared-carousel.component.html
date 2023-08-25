@@ -1,5 +1,8 @@
-<ngx-slick-carousel class="carousel-container" #clickModal="slick-carousel" [config]="slideConfig">
-    <div ngxSlickItem *ngFor="let item of data" class="shared-cards">
-
-    </div>
-</ngx-slick-carousel>
+<project-carousel-dynamic-element [hidden]="true"></project-carousel-dynamic-element>
+<div>
+    <ngx-slick-carousel class="carousel-container" #clickModal="slick-carousel" [config]="slideConfig">
+        <div ngxSlickItem *ngFor="let item of elements" class="shared-slide">
+            <ng-container *view="item.view"></ng-container>
+        </div>
+    </ngx-slick-carousel>
+</div>

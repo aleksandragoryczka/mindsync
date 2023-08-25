@@ -15,6 +15,10 @@ import { ShowsComponent } from './shows/shows.component';
 import { ScreenshotsComponent } from './shows/screenshots/screenshots.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LoadingInterceptor } from '../../../../libs/shared/src/lib/interceptor/loading.interceptor';
+import { ProfileComponent } from './profile/profile.component';
+import { AdminPanelComponent } from './admin-panel/admin-panel.component';
+import { ProfilePopupComponent } from './profile/profile-popup/profile-popup.component';
+import { SlickCarouselModule } from 'ngx-slick-carousel';
 
 export function tokenGetter() {
   return localStorage.getItem('Access-Token');
@@ -27,6 +31,9 @@ export function tokenGetter() {
     PresentationDetailsComponent,
     ShowsComponent,
     ScreenshotsComponent,
+    ProfileComponent,
+    AdminPanelComponent,
+    ProfilePopupComponent,
   ],
   imports: [
     BrowserModule,
@@ -35,6 +42,7 @@ export function tokenGetter() {
     SharedModule,
     LayoutModule,
     MatIconModule,
+    SlickCarouselModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,

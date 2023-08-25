@@ -1,0 +1,50 @@
+@import '../../../../../libs/ui/src/lib/variables';
+
+.profile-content-container {
+  width: 900px;
+}
+
+.data-container {
+  //width: 75%;
+  min-width: 400px;
+  border: 2px solid $darker-brown;
+}
+
+.user-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.container-details {
+  display: flex;
+  gap: 70px;
+}
+
+.value-container {
+  display: flex;
+  gap: 40px;
+}
+
+.details-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+p {
+  font-size: larger;
+  font-weight: 700;
+  margin-top: 1rem;
+}
+
+mat-icon {
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.profile-btn {
+  margin: 20px 11px;
+  padding: 13px 12px;
+}

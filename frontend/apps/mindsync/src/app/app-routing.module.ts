@@ -5,6 +5,8 @@ import { authGuard } from 'libs/shared/src/lib/guard/auth.guard';
 import { NavigationComponent } from 'libs/layout/src/lib/navigation/navigation.component';
 import { PresentationDetailsComponent } from './presentation-details/presentation-details.component';
 import { ShowsComponent } from './shows/shows.component';
+import { ProfileComponent } from './profile/profile.component';
+import { AdminPanelComponent } from './admin-panel/admin-panel.component';
 
 const routes: Routes = [
   { path: 'verify', component: NavigationComponent },
@@ -16,6 +18,8 @@ const routes: Routes = [
         component: DashboardComponent,
         canActivate: [authGuard],
       },
+      { path: 'profile', component: ProfileComponent },
+      { path: 'admin-panel', component: AdminPanelComponent },
       {
         path: 'presentation/:id',
         component: PresentationDetailsComponent,

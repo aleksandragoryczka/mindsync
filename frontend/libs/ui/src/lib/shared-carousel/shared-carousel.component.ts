@@ -1,43 +1,50 @@
 import {
+  AfterViewInit,
   Component,
-  ComponentRef,
+  ElementRef,
   Input,
+  Type,
+  ViewChild,
   ViewContainerRef,
+  ViewRef,
 } from '@angular/core';
-import { SharedCardComponent } from '../shared-card/shared-card.component';
-import { SharedTableComponent } from '../shared-table/shared-table.component';
-import { OnInit } from '@angular/core';
+import { CarouselDynamicElementComponent } from './carousel-dynamic-element/carousel-dynamic-element.component';
+import { CardSlideComponent } from '../carousel-slide/card-slide/card-slide.component';
+import { CarouselSlideComponent } from '../carousel-slide/carousel-slide.component';
 
 @Component({
   selector: 'project-shared-carousel',
   templateUrl: './shared-carousel.component.html',
   styleUrls: ['./shared-carousel.component.scss'],
 })
-export class SharedCarouselComponent implements OnInit {
+export class SharedCarouselComponent implements AfterViewInit {
   @Input() slideConfig!: object;
   @Input() data!: any[];
   @Input() slideType!: string;
+  public elements: Array<{ view: ViewRef; component: CarouselSlideComponent }> =
+    [];
+  private SlideTypes: any = {
+    CardSlide: CardSlideComponent,
+  };
+  @ViewChild(CarouselDynamicElementComponent)
+  carouselDynamicElementComponent!: CarouselDynamicElementComponent;
 
-  constructor(private viewContainerRef: ViewContainerRef) {}
+  constructor(
+    private viewContainerRef: ViewContainerRef,
+    private elementRef: ElementRef
+  ) {}
 
-  ngOnInit(): void {
-    console.log(this.slideType);
-    this.loadCarouselItems();
-  }
-
-  private loadCarouselItems(): void {
-    this.viewContainerRef.clear();
-    const componentType = this.checkSlideType();
-    //console.log(typeof componentType);
-    console.log(this.data);
+  ngAfterViewInit(): void {
     this.data.forEach(item => {
-      const componetRef = this.viewContainerRef.createComponent(componentType);
-      componetRef.instance.data = item;
+      const component = this.carouselDynamicElementComponent.addComponent(
+        this.SlideTypes[this.slideType],
+        item
+      );
+      component.data = item;
+      const view: ViewRef | null =
+        this.carouselDynamicElementComponent.container.detach(0);
+      if (view) this.elements.push({ view, component });
     });
-  }
-
-  private checkSlideType() {
-    if (this.slideType === 'sharedCard') return SharedCardComponent;
-    return SharedCardComponent;
+    this.carouselDynamicElementComponent.resetContainer();
   }
 }

@@ -48,7 +48,8 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserSummaryResponseDto getCurrentUser(UserPrincipal currentUser) {
-		return new UserSummaryResponseDto(currentUser.getUsername(), currentUser.getUsername(), currentUser.getEmail());
+		return new UserSummaryResponseDto(currentUser.getId(), currentUser.getUsername(), currentUser.getUsername(),
+				currentUser.getEmail());
 	}
 
 	@Override
@@ -70,8 +71,12 @@ public class UserServiceImpl implements UserService {
 		User user = userRepository.findById(userId)
 				.orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));
 		if (AppUtils.checkUserIsCurrentUserOrAdmin(user, currentUser)) {
-			user.setName(newUser.getName());
-			user.setPassword(passwordEncoder.encode(newUser.getPassword()));
+			if (newUser.getName() != null && !newUser.getName().isEmpty())
+				user.setName(newUser.getName());
+			if (newUser.getUsername() != null && !newUser.getUsername().isEmpty())
+				user.setUsername(newUser.getUsername());
+			if (newUser.getPassword() != null && !newUser.getPassword().isEmpty())
+				user.setPassword(passwordEncoder.encode(newUser.getPassword()));
 
 			return userRepository.save(user);
 		}
