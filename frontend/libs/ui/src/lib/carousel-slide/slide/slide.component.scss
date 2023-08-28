@@ -1,16 +1,16 @@
 .content-slide {
   min-width: 1200px;
-  min-height: 460px;
-  //width: 10%;
+  //min-height: 46vh;
   border: 1px solid;
 }
 
 .heading-slide {
   background-color: black;
-  justify-content: left;
+  justify-content: space-between;
 }
 
 .data-slide,
 .content-slide {
   background-color: white;
+  min-height: 46vh;
 }

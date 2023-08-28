@@ -5,6 +5,7 @@ import com.project.mindsync.dto.request.PresentationRequestDto;
 import com.project.mindsync.dto.response.ApiResponseDto;
 import com.project.mindsync.dto.response.PagedResponseDto;
 import com.project.mindsync.dto.response.PresentationWithShowsResponseDto;
+import com.project.mindsync.dto.response.PresentationWithSlidesResponseDto;
 import com.project.mindsync.model.Presentation;
 import com.project.mindsync.security.UserPrincipal;
 
@@ -21,4 +22,6 @@ public interface PresentationService {
 	ApiResponseDto deletePresentation(Long id, UserPrincipal currentUser);
 
 	PresentationWithShowsResponseDto getPresentationWithShows(Long presentationId, int page, int size);
+
+	PresentationWithSlidesResponseDto getPresentationWithSlides(Long presentationId);
 }

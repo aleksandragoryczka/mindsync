@@ -1,18 +1,18 @@
 <div class="mindsync-default-container">
     <div class="mindsync-default-content-container main-presentation-container">
         <div class="mindsync-default-content-heading">
-            Presentation title
+            {{ presentation.title }}
         </div>
         <div class="mindsync-default-content-data">
             <div class="container-navigation">
                 <div class="container-details">
                     <div class="details-section">
                         <p>Code: </p>
-                        <p>123456</p>
+                        <p>{{ presentation.code }}</p>
                     </div>
                     <div class="details-section">
                         <p>Created At: </p>
-                        <p>23-03-2023</p>
+                        <p>{{ stringFormater.getDateFromISOString(presentation.createdAt ?? '') }}</p>
                     </div>
                 </div>
                 <div class="buttons-container">

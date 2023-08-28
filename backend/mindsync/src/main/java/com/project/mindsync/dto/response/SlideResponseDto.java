@@ -2,6 +2,9 @@ package com.project.mindsync.dto.response;
 
 import java.util.List;
 
+import lombok.Data;
+
+@Data
 public class SlideResponseDto {
 	private Long id;
 	private String title;

@@ -4,6 +4,9 @@ import java.util.List;
 
 import com.project.mindsync.model.Slide;
 
+import lombok.Data;
+
+@Data
 public class PresentationWithSlidesResponseDto {
 	private Long id;
 	private String title;

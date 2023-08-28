@@ -19,7 +19,9 @@ import com.project.mindsync.dto.request.SlideRequestDto;
 import com.project.mindsync.dto.response.ApiResponseDto;
 import com.project.mindsync.dto.response.PagedResponseDto;
 import com.project.mindsync.dto.response.PresentationWithShowsResponseDto;
+import com.project.mindsync.dto.response.PresentationWithSlidesResponseDto;
 import com.project.mindsync.dto.response.ShowResponseDto;
+import com.project.mindsync.dto.response.SlideResponseDto;
 import com.project.mindsync.exception.ResourceNotFoundException;
 import com.project.mindsync.exception.UnauthorizedException;
 import com.project.mindsync.model.Option;
@@ -83,6 +85,22 @@ public class PresentationServiceImpl implements PresentationService {
 		// PagedResponseDto<PresentationWithShowsResponseDto>(List.of(presentationWithShowsResponse),
 		// shows.getNumber(), shows.getSize(), shows.getTotalElements(),
 		// shows.getTotalPages(), shows.isLast());
+	}
+
+	@Override
+	public PresentationWithSlidesResponseDto getPresentationWithSlides(Long presentationId) {
+		Presentation presentation = presentationRepository.findById(presentationId).orElseThrow(
+				() -> new ResourceNotFoundException(AppConstants.PRESENTATION, AppConstants.ID, presentationId));
+		List<Slide> slides = slideRepository.findByPresentationId(presentationId);
+		List<SlideResponseDto> slidesResponses = slides.stream().map(this::mapToSlideResponseDto)
+				.collect(Collectors.toList());
+		PresentationWithSlidesResponseDto presentationWithSlidesResponse = new PresentationWithSlidesResponseDto();
+		presentationWithSlidesResponse.setId(presentationId);
+		presentationWithSlidesResponse.setCode(presentation.getCode());
+		presentationWithSlidesResponse.setCreatedAt(presentation.getCreatedAt().toString());
+		presentationWithSlidesResponse.setTitle(presentation.getTitle());
+		presentationWithSlidesResponse.setSlides(slidesResponses);
+		return presentationWithSlidesResponse;
 	}
 
 	@Override
@@ -297,5 +315,15 @@ public class PresentationServiceImpl implements PresentationService {
 		showResponse.setAttendeesNumber(show.getAttendeesNumber());
 		showResponse.setCreatedAt(show.getCreatedAt().toString());
 		return showResponse;
+	}
+
+	private SlideResponseDto mapToSlideResponseDto(Slide slide) {
+		SlideResponseDto slideReponse = new SlideResponseDto();
+		slideReponse.setId(slide.getId());
+		slideReponse.setTitle(slide.getTitle());
+		slideReponse.setType(slide.getType().toString());
+		slideReponse.setDisplayTime(slide.getDisplayTime());
+		slideReponse.setOptions(slide.getOptions().stream().map(Option::getOption).collect(Collectors.toList()));
+		return slideReponse;
 	}
 }

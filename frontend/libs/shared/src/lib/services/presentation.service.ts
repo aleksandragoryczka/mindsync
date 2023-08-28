@@ -5,6 +5,7 @@ import { PaginatedResult } from '../models/paginated-result.model';
 import { PresentationModel } from '../models/presentation.model';
 import { environment } from 'apps/mindsync/src/environments/environment.development';
 import { PresentationWithShows } from '../models/presentation-with-shows.model';
+import { PresentationWithSlides } from '../models/presentation-with-slides.model';
 
 @Injectable({ providedIn: 'root' })
 export class PresentationService {
@@ -23,6 +24,12 @@ export class PresentationService {
   ): Observable<PresentationWithShows> {
     return this.http.get<PresentationWithShows>(
       `${environment.apiUrl}/presentation/${id}/shows?page=${page}&size=${size}`
+    );
+  }
+
+  getPresentationWithSlides(id: string): Observable<PresentationWithSlides> {
+    return this.http.get<PresentationWithSlides>(
+      `${environment.apiUrl}/presentation/${id}/slides`
     );
   }
 }

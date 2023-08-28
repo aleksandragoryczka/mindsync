@@ -48,7 +48,7 @@ export class ShowsComponent implements OnInit {
     this.presentationTitle =
       this.activatedRoute.snapshot.queryParamMap.get('title') ?? '';
     if (id != null) this.presentationId = id;
-    this.presentationId = '1'; //to be deleted
+    this.presentationId = '1'; //TODO: to be deleted
     //this.loadShows().subscribe();
   }
 

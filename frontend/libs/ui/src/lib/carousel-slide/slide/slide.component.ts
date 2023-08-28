@@ -2,6 +2,8 @@ import { Component, ElementRef, Renderer2 } from '@angular/core';
 import { CarouselSlideComponent } from '../carousel-slide.component';
 import { Router } from '@angular/router';
 import { PresentationService } from 'libs/shared/src/lib/services/presentation.service';
+import { SharedTableDataFunc } from 'libs/shared/src/lib/models/shared-table-data.model';
+import { TooltipTexts } from '../../../../../shared/src/lib/models/enums/tooltips-texts.enum';
 
 @Component({
   selector: 'project-slide',
@@ -17,4 +19,25 @@ export class SlideComponent extends CarouselSlideComponent {
   ) {
     super(ngEl, renderer);
   }
+
+  slideActions: SharedTableDataFunc[] = [
+    {
+      icon: 'timer',
+      func: () => console.log(''),
+      arg: '1',
+      tooltip: '30s',
+    },
+    {
+      icon: 'edit',
+      func: () => console.log(''),
+      arg: '1',
+      tooltip: TooltipTexts.edit,
+    },
+    {
+      icon: 'delete',
+      func: () => console.log(''),
+      arg: '1',
+      tooltip: TooltipTexts.delete,
+    },
+  ];
 }

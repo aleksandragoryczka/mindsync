@@ -20,6 +20,7 @@ import com.project.mindsync.dto.request.PresentationRequestDto;
 import com.project.mindsync.dto.response.ApiResponseDto;
 import com.project.mindsync.dto.response.PagedResponseDto;
 import com.project.mindsync.dto.response.PresentationWithShowsResponseDto;
+import com.project.mindsync.dto.response.PresentationWithSlidesResponseDto;
 import com.project.mindsync.model.Presentation;
 import com.project.mindsync.model.Slide;
 import com.project.mindsync.security.CurrentUser;
@@ -70,7 +71,7 @@ public class PresentationController {
 		return ResponseEntity.ok().body(apiResponse);
 	}
 
-	@GetMapping("/{id}/slides")
+	@GetMapping("/{id}/allslides")
 	public ResponseEntity<PagedResponseDto<Slide>> getAllSlidesByPresentation(@PathVariable(name = "id") Long id,
 			@RequestParam(name = "page", required = false, defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
 			@RequestParam(name = "size", required = false, defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size) {
@@ -78,8 +79,12 @@ public class PresentationController {
 		return ResponseEntity.ok().body(slides);
 	}
 
-	//@GetMapping("/{id}/slides")
-	//public ResponseEntity<PresentationWithShowsResponseDto>
+	@GetMapping("/{id}/slides")
+	public ResponseEntity<PresentationWithSlidesResponseDto> getPresentationWithSlides(
+			@PathVariable(name = "id") Long id) {
+		PresentationWithSlidesResponseDto response = presentationService.getPresentationWithSlides(id);
+		return ResponseEntity.ok().body(response);
+	}
 
 	@GetMapping("/{id}/shows")
 	public ResponseEntity<PresentationWithShowsResponseDto> getPresentationWithShows(@PathVariable(name = "id") Long id,
