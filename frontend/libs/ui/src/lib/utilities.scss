@@ -31,6 +31,12 @@
   filter: drop-shadow(0 15px 15px rgba(0, 0, 0, 0.25));
 }
 
+.mindsync-input-section {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
 .mindsync-input {
   font-weight: 500;
   border: 1px solid $dark-brown;

@@ -21,8 +21,8 @@
                 </div>
             </div>
             <div class="carousel-main-container">
-                <project-shared-carousel [slideConfig]="slideConfig" [data]="slides"
-                    [slideType]="'Slide'"></project-shared-carousel>
+                <project-shared-carousel *ngIf="(listOfSlides$ | async) as slides" [slideConfig]="slideConfig"
+                    [data]="slides" [slideType]="'Slide'"></project-shared-carousel>
             </div>
 
         </div>

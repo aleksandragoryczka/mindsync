@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SlideModel } from 'libs/shared/src/lib/models/slide.model';
 import { PresentationService } from 'libs/shared/src/lib/services/presentation.service';
-import { Observable, map, tap } from 'rxjs';
+import { EMPTY, Observable, map, tap } from 'rxjs';
 import { PresentationModel } from '../../../../../libs/shared/src/lib/models/presentation.model';
 import StringFormater from '../../../../../libs/shared/src/lib/utils/string-formater';
+import { PresentationWithSlides } from 'libs/shared/src/lib/models/presentation-with-slides.model';
 
 @Component({
   selector: 'project-presentation-details',
@@ -12,9 +13,8 @@ import StringFormater from '../../../../../libs/shared/src/lib/utils/string-form
   styleUrls: ['./presentation-details.component.scss'],
 })
 export class PresentationDetailsComponent {
-  //listOfSlides$!: Observable<SlideModel[]>;
-  presentation!: PresentationModel;
-  presentationId: string | null = '';
+  listOfSlides$: Observable<SlideModel[]> = EMPTY;
+  presentation: PresentationModel = { title: '', code: '', createdAt: '' };
   slides: SlideModel[] = [];
   stringFormater = StringFormater;
 
@@ -30,26 +30,23 @@ export class PresentationDetailsComponent {
     private activatedRoute: ActivatedRoute,
     private presentationService: PresentationService
   ) {
-    this.presentationId = this.activatedRoute.snapshot.paramMap.get('id');
-    //console.log(this.activatedRoute.snapshot.paramMap.get('id'));
-    if (this.presentationId) {
-      this.loadSlides('7'); //TODO" to be delated with this.loadSlides(id)
-      //console.log('tutaj' + this.slides);
+    const id = this.activatedRoute.snapshot.paramMap.get('id');
+    if (id) {
+      this.listOfSlides$ = this.loadSlides('7'); //TODO: to be replaced with 'id'
     }
   }
 
-  private loadSlides(id: string): void {
-    this.presentationService.getPresentationWithSlides(id).subscribe(res => {
-      this.slides = res.slides;
-      const presentation: PresentationModel = {
-        title: res.title,
-        code: res.code,
-        createdAt: res.createdAt,
-      };
-      this.presentation = presentation;
-      //console.log(this.presentation);
-      console.log(this.slides);
-    });
-    //return new Observable<SlideModel[]>();
+  private loadSlides(id: string): Observable<SlideModel[]> {
+    return this.presentationService.getPresentationWithSlides(id).pipe(
+      tap((res: PresentationWithSlides) => {
+        const presentation: PresentationModel = {
+          title: res.title,
+          code: res.code,
+          createdAt: res.createdAt,
+        };
+        this.presentation = presentation;
+      }),
+      map((res: PresentationWithSlides) => res.slides)
+    );
   }
 }

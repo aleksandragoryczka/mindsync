@@ -1,16 +1,8 @@
-import {
-  Component,
-  ElementRef,
-  Input,
-  OnInit,
-  Renderer2,
-  forwardRef,
-} from '@angular/core';
-import { PresentationModel } from '../../../../../shared/src/lib/models/presentation.model';
+import { Component, ElementRef, Input, Renderer2 } from '@angular/core';
 import StringFormater from '../../../../../shared/src/lib/utils/string-formater';
 import { Router } from '@angular/router';
-import { PresentationService } from '../../../../../shared/src/lib/services/presentation.service';
 import { CarouselSlideComponent } from '../carousel-slide.component';
+import { PresentationModel } from 'libs/shared/src/lib/models/presentation.model';
 
 @Component({
   selector: 'project-card-slide',
@@ -24,12 +16,11 @@ export class CardSlideComponent extends CarouselSlideComponent {
 
   constructor(
     private router: Router,
-    private presentationService: PresentationService,
     private ngEl: ElementRef,
-    renderer: Renderer2
+    private renderer: Renderer2
   ) {
     super(ngEl, renderer);
-
+    console.log(this.data);
   }
 
   async getDetailsButton(): Promise<void> {

@@ -4,7 +4,7 @@ export interface SlideModel {
   id?: string;
   title: string;
   displayTime: string;
-  type: SlideTypes;
+  type: SlideTypes | string;
   options?: Array<string>;
   //TODO: to be implemented
 }

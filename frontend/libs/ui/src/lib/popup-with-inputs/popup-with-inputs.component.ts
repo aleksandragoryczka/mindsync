@@ -1,4 +1,12 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Inject,
+  OnInit,
+  QueryList,
+  ViewChild,
+} from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,

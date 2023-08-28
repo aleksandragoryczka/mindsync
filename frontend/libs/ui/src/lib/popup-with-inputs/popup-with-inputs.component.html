@@ -43,8 +43,8 @@
                             <div *ngIf="rf['name'].errors['required']">Name is required</div>
                             <div *ngIf="rf['name'].errors['minlength']">Name must be at least 3 characters</div>
                         </div>
-                        <input matInput type="text" formControlName="surname" class="mindsync-input" placeholder="Surname"
-                            [ngClass]="{ 'is-invalid': submitted && rf['surname'].errors}">
+                        <input matInput type="text" formControlName="surname" class="mindsync-input"
+                            placeholder="Surname" [ngClass]="{ 'is-invalid': submitted && rf['surname'].errors}">
                         <div *ngIf="submitted && rf['surname'].errors" class="invalid-feedback">
                             <div *ngIf="rf['surname'].errors['required']">Surname is required</div>
                             <div *ngIf="rf['surname'].errors['minlength']">Surname must be at least 3 characters</div>
@@ -71,14 +71,19 @@
                     <div *ngSwitchDefault class="mindsync-popup-inputs-container">
                         <span> {{ data.description }} </span>
                         <ng-container *ngFor="let input of getRecordValues(data.inputs); trackBy: trackByFn">
-                            <ng-container [ngSwitch]="input[1].type">
-                                <input *ngSwitchCase="'text'" type="text" class="mindsync-input"
-                                    [placeholder]="input[1].placeholder ?? ''" [(ngModel)]="input[1].value">
-                                <input *ngSwitchCase="'password'" type="password" class="mindsync-input"
-                                    [placeholder]="input[1].placeholder ?? ''" [(ngModel)]="input[1].value">
-                                <input *ngSwitchCase="'email'" type="email" class="mindsync-input"
-                                    [placeholder]="input[1].placeholder ?? ''" [(ngModel)]="input[1].value">
-                            </ng-container>
+                            <div class="mindsync-input-section">
+                                <mat-label>{{input[1].placeholder ?? ''}}:</mat-label>
+                                <ng-container [ngSwitch]="input[1].type">
+                                    <input *ngSwitchCase="'text'" type="text" class="mindsync-input default-input"
+                                        [placeholder]="input[1].placeholder ?? ''" [(ngModel)]="input[1].value">
+                                    <select *ngSwitchCase="'select'" class="mindsync-input default-input">
+                                        <option value="" disabled selected hidden>{{ input[1].value }}</option>
+                                        <option *ngFor=" let option of input[1].selectOptions" [value]="option.value">
+                                            {{ option.displayValue }}
+                                        </option>
+                                    </select>
+                                </ng-container>
+                            </div>
                         </ng-container>
                     </div>
                     <div class="mindsync-popup-buttons-container">
