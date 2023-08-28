@@ -11,6 +11,7 @@ import {
 import { CarouselDynamicElementComponent } from './carousel-dynamic-element/carousel-dynamic-element.component';
 import { CardSlideComponent } from '../carousel-slide/card-slide/card-slide.component';
 import { CarouselSlideComponent } from '../carousel-slide/carousel-slide.component';
+import { SlideComponent } from '../carousel-slide/slide/slide.component';
 
 @Component({
   selector: 'project-shared-carousel',
@@ -25,6 +26,7 @@ export class SharedCarouselComponent implements AfterViewInit {
     [];
   private SlideTypes: any = {
     CardSlide: CardSlideComponent,
+    Slide: SlideComponent,
   };
   @ViewChild(CarouselDynamicElementComponent)
   carouselDynamicElementComponent!: CarouselDynamicElementComponent;

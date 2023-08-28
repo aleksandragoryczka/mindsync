@@ -1,7 +1,11 @@
 @import '../../../../../libs/ui/src/lib/_variables.scss';
 
+.main-presentation-container {
+  width: 80%;
+}
+
 .mindsync-default-content-data {
-  padding: 20px 40px;
+  padding: 10px 40px;
 }
 
 .container-navigation {
@@ -34,5 +38,4 @@ p {
 
 .carousel-main-container {
   width: 100%;
-  margin-top: 30px;
 }

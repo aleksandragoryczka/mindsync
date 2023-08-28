@@ -14,6 +14,7 @@ import { ViewDirective } from './view.directive';
 import { CarouselSlideComponent } from './carousel-slide/carousel-slide.component';
 import { CarouselDynamicElementComponent } from './shared-carousel/carousel-dynamic-element/carousel-dynamic-element.component';
 import { CardSlideComponent } from './carousel-slide/card-slide/card-slide.component';
+import { SlideComponent } from './carousel-slide/slide/slide.component';
 
 @NgModule({
   imports: [
@@ -35,6 +36,7 @@ import { CardSlideComponent } from './carousel-slide/card-slide/card-slide.compo
     CarouselDynamicElementComponent,
     ViewDirective,
     CarouselSlideComponent,
+    SlideComponent,
   ],
   exports: [
     CardSlideComponent,
@@ -42,6 +44,7 @@ import { CardSlideComponent } from './carousel-slide/card-slide/card-slide.compo
     SpinnerComponent,
     SharedCarouselComponent,
     CarouselDynamicElementComponent,
+    SlideComponent,
   ],
 })
 export class UiModule {}

@@ -1,0 +1,16 @@
+.content-slide {
+  min-width: 1200px;
+  min-height: 460px;
+  //width: 10%;
+  border: 1px solid;
+}
+
+.heading-slide {
+  background-color: black;
+  justify-content: left;
+}
+
+.data-slide,
+.content-slide {
+  background-color: white;
+}

@@ -8,10 +8,12 @@
 }
 
 .slick-slider {
-  width: 90vw;
+  //width: 90%
+  max-width: 90vw;
   display: flex;
   justify-content: center;
-  margin-top: 40px;
+  align-items: center;
+  margin: 25px 40px;
 }
 
 .shared-slide {

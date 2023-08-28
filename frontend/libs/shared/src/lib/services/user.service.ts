@@ -7,7 +7,6 @@ import { AuthenticatedResponse } from '../models/authenticated-response.model';
 import { Injectable } from '@angular/core';
 import { LoginModel } from '../models/login.model';
 import { environment } from '../../../../../apps/mindsync/src/environments/environment.development';
-import { Roles } from '../models/enums/roles.enum';
 import { RegisterModel } from '../models/register.model';
 import { UpdatedUserModel } from '../models/updated-user.model';
 import { UpdatedPasswordModel } from '../models/updated-password.model';

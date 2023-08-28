@@ -7,13 +7,14 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./presentation-details.component.scss'],
 })
 export class PresentationDetailsComponent implements OnInit {
-  slides = [1, 2, 3, 4, 5];
+  slides = [1, 2];
 
   slideConfig = {
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: false,
     arrows: true,
+    dots: true,
   };
 
   constructor(private activatedRoute: ActivatedRoute) {}
