@@ -321,7 +321,7 @@ public class PresentationServiceImpl implements PresentationService {
 		SlideResponseDto slideReponse = new SlideResponseDto();
 		slideReponse.setId(slide.getId());
 		slideReponse.setTitle(slide.getTitle());
-		slideReponse.setType(slide.getType().toString());
+		slideReponse.setType(slide.getType().getName().toString());
 		slideReponse.setDisplayTime(slide.getDisplayTime());
 		slideReponse.setOptions(slide.getOptions().stream().map(Option::getOption).collect(Collectors.toList()));
 		return slideReponse;

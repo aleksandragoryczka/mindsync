@@ -34,6 +34,7 @@ export class PresentationDetailsComponent {
     //console.log(this.activatedRoute.snapshot.paramMap.get('id'));
     if (this.presentationId) {
       this.loadSlides('7'); //TODO" to be delated with this.loadSlides(id)
+      //console.log('tutaj' + this.slides);
     }
   }
 
@@ -46,7 +47,8 @@ export class PresentationDetailsComponent {
         createdAt: res.createdAt,
       };
       this.presentation = presentation;
-      console.log(this.presentation);
+      //console.log(this.presentation);
+      console.log(this.slides);
     });
     //return new Observable<SlideModel[]>();
   }

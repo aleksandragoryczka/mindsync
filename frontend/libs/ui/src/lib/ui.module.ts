@@ -15,6 +15,7 @@ import { CarouselSlideComponent } from './carousel-slide/carousel-slide.componen
 import { CarouselDynamicElementComponent } from './shared-carousel/carousel-dynamic-element/carousel-dynamic-element.component';
 import { CardSlideComponent } from './carousel-slide/card-slide/card-slide.component';
 import { SlideComponent } from './carousel-slide/slide/slide.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
   imports: [
@@ -26,6 +27,7 @@ import { SlideComponent } from './carousel-slide/slide/slide.component';
     MatCardModule,
     NgbTooltipModule,
     SlickCarouselModule,
+    MatCheckboxModule,
   ],
   declarations: [
     PopupWithInputsComponent,

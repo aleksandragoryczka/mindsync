@@ -1,3 +1,5 @@
+@import '../../variables';
+
 .content-slide {
   min-width: 1200px;
   //min-height: 46vh;
@@ -13,4 +15,16 @@
 .content-slide {
   background-color: white;
   min-height: 46vh;
+  align-items: flex-start;
+}
+
+.options-container {
+  font-size: 35px;
+  margin-left: 40px;
+}
+
+::ng-deep .mat-mdc-checkbox.mat-mdc-checkbox-checked .mdc-checkbox__background,
+::ng-deep .mdc-checkbox__ripple {
+  background-color: $dark-green !important;
+  border-color: $dark-green !important;
 }
