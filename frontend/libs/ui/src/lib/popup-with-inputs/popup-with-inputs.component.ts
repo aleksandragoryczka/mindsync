@@ -34,6 +34,7 @@ import { SlideTypes } from 'libs/shared/src/lib/models/enums/slideTypes.enum';
   styleUrls: ['./popup-with-inputs.component.scss'],
 })
 export class PopupWithInputsComponent implements OnInit {
+  color = '';
   primary = ButtonTypes.PRIMARY;
   loginForm!: FormGroup;
   registrationForm!: FormGroup;
@@ -50,6 +51,7 @@ export class PopupWithInputsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    //console.log(this.data);
     this.loginForm = this.formBuilder.group({
       email: ['', Validators.required],
       password: ['', Validators.required],
@@ -72,7 +74,7 @@ export class PopupWithInputsComponent implements OnInit {
       },
       { validators: [Validation.match('password', 'repeatPassword')] }
     );
-    this.data.inputs;
+    // this.data.inputs;
   }
 
   get rf(): { [key: string]: AbstractControl } {
@@ -96,6 +98,10 @@ export class PopupWithInputsComponent implements OnInit {
       this.isMultipleChoiceType = false;
     }
     return Object.entries(record);
+  }
+
+  getOptionsArray(options: string[] | undefined): string[] {
+    return options ? [...options] : [];
   }
 
   getTitle(input: InputPopupFullDataModel): string {
@@ -152,11 +158,19 @@ export class PopupWithInputsComponent implements OnInit {
   onTypeChange(event: any) {
     if (
       Object.keys(SlideTypes).includes(event.value) &&
-      event.value === 'MULTIPLE_CHOICE'
+      event.value === SlideTypes.MULTIPLE_CHOICE
     ) {
       this.isMultipleChoiceType = true;
-      //console.log(event.value);
     }
+  }
+
+  addOptionField() {
+    this.data.options?.push('');
+  }
+
+  removeOptionField() {
+    if (this.data.options && this.data.options?.length > 0)
+      this.data.options?.pop();
   }
 
   async buttonClick(button: ButtonPopupModel): Promise<void> {

@@ -74,6 +74,12 @@
                             <div class="mindsync-input-section">
                                 <mat-label>{{input[1].placeholder ?? ''}}:</mat-label>
                                 <ng-container [ngSwitch]="input[1].type">
+                                    <div *ngSwitchCase="'color'" class="colors-container">
+                                        <ngx-colors ngx-colors-trigger [(ngModel)]="color" class="tooltip-message"
+                                            [ngbTooltip]="'Header color'"></ngx-colors>
+                                        <ngx-colors ngx-colors-trigger [(ngModel)]="color" class="tooltip-message"
+                                            [ngbTooltip]="'Title color'"></ngx-colors>
+                                    </div>
                                     <input *ngSwitchCase="'text'" type="text" class="mindsync-input default-input"
                                         [placeholder]="input[1].placeholder ?? ''" [(ngModel)]="input[1].value">
                                     <mat-form-field *ngSwitchCase="'select'" class="default-input select-input">
@@ -88,7 +94,22 @@
                                 </ng-container>
                             </div>
                         </ng-container>
-                        <ng-container *ngIf="isMultipleChoiceType">dupa</ng-container>
+                        <ng-container *ngIf="isMultipleChoiceType">
+                            <div class="d-flex justify-content-between">
+                                <div class="d-flex flex-column justify-content-center">
+                                    <mat-icon class="option-btn"
+                                        (click)="addOptionField()">add_circle_outline</mat-icon>
+                                    <mat-icon class="option-btn"
+                                        (click)="removeOptionField()">remove_circle_outline</mat-icon>
+                                </div>
+                                <div class="option-container">
+                                    <div *ngFor="let option of getOptionsArray(data.options); let i = index">
+                                        <input type="text" class="mindsync-input" [placeholder]="option"
+                                            [(ngModel)]="data.options![i]" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
                     </div>
                     <div class="mindsync-popup-buttons-container">
                         <div *ngFor="let button of data.buttons" class="mindsync-btn mindsync-btn-primary"

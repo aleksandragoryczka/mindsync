@@ -26,4 +26,5 @@ export interface InputPopupFullDataModel {
   description?: string;
   buttons?: ButtonPopupModel[];
   inputs: Record<string, InputPopupModel>;
+  options?: string[];
 }

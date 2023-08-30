@@ -1,6 +1,5 @@
-import { Component, ElementRef, Input, OnInit, Renderer2 } from '@angular/core';
+import { Component, ElementRef, Renderer2 } from '@angular/core';
 import { CarouselSlideComponent } from '../carousel-slide.component';
-import { Router } from '@angular/router';
 import { PresentationService } from 'libs/shared/src/lib/services/presentation.service';
 import { SharedTableDataFunc } from 'libs/shared/src/lib/models/shared-table-data.model';
 import { TooltipTexts } from '../../../../../shared/src/lib/models/enums/tooltips-texts.enum';
@@ -16,7 +15,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { PopupWithInputsComponent } from '../../popup-with-inputs/popup-with-inputs.component';
 import StringFormater from 'libs/shared/src/lib/utils/string-formater';
-import { EditSlidePopupComponent } from './edit-slide-popup/edit-slide-popup.component';
 
 @Component({
   selector: 'project-slide',
@@ -24,6 +22,7 @@ import { EditSlidePopupComponent } from './edit-slide-popup/edit-slide-popup.com
   styleUrls: ['./slide.component.scss'],
 })
 export class SlideComponent extends CarouselSlideComponent {
+  color = '#f9a825';
   slideTypes = SlideTypes;
   //@Input() data!: SlideModel;
   slides: any[] = [];
@@ -44,7 +43,7 @@ export class SlideComponent extends CarouselSlideComponent {
     this.slides = this.data;
     //console.log(this.data.displayTime);
     //console.log(this.slides);
-
+    console.log(this.slides);
     this.slideActions = [
       {
         icon: 'timer',
@@ -54,8 +53,8 @@ export class SlideComponent extends CarouselSlideComponent {
       },
       {
         icon: 'edit',
-        func: (arg: string) => this.openEditSlidePopup(arg),
-        arg: this.data.id,
+        func: (arg: string[]) => this.openEditSlidePopup(arg),
+        arg: this.data.options,
         tooltip: TooltipTexts.edit,
       },
       {
@@ -67,12 +66,17 @@ export class SlideComponent extends CarouselSlideComponent {
     ];
   }
 
-  private openEditSlidePopup(id: string): void {
+  private openEditSlidePopup(options: string[]): void {
     const inputs: Record<string, InputPopupModel> = {
       ['title']: {
         value: this.data.title,
         type: 'text',
         placeholder: 'Slide title',
+      },
+      ['slideColor']: {
+        value: '',
+        type: 'color',
+        placeholder: 'Select colors palette',
       },
       ['displayTime']: {
         value: this.data.displayTime,
@@ -103,6 +107,7 @@ export class SlideComponent extends CarouselSlideComponent {
       description: '',
       inputs: inputs,
       buttons: buttons,
+      options: options,
     };
     this.dialog.open(PopupWithInputsComponent, {
       data: fullPopupData,

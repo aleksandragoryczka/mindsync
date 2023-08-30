@@ -21,6 +21,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { EditSlidePopupComponent } from './carousel-slide/slide/edit-slide-popup/edit-slide-popup.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgxColorsModule } from 'ngx-colors';
 
 @NgModule({
   imports: [
@@ -37,6 +38,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatSelectModule,
     MatFormFieldModule,
     BrowserAnimationsModule,
+    NgxColorsModule,
   ],
   declarations: [
     PopupWithInputsComponent,
