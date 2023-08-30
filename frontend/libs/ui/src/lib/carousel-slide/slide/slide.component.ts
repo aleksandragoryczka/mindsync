@@ -16,6 +16,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { PopupWithInputsComponent } from '../../popup-with-inputs/popup-with-inputs.component';
 import StringFormater from 'libs/shared/src/lib/utils/string-formater';
+import { EditSlidePopupComponent } from './edit-slide-popup/edit-slide-popup.component';
 
 @Component({
   selector: 'project-slide',
@@ -109,13 +110,16 @@ export class SlideComponent extends CarouselSlideComponent {
   }
 
   private updateSlide(inputs: Record<string, InputPopupModel>): void {
+    console.log(inputs['type'].value);
+    console.log(inputs['title'].value);
+    console.log(inputs['displayTime'].value);
     const updatedSlide: SlideModel = {
       title: String(inputs['title'].value),
       displayTime: String(inputs['displayTime'].value),
       type: String(inputs['type'].value),
     };
-    if (updatedSlide.type === 'MULTIPLE_CHOICE') {
-      this.dialog.open(PopupWithInputsComponent, { height: '500px' });
-    }
+    //if (updatedSlide.type === 'MULTIPLE_CHOICE') {
+    //  this.dialog.open(PopupWithInputsComponent, { height: '500px' });
+    // }
   }
 }

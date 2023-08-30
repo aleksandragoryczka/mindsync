@@ -1,3 +1,5 @@
+@import '../variables';
+
 .form-group {
   display: flex;
   flex-direction: column;
@@ -28,4 +30,46 @@
 
 mat-label {
   font-weight: 700;
+}
+
+.select-input {
+  height: 100%;
+}
+
+::ng-deep .mat-mdc-form-field-subscript-wrapper {
+  display: none;
+}
+
+::ng-deep .mdc-text-field--filled:not(.mdc-text-field--disabled) {
+  background-color: $beige;
+  border: $dark-brown solid 1px;
+  border-radius: 0%;
+  margin-top: 12px;
+}
+
+::ng-deep .mat-mdc-select-arrow svg {
+  color: $white;
+  height: 37px;
+  color: $dark-brown;
+  border-radius: 0 5px 5px 0;
+}
+
+::ng-deep .mat-mdc-select-panel {
+  background-color: $beige !important;
+}
+
+::ng-deep
+  .mat-mdc-option.mdc-list-item--selected:not(.mdc-list-item--disabled)
+  .mdc-list-item__primary-text,
+::ng-deep
+  .mat-primary
+  .mat-pseudo-checkbox-checked.mat-pseudo-checkbox-minimal::after,
+::ng-deep
+  .mat-primary
+  .mat-pseudo-checkbox-indeterminate.mat-pseudo-checkbox-minimal::after {
+  color: $darker-brown !important;
+}
+
+::ng-deep .mdc-text-field--filled .mdc-line-ripple::after {
+  border-bottom-color: $dark-brown !important;
 }

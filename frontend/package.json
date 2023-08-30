@@ -17,6 +17,7 @@
     "@auth0/angular-jwt": "^5.1.2",
     "@material/card": "^15.0.0-canary.b994146f6.0",
     "@material/dialog": "^15.0.0-canary.b994146f6.0",
+    "@material/form-field": "^15.0.0-canary.b994146f6.0",
     "@ng-bootstrap/ng-bootstrap": "^15.1.1",
     "@nx/angular": "16.5.0",
     "@types/file-saver": "^2.0.5",

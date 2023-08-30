@@ -24,13 +24,11 @@ export default class StringFormater {
     const types: SelectOptionPopupModel[] = [];
     for (let i = 0; i < Object.keys(SlideTypes).length; i = i + 1) {
       const strValue = Object.values(SlideTypes)[i];
-      console.log(strValue);
       types.push({
         value: strValue,
         displayValue: strValue,
       });
     }
-    console.log(types);
     return types;
   }
 }

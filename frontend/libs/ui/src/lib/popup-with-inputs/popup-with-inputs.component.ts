@@ -48,6 +48,7 @@ export class PopupWithInputsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    console.log(this.data);
     this.loginForm = this.formBuilder.group({
       email: ['', Validators.required],
       password: ['', Validators.required],

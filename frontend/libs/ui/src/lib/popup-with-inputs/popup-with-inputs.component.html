@@ -76,13 +76,23 @@
                                 <ng-container [ngSwitch]="input[1].type">
                                     <input *ngSwitchCase="'text'" type="text" class="mindsync-input default-input"
                                         [placeholder]="input[1].placeholder ?? ''" [(ngModel)]="input[1].value">
+                                    <mat-form-field *ngSwitchCase="'select'" class="default-input select-input">
+                                        <mat-select [(ngModel)]="input[1].value">
+                                            <mat-option *ngFor="let option of input[1].selectOptions"
+                                                [value]="option.value">
+                                                {{ option.displayValue }}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <!--
                                     <select *ngSwitchCase="'select'" class="mindsync-input default-input">
                                         <option value="" disabled selected hidden>{{ input[1].value }}</option>
                                         <option *ngFor=" let option of input[1].selectOptions" [value]="option.value">
                                             {{ option.displayValue }}
                                         </option>
-                                    </select>
+                                    </select>-->
                                 </ng-container>
+
                             </div>
                         </ng-container>
                     </div>

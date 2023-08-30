@@ -18,6 +18,9 @@ import { SlideComponent } from './carousel-slide/slide/slide.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { EditSlidePopupComponent } from './carousel-slide/slide/edit-slide-popup/edit-slide-popup.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   imports: [
@@ -32,6 +35,8 @@ import { MatSelectModule } from '@angular/material/select';
     MatCheckboxModule,
     MatInputModule,
     MatSelectModule,
+    MatFormFieldModule,
+    BrowserAnimationsModule,
   ],
   declarations: [
     PopupWithInputsComponent,
@@ -43,6 +48,7 @@ import { MatSelectModule } from '@angular/material/select';
     ViewDirective,
     CarouselSlideComponent,
     SlideComponent,
+    EditSlidePopupComponent,
   ],
   exports: [
     CardSlideComponent,

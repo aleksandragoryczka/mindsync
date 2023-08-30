@@ -49,7 +49,6 @@ export class ProfilePopupComponent implements OnInit {
       },
       { validators: [Validation.match('password', 'repeatPassword')] }
     );
-    console.log(this.userId);
   }
 
   get f(): { [key: string]: AbstractControl } {
