@@ -14,5 +14,7 @@ public class SlideRequestDto {
 	private String title;
 	private String type;
 	private String displayTime;
+	private String headerColor;
+	private String titleColor;
 	private List<Option> options;
 }

@@ -198,6 +198,8 @@ public class PresentationServiceImpl implements PresentationService {
 	private Slide updateSlide(Slide existingSlide, SlideRequestDto updatedSlide) {
 		existingSlide.setTitle(updatedSlide.getTitle());
 		existingSlide.setDisplayTime(updatedSlide.getDisplayTime());
+		existingSlide.setHeaderColor(updatedSlide.getHeaderColor());
+		existingSlide.setTitleColor(updatedSlide.getTitleColor());
 		SlideType slideType = slideTypeRepository.findByName(SlideTypeName.valueOf(updatedSlide.getType()));
 		existingSlide.setType(slideType);
 		if (AppConstants.OPTIONS_SLIDES_TYPES.contains(slideType.getName())) {
@@ -260,6 +262,8 @@ public class PresentationServiceImpl implements PresentationService {
 		newSlide.setType(slideType);
 		newSlide.setPresentation(presentation);
 		newSlide.setDisplayTime(updatedSlide.getDisplayTime());
+		newSlide.setHeaderColor(updatedSlide.getHeaderColor());
+		newSlide.setTitleColor(updatedSlide.getTitleColor());
 		if (AppConstants.OPTIONS_SLIDES_TYPES.contains(slideType.getName())) {
 			List<Option> options = new ArrayList<Option>();
 			for (Option updatedOption : updatedSlide.getOptions()) {
@@ -323,6 +327,8 @@ public class PresentationServiceImpl implements PresentationService {
 		slideReponse.setTitle(slide.getTitle());
 		slideReponse.setType(slide.getType().getName().toString());
 		slideReponse.setDisplayTime(slide.getDisplayTime());
+		slideReponse.setHeaderColor(slide.getHeaderColor());
+		slideReponse.setTitleColor(slide.getTitleColor());
 		slideReponse.setOptions(slide.getOptions().stream().map(Option::getOption).collect(Collectors.toList()));
 		return slideReponse;
 	}

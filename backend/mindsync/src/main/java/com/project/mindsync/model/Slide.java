@@ -53,6 +53,12 @@ public class Slide extends DateAudit {
 	@Column(name = "display_time", length = 5)
 	private String displayTime = "20";
 
+	@Column(name = "header_color")
+	private String headerColor;
+	
+	@Column(name = "title_color")
+	private String titleColor;
+
 	public Slide(String title, SlideType slideType) {
 		this.title = title;
 		this.type = slideType;

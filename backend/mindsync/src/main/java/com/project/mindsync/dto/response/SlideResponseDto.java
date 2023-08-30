@@ -10,5 +10,7 @@ public class SlideResponseDto {
 	private String title;
 	private String displayTime;
 	private String type;
+	private String headerColor;
+	private String titleColor;
 	private List<String> options;
 }
