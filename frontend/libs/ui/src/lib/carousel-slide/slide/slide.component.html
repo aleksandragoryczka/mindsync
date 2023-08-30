@@ -1,9 +1,9 @@
 <div class="mindsync-default-container">
     <div class="mindsync-default-content-container content-slide">
-        <div class="mindsync-default-content-heading heading-slide">
+        <div class="mindsync-default-content-heading heading-slide" [style.background-color]="data.headerColor"
+            [style.color]="data.titleColor">
             {{ data.title }}
-
-            <div class="nav-section">
+            <div class=" nav-section">
                 <ng-container *ngFor="let action of slideActions">
                     <mat-icon class="mindsync-icon mx-1 tooltip-message" [ngbTooltip]="action.tooltip"
                         (click)="action.func(action.arg)">{{ action.icon }}</mat-icon>
@@ -17,6 +17,6 @@
                     {{opt}}
                 </div>
             </div>
-        </div>   
+        </div>
     </div>
 </div>

@@ -22,7 +22,7 @@ import StringFormater from 'libs/shared/src/lib/utils/string-formater';
   styleUrls: ['./slide.component.scss'],
 })
 export class SlideComponent extends CarouselSlideComponent {
-  color = '#f9a825';
+  //color = '#f9a825';
   slideTypes = SlideTypes;
   //@Input() data!: SlideModel;
   slides: any[] = [];
@@ -41,9 +41,6 @@ export class SlideComponent extends CarouselSlideComponent {
   override ngOnInit(): void {
     super.ngOnInit();
     this.slides = this.data;
-    //console.log(this.data.displayTime);
-    //console.log(this.slides);
-    console.log(this.slides);
     this.slideActions = [
       {
         icon: 'timer',
@@ -73,8 +70,8 @@ export class SlideComponent extends CarouselSlideComponent {
         type: 'text',
         placeholder: 'Slide title',
       },
-      ['slideColor']: {
-        value: '',
+      ['color']: {
+        value: [this.data.headerColor, this.data.titleColor],
         type: 'color',
         placeholder: 'Select colors palette',
       },

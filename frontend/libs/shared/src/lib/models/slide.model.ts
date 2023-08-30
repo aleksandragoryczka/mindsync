@@ -5,6 +5,8 @@ export interface SlideModel {
   title: string;
   displayTime: string;
   type: SlideTypes | string;
+  headerColor?: string;
+  titleColor?: string;
   options?: Array<string>;
   //TODO: to be implemented
 }

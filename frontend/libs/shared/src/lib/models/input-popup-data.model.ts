@@ -2,7 +2,7 @@ export interface InputPopupModel {
   type: string;
   placeholder?: string;
   selectOptions?: SelectOptionPopupModel[];
-  value?: number | string;
+  value?: number | string | string[];
 }
 
 export interface SelectOptionPopupModel {

@@ -34,7 +34,8 @@ import { SlideTypes } from 'libs/shared/src/lib/models/enums/slideTypes.enum';
   styleUrls: ['./popup-with-inputs.component.scss'],
 })
 export class PopupWithInputsComponent implements OnInit {
-  color = '';
+  headerColor = '';
+  titleColor = '';
   primary = ButtonTypes.PRIMARY;
   loginForm!: FormGroup;
   registrationForm!: FormGroup;
@@ -92,10 +93,12 @@ export class PopupWithInputsComponent implements OnInit {
   getRecordValues(
     record: Record<string, InputPopupModel>
   ): [string, InputPopupModel][] {
-    if (record['type'].value === SlideTypes.MULTIPLE_CHOICE)
-      this.isMultipleChoiceType = true;
-    else {
-      this.isMultipleChoiceType = false;
+    record['type'].value === SlideTypes.MULTIPLE_CHOICE
+      ? (this.isMultipleChoiceType = true)
+      : (this.isMultipleChoiceType = false);
+    if (record['color'] && Array.isArray(record['color'].value)) {
+      this.headerColor = record['color'].value[0];
+      this.titleColor = record['color'].value[1];
     }
     return Object.entries(record);
   }

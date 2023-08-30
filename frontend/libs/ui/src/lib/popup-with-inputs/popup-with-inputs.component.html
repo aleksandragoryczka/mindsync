@@ -75,9 +75,9 @@
                                 <mat-label>{{input[1].placeholder ?? ''}}:</mat-label>
                                 <ng-container [ngSwitch]="input[1].type">
                                     <div *ngSwitchCase="'color'" class="colors-container">
-                                        <ngx-colors ngx-colors-trigger [(ngModel)]="color" class="tooltip-message"
+                                        <ngx-colors ngx-colors-trigger [(ngModel)]="headerColor" class="tooltip-message"
                                             [ngbTooltip]="'Header color'"></ngx-colors>
-                                        <ngx-colors ngx-colors-trigger [(ngModel)]="color" class="tooltip-message"
+                                        <ngx-colors ngx-colors-trigger [(ngModel)]="titleColor" class="tooltip-message"
                                             [ngbTooltip]="'Title color'"></ngx-colors>
                                     </div>
                                     <input *ngSwitchCase="'text'" type="text" class="mindsync-input default-input"

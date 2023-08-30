@@ -33,6 +33,7 @@ export class PresentationDetailsComponent {
     const id = this.activatedRoute.snapshot.paramMap.get('id');
     if (id) {
       this.listOfSlides$ = this.loadSlides('7'); //TODO: to be replaced with 'id'
+      //console.log(this.listOfSlides$);
     }
   }
 
