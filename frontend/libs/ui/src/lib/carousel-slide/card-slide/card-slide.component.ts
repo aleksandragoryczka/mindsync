@@ -20,7 +20,6 @@ export class CardSlideComponent extends CarouselSlideComponent {
     private renderer: Renderer2
   ) {
     super(ngEl, renderer);
-    console.log(this.data);
   }
 
   async getDetailsButton(): Promise<void> {

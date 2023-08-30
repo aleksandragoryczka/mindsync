@@ -26,6 +26,7 @@ import {
 import { Router } from '@angular/router';
 import { RegisterModel } from 'libs/shared/src/lib/models/register.model';
 import { ToastrService } from 'ngx-toastr';
+import { SlideTypes } from 'libs/shared/src/lib/models/enums/slideTypes.enum';
 
 @Component({
   selector: 'project-popup-with-inputs',
@@ -37,6 +38,7 @@ export class PopupWithInputsComponent implements OnInit {
   loginForm!: FormGroup;
   registrationForm!: FormGroup;
   submitted = false;
+  isMultipleChoiceType!: boolean;
 
   constructor(
     public dialogRef: MatDialogRef<PopupWithInputsComponent>,
@@ -48,7 +50,6 @@ export class PopupWithInputsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log(this.data);
     this.loginForm = this.formBuilder.group({
       email: ['', Validators.required],
       password: ['', Validators.required],
@@ -71,6 +72,7 @@ export class PopupWithInputsComponent implements OnInit {
       },
       { validators: [Validation.match('password', 'repeatPassword')] }
     );
+    this.data.inputs;
   }
 
   get rf(): { [key: string]: AbstractControl } {
@@ -88,6 +90,11 @@ export class PopupWithInputsComponent implements OnInit {
   getRecordValues(
     record: Record<string, InputPopupModel>
   ): [string, InputPopupModel][] {
+    if (record['type'].value === SlideTypes.MULTIPLE_CHOICE)
+      this.isMultipleChoiceType = true;
+    else {
+      this.isMultipleChoiceType = false;
+    }
     return Object.entries(record);
   }
 
@@ -140,6 +147,16 @@ export class PopupWithInputsComponent implements OnInit {
         );
       } else this.toastrService.error('Error during registration. Try again');
     });
+  }
+
+  onTypeChange(event: any) {
+    if (
+      Object.keys(SlideTypes).includes(event.value) &&
+      event.value === 'MULTIPLE_CHOICE'
+    ) {
+      this.isMultipleChoiceType = true;
+      //console.log(event.value);
+    }
   }
 
   async buttonClick(button: ButtonPopupModel): Promise<void> {
