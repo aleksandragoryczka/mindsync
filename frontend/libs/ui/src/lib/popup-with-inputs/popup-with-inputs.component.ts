@@ -91,6 +91,11 @@ export class PopupWithInputsComponent implements OnInit {
     return Object.entries(record);
   }
 
+  checkIfDataInputs(record: Record<string, InputPopupModel>): boolean {
+    if (Object.keys(record).length > 0) return true;
+    return false;
+  }
+
   getTitle(input: InputPopupFullDataModel): string {
     return Object.values(input)[0];
   }

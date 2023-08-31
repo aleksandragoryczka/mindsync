@@ -61,8 +61,8 @@ export class SlideComponent extends CarouselSlideComponent {
       },
       {
         icon: 'delete',
-        func: () => console.log(''),
-        arg: '1',
+        func: (arg: string) => this.openDeleteSlidePopup(arg),
+        arg: this.data.id,
         tooltip: TooltipTexts.delete,
       },
     ];
@@ -72,6 +72,41 @@ export class SlideComponent extends CarouselSlideComponent {
       this.toastrService.success(updateSuccessMessage);
       localStorage.removeItem('Success-Message');
     }
+  }
+
+  private deleteSlide(slideId: string) {
+    this.slideService.deleteSlide(slideId).subscribe(isDeleted => {
+      if (!isDeleted) this.toastrService.warning('Something went wrong');
+      else {
+        StorageRealod.reloadWithMessage(
+          'Success-Message',
+          'Slide deleted successfully'
+        );
+        //this.toastrService.success('Slide deleted successfully');
+      }
+    });
+  }
+
+  private openDeleteSlidePopup(slideId: string): void {
+    const inputs: Record<string, InputPopupModel> = {};
+    const buttons: ButtonPopupModel[] = [
+      {
+        type: ButtonTypes.PRIMARY,
+        text: 'Yes',
+        onClick: () => this.deleteSlide(slideId),
+      },
+      {
+        type: ButtonTypes.SECONDARY,
+        text: 'No',
+      },
+    ];
+    const data: InputPopupFullDataModel = {
+      title: 'Delete slide',
+      description: 'Are you sure want to delete that slide?',
+      inputs: inputs,
+      buttons: buttons,
+    };
+    this.dialog.open(PopupWithInputsComponent, { data: data });
   }
 
   private openEditSlidePopup(options: OptionModel[]): void {

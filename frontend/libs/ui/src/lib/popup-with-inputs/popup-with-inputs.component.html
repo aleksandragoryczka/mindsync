@@ -70,53 +70,56 @@
                 <div *ngSwitchDefault>
                     <div *ngSwitchDefault class="mindsync-popup-inputs-container">
                         <span> {{ data.description }} </span>
-                        <ng-container *ngFor="let input of getRecordValues(data.inputs); trackBy: trackByFn">
-                            <div class="mindsync-input-section">
-                                <mat-label>{{input[1].placeholder ?? ''}}:</mat-label>
-                                <ng-container [ngSwitch]="input[1].type">
-                                    <div *ngSwitchCase="'color'" class="colors-container">
-                                        <ngx-colors *ngIf="input[0]==='headerColor'" ngx-colors-trigger
-                                            [(ngModel)]="input[1].value" class="tooltip-message"
-                                            [ngbTooltip]="TooltipTexts.backgroundColor"></ngx-colors>
-                                        <ngx-colors *ngIf="input[0]==='titleColor'" ngx-colors-trigger
-                                            [(ngModel)]="input[1].value" class="tooltip-message"
-                                            [ngbTooltip]="TooltipTexts.textColor"></ngx-colors>
-                                    </div>
-                                    <input *ngSwitchCase="'text'" type="text" class="mindsync-input default-input"
-                                        [placeholder]="input[1].placeholder ?? ''" [(ngModel)]="input[1].value">
-                                    <mat-form-field *ngSwitchCase="'select'" class="default-input select-input">
-                                        <mat-select [(ngModel)]="input[1].value"
-                                            (selectionChange)="onTypeChange($event)">
-                                            <mat-option *ngFor="let option of input[1].selectOptions"
-                                                [value]="option.value">
-                                                {{ option.displayValue }}
-                                            </mat-option>
-                                        </mat-select>
-                                    </mat-form-field>
-                                </ng-container>
-                            </div>
-                        </ng-container>
-                        <ng-container *ngIf="isMultipleChoiceType">
-                            <div class="d-flex justify-content-between">
-                                <div class="d-flex flex-column justify-content-center">
-                                    <mat-icon class="option-btn"
-                                        (click)="addOptionField()">add_circle_outline</mat-icon>
-                                    <mat-icon class="option-btn"
-                                        (click)="removeOptionField()">remove_circle_outline</mat-icon>
+                        <ng-container *ngIf="checkIfDataInputs(data.inputs)">
+                            <ng-container *ngFor="let input of getRecordValues(data.inputs); trackBy: trackByFn">
+                                <div class="mindsync-input-section">
+                                    <mat-label>{{input[1].placeholder ?? ''}}:</mat-label>
+                                    <ng-container [ngSwitch]="input[1].type">
+                                        <div *ngSwitchCase="'color'" class="colors-container">
+                                            <ngx-colors *ngIf="input[0]==='headerColor'" ngx-colors-trigger
+                                                [(ngModel)]="input[1].value" class="tooltip-message"
+                                                [ngbTooltip]="TooltipTexts.backgroundColor"></ngx-colors>
+                                            <ngx-colors *ngIf="input[0]==='titleColor'" ngx-colors-trigger
+                                                [(ngModel)]="input[1].value" class="tooltip-message"
+                                                [ngbTooltip]="TooltipTexts.textColor"></ngx-colors>
+                                        </div>
+                                        <input *ngSwitchCase="'text'" type="text" class="mindsync-input default-input"
+                                            [placeholder]="input[1].placeholder ?? ''" [(ngModel)]="input[1].value">
+                                        <mat-form-field *ngSwitchCase="'select'" class="default-input select-input">
+                                            <mat-select [(ngModel)]="input[1].value"
+                                                (selectionChange)="onTypeChange($event)">
+                                                <mat-option *ngFor="let option of input[1].selectOptions"
+                                                    [value]="option.value">
+                                                    {{ option.displayValue }}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </ng-container>
                                 </div>
-                                <div class="options">
-                                    <div *ngFor="let optionModel of data.options; let i = index"
-                                        class="option-container">
-                                        <mat-checkbox class="checkbox" [(ngModel)]="optionModel.isCorrect"
-                                            [checked]="data.options![i].isCorrect"></mat-checkbox>
-                                        <input type=" text" class="mindsync-input" [placeholder]="optionModel.option"
-                                            [(ngModel)]="optionModel.option" required>
+                            </ng-container>
+                            <ng-container *ngIf="isMultipleChoiceType">
+                                <div class="d-flex justify-content-between">
+                                    <div class="d-flex flex-column justify-content-center">
+                                        <mat-icon class="option-btn"
+                                            (click)="addOptionField()">add_circle_outline</mat-icon>
+                                        <mat-icon class="option-btn"
+                                            (click)="removeOptionField()">remove_circle_outline</mat-icon>
+                                    </div>
+                                    <div class="options">
+                                        <div *ngFor="let optionModel of data.options; let i = index"
+                                            class="option-container">
+                                            <mat-checkbox class="checkbox" [(ngModel)]="optionModel.isCorrect"
+                                                [checked]="data.options![i].isCorrect"></mat-checkbox>
+                                            <input type=" text" class="mindsync-input"
+                                                [placeholder]="optionModel.option" [(ngModel)]="optionModel.option"
+                                                required>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            </ng-container>
                         </ng-container>
                     </div>
-                    <div class="mindsync-popup-buttons-container">
+                    <div *ngSwitchDefault class="mindsync-popup-buttons-container">
                         <div *ngFor="let button of data.buttons" class="mindsync-btn mindsync-btn-primary"
                             [class]="button.type === primary ? 'mindsync-btn mindsync-btn-primary' : 'mindsync-btn-secondary'"
                             (click)="buttonClick(button)">

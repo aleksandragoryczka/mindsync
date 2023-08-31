@@ -10,18 +10,23 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.project.mindsync.dto.request.SlideRequestDto;
+import com.project.mindsync.dto.response.ApiResponseDto;
 import com.project.mindsync.dto.response.PagedResponseDto;
 import com.project.mindsync.exception.ResourceNotFoundException;
+import com.project.mindsync.exception.UnauthorizedException;
 import com.project.mindsync.model.Option;
+import com.project.mindsync.model.Show;
 import com.project.mindsync.model.Slide;
 import com.project.mindsync.model.SlideType;
 import com.project.mindsync.model.enums.SlideTypeName;
 import com.project.mindsync.repository.OptionRepository;
 import com.project.mindsync.repository.SlideRepository;
 import com.project.mindsync.repository.SlideTypeRepository;
+import com.project.mindsync.security.UserPrincipal;
 import com.project.mindsync.service.SlideService;
 import com.project.mindsync.utils.AppConstants;
 import com.project.mindsync.utils.AppUtils;
@@ -90,6 +95,18 @@ public class SlideServiceImpl implements SlideService {
 			slide.setOptions(existingOptions);
 		}
 		return slideRepository.save(slide);
+	}
+
+	@Override
+	public ResponseEntity<ApiResponseDto> deleteSlide(Long id, UserPrincipal currentUser) {
+		Slide slide = slideRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException(AppConstants.SLIDE, AppConstants.ID, id));
+		if (AppUtils.checkUserIsCurrentUserOrAdmin(slide.getPresentation().getUser(), currentUser)) {
+			slideRepository.delete(slide);
+			return ResponseEntity.ok().body(new ApiResponseDto(true, "Successfully deleted Slide with ID: " + id));
+		}
+		ApiResponseDto apiResponse = new ApiResponseDto(false, "You do not have permissions to delete that slide.");
+		throw new UnauthorizedException(apiResponse);
 	}
 
 	private List<Option> deleteOptions(List<Option> existingOptions, List<Option> updatedOptions) {
