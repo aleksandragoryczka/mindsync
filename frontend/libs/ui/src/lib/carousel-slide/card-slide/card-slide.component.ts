@@ -1,17 +1,14 @@
-import { Component, ElementRef, Input, Renderer2 } from '@angular/core';
+import { Component, ElementRef, Renderer2 } from '@angular/core';
 import StringFormatter from '../../../../../shared/src/lib/utils/string-formatter';
 import { Router } from '@angular/router';
 import { CarouselSlideComponent } from '../carousel-slide.component';
-import { PresentationModel } from 'libs/shared/src/lib/models/presentation.model';
 
 @Component({
   selector: 'project-card-slide',
   templateUrl: './card-slide.component.html',
   styleUrls: ['./card-slide.component.scss'],
-  //providers: [{provide: CarouselSlideComponent, useExisting: forwardRef(())}]
 })
 export class CardSlideComponent extends CarouselSlideComponent {
-  //@Input() data!: PresentationModel;
   StringFormatter = StringFormatter;
 
   constructor(

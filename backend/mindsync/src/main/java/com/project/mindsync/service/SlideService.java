@@ -4,9 +4,7 @@ import javax.validation.Valid;
 
 import com.project.mindsync.dto.request.SlideRequestDto;
 import com.project.mindsync.dto.response.PagedResponseDto;
-import com.project.mindsync.dto.response.SlideResponseDto;
 import com.project.mindsync.model.Slide;
-import com.project.mindsync.security.UserPrincipal;
 
 public interface SlideService {
 

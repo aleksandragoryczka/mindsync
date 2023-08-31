@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import com.project.mindsync.dto.request.SlideRequestDto;
 import com.project.mindsync.dto.response.PagedResponseDto;
-import com.project.mindsync.dto.response.SlideResponseDto;
 import com.project.mindsync.exception.ResourceNotFoundException;
 import com.project.mindsync.model.Option;
 import com.project.mindsync.model.Slide;
@@ -23,7 +22,6 @@ import com.project.mindsync.model.enums.SlideTypeName;
 import com.project.mindsync.repository.OptionRepository;
 import com.project.mindsync.repository.SlideRepository;
 import com.project.mindsync.repository.SlideTypeRepository;
-import com.project.mindsync.security.UserPrincipal;
 import com.project.mindsync.service.SlideService;
 import com.project.mindsync.utils.AppConstants;
 import com.project.mindsync.utils.AppUtils;

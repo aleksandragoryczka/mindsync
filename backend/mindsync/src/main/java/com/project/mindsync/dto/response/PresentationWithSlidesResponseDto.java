@@ -2,8 +2,6 @@ package com.project.mindsync.dto.response;
 
 import java.util.List;
 
-import com.project.mindsync.model.Slide;
-
 import lombok.Data;
 
 @Data

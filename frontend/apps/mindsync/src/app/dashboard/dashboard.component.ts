@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { BehaviorSubject, Observable, map, switchMap } from 'rxjs';
+import { Component } from '@angular/core';
+import { Observable, map } from 'rxjs';
 import { PresentationModel } from '../../../../../libs/shared/src/lib/models/presentation.model';
 import { PresentationService } from '../../../../../libs/shared/src/lib/services/presentation.service';
 import { PaginatedResult } from 'libs/shared/src/lib/models/paginated-result.model';

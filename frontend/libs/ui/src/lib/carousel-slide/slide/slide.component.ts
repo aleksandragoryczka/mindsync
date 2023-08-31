@@ -1,4 +1,4 @@
-import { Component, ElementRef, Renderer2, Type } from '@angular/core';
+import { Component, ElementRef, Renderer2 } from '@angular/core';
 import { CarouselSlideComponent } from '../carousel-slide.component';
 import { PresentationService } from 'libs/shared/src/lib/services/presentation.service';
 import { SharedTableDataFunc } from 'libs/shared/src/lib/models/shared-table-data.model';

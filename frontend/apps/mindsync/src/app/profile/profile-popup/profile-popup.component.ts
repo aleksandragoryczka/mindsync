@@ -6,7 +6,6 @@ import {
   AbstractControl,
 } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { UpdatedUserModel } from 'libs/shared/src/lib/models/updated-user.model';
 import { UserService } from 'libs/shared/src/lib/services/user.service';
 import StorageRealod from 'libs/shared/src/lib/utils/storage-reload';
 import Validation from 'libs/shared/src/lib/utils/validation';

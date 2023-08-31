@@ -10,7 +10,7 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { SharedCarouselComponent } from './shared-carousel/shared-carousel.component';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
-import { ViewDirective } from './view.directive';
+import { ViewDirective } from '../../../shared/src/lib/directive/view.directive';
 import { CarouselSlideComponent } from './carousel-slide/carousel-slide.component';
 import { CarouselDynamicElementComponent } from './shared-carousel/carousel-dynamic-element/carousel-dynamic-element.component';
 import { CardSlideComponent } from './carousel-slide/card-slide/card-slide.component';

@@ -1,5 +1,4 @@
 import { Component, Type, ViewChild, ViewContainerRef } from '@angular/core';
-import { CardSlideComponent } from '../../carousel-slide/card-slide/card-slide.component';
 import { CarouselSlideComponent } from '../../carousel-slide/carousel-slide.component';
 
 @Component({

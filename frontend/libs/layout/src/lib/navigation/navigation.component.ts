@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import {
-  ButtonTypes,
   InputPopupFullDataModel,
   InputPopupModel,
 } from '../../../../shared/src/lib/models/input-popup-data.model';

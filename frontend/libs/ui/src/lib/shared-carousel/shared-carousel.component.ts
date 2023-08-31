@@ -3,7 +3,6 @@ import {
   Component,
   ElementRef,
   Input,
-  Type,
   ViewChild,
   ViewContainerRef,
   ViewRef,
