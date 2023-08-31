@@ -1,7 +1,7 @@
 import { SlideTypes } from '../models/enums/slideTypes.enum';
 import { SelectOptionPopupModel } from '../models/input-popup-data.model';
 
-export default class StringFormater {
+export default class StringFormatter {
   static getDateFromISOString(isoString: string): string {
     if (isoString.length > 0) return new Date(isoString).toLocaleDateString();
     return '';

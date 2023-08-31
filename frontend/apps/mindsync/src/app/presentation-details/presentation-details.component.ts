@@ -4,7 +4,7 @@ import { SlideModel } from 'libs/shared/src/lib/models/slide.model';
 import { PresentationService } from 'libs/shared/src/lib/services/presentation.service';
 import { EMPTY, Observable, map, tap } from 'rxjs';
 import { PresentationModel } from '../../../../../libs/shared/src/lib/models/presentation.model';
-import StringFormater from '../../../../../libs/shared/src/lib/utils/string-formater';
+import StringFormatter from '../../../../../libs/shared/src/lib/utils/string-formatter';
 import { PresentationWithSlides } from 'libs/shared/src/lib/models/presentation-with-slides.model';
 
 @Component({
@@ -16,7 +16,7 @@ export class PresentationDetailsComponent {
   listOfSlides$: Observable<SlideModel[]> = EMPTY;
   presentation: PresentationModel = { title: '', code: '', createdAt: '' };
   slides: SlideModel[] = [];
-  stringFormater = StringFormater;
+  StringFormatter = StringFormatter;
 
   slideConfig = {
     slidesToShow: 1,

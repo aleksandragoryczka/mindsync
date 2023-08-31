@@ -4,7 +4,7 @@ import { SharedTableData } from '../../../../../libs/shared/src/lib/models/share
 import { PresentationService } from '../../../../../libs/shared/src/lib/services/presentation.service';
 import { ActivatedRoute } from '@angular/router';
 import { PresentationWithShows } from 'libs/shared/src/lib/models/presentation-with-shows.model';
-import StringFormater from 'libs/shared/src/lib/utils/string-formater';
+import StringFormatter from 'libs/shared/src/lib/utils/string-formatter';
 import {
   ButtonPopupModel,
   ButtonTypes,
@@ -146,7 +146,7 @@ export class ShowsComponent implements OnInit {
       const result: SharedTableData = {
         cols: [
           show.attendeesNumber,
-          StringFormater.getDateFromISOString(show.createdAt),
+          StringFormatter.getDateFromISOString(show.createdAt),
         ],
         actions: [
           {

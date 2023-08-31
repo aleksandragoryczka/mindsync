@@ -2,6 +2,7 @@ package com.project.mindsync.service.impl;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -93,7 +94,7 @@ public class PresentationServiceImpl implements PresentationService {
 				() -> new ResourceNotFoundException(AppConstants.PRESENTATION, AppConstants.ID, presentationId));
 		List<Slide> slides = slideRepository.findByPresentationId(presentationId);
 		List<SlideResponseDto> slidesResponses = slides.stream().map(this::mapToSlideResponseDto)
-				.collect(Collectors.toList());
+				.sorted(Comparator.comparingLong(SlideResponseDto::getId)).collect(Collectors.toList());
 		PresentationWithSlidesResponseDto presentationWithSlidesResponse = new PresentationWithSlidesResponseDto();
 		presentationWithSlidesResponse.setId(presentationId);
 		presentationWithSlidesResponse.setCode(presentation.getCode());

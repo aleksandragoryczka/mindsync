@@ -4,4 +4,6 @@ export enum TooltipTexts {
   delete = 'Delete',
   timer = 'Set slide display time',
   edit = 'Edit',
+  backgroundColor = 'Main theme',
+  textColor = 'Text color',
 }

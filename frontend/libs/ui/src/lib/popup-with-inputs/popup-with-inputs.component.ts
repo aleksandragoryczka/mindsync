@@ -27,6 +27,7 @@ import { Router } from '@angular/router';
 import { RegisterModel } from 'libs/shared/src/lib/models/register.model';
 import { ToastrService } from 'ngx-toastr';
 import { SlideTypes } from 'libs/shared/src/lib/models/enums/slideTypes.enum';
+import { TooltipTexts } from 'libs/shared/src/lib/models/enums/tooltips-texts.enum';
 
 @Component({
   selector: 'project-popup-with-inputs',
@@ -41,6 +42,7 @@ export class PopupWithInputsComponent implements OnInit {
   registrationForm!: FormGroup;
   submitted = false;
   isMultipleChoiceType!: boolean;
+  TooltipTexts = TooltipTexts;
 
   constructor(
     public dialogRef: MatDialogRef<PopupWithInputsComponent>,
@@ -104,7 +106,15 @@ export class PopupWithInputsComponent implements OnInit {
   }
 
   getOptionsArray(options: string[] | undefined): string[] {
-    return options ? [...options] : [];
+    //const x = options;
+    if (options) {
+      const x = options;
+      return x;
+    }
+    return [];
+    //if (options) const x = options;
+    //return x;
+    //return options ? [...options] : [];
   }
 
   getTitle(input: InputPopupFullDataModel): string {
@@ -113,6 +123,10 @@ export class PopupWithInputsComponent implements OnInit {
 
   trackByFn(index: number, item: [key: string, val: InputPopupModel]): string {
     return item[0];
+  }
+
+  trackByOptionIndex(index: number): number {
+    return index;
   }
 
   onSubmitLogin(): void {
@@ -168,12 +182,18 @@ export class PopupWithInputsComponent implements OnInit {
   }
 
   addOptionField() {
-    this.data.options?.push('');
+    if (this.data.options?.length == 6)
+      this.toastrService.warning('You can add 6 options maximally');
+    else this.data.options?.push('');
   }
 
   removeOptionField() {
-    if (this.data.options && this.data.options?.length > 0)
-      this.data.options?.pop();
+    if (this.data.options?.length == 0)
+      this.toastrService.warning(
+        'First add new option',
+        'No option to be deleted'
+      );
+    else this.data.options?.pop();
   }
 
   async buttonClick(button: ButtonPopupModel): Promise<void> {

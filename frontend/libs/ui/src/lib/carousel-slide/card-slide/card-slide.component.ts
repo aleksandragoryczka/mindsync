@@ -1,5 +1,5 @@
 import { Component, ElementRef, Input, Renderer2 } from '@angular/core';
-import StringFormater from '../../../../../shared/src/lib/utils/string-formater';
+import StringFormatter from '../../../../../shared/src/lib/utils/string-formatter';
 import { Router } from '@angular/router';
 import { CarouselSlideComponent } from '../carousel-slide.component';
 import { PresentationModel } from 'libs/shared/src/lib/models/presentation.model';
@@ -12,7 +12,7 @@ import { PresentationModel } from 'libs/shared/src/lib/models/presentation.model
 })
 export class CardSlideComponent extends CarouselSlideComponent {
   //@Input() data!: PresentationModel;
-  stringFormater = StringFormater;
+  StringFormatter = StringFormatter;
 
   constructor(
     private router: Router,
