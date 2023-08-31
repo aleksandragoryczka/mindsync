@@ -81,16 +81,19 @@ mat-label {
   height: 60px;
 }
 
-.option-container {
-  display: flex;
-  flex-direction: column;
-  width: 70%;
-}
-
 mat-icon:hover {
   cursor: pointer;
 }
 
 .colors-container {
   margin: 15px 65px 8px 0px;
+}
+
+.option-container {
+  display: flex;
+  align-items: baseline;
+}
+
+.options {
+  width: 80%;
 }

@@ -20,6 +20,7 @@ import { RegisterModel } from 'libs/shared/src/lib/models/register.model';
 import { ToastrService } from 'ngx-toastr';
 import { SlideTypes } from 'libs/shared/src/lib/models/enums/slideTypes.enum';
 import { TooltipTexts } from 'libs/shared/src/lib/models/enums/tooltips-texts.enum';
+import { OptionModel } from 'libs/shared/src/lib/models/option.model';
 
 @Component({
   selector: 'project-popup-with-inputs',
@@ -27,8 +28,6 @@ import { TooltipTexts } from 'libs/shared/src/lib/models/enums/tooltips-texts.en
   styleUrls: ['./popup-with-inputs.component.scss'],
 })
 export class PopupWithInputsComponent implements OnInit {
-  headerColor = '';
-  titleColor = '';
   primary = ButtonTypes.PRIMARY;
   loginForm!: FormGroup;
   registrationForm!: FormGroup;
@@ -69,7 +68,6 @@ export class PopupWithInputsComponent implements OnInit {
       },
       { validators: [Validation.match('password', 'repeatPassword')] }
     );
-    // this.data.inputs;
   }
 
   get rf(): { [key: string]: AbstractControl } {
@@ -90,23 +88,7 @@ export class PopupWithInputsComponent implements OnInit {
     record['type'].value === SlideTypes.MULTIPLE_CHOICE
       ? (this.isMultipleChoiceType = true)
       : (this.isMultipleChoiceType = false);
-    if (record['color'] && Array.isArray(record['color'].value)) {
-      this.headerColor = record['color'].value[0];
-      this.titleColor = record['color'].value[1];
-    }
     return Object.entries(record);
-  }
-
-  getOptionsArray(options: string[] | undefined): string[] {
-    //const x = options;
-    if (options) {
-      const x = options;
-      return x;
-    }
-    return [];
-    //if (options) const x = options;
-    //return x;
-    //return options ? [...options] : [];
   }
 
   getTitle(input: InputPopupFullDataModel): string {
@@ -115,10 +97,6 @@ export class PopupWithInputsComponent implements OnInit {
 
   trackByFn(index: number, item: [key: string, val: InputPopupModel]): string {
     return item[0];
-  }
-
-  trackByOptionIndex(index: number): number {
-    return index;
   }
 
   onSubmitLogin(): void {
@@ -176,7 +154,7 @@ export class PopupWithInputsComponent implements OnInit {
   addOptionField() {
     if (this.data.options?.length == 6)
       this.toastrService.warning('You can add 6 options maximally');
-    else this.data.options?.push('');
+    else this.data.options?.push({ option: '', isCorrect: false });
   }
 
   removeOptionField() {

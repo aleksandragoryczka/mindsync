@@ -330,7 +330,7 @@ public class PresentationServiceImpl implements PresentationService {
 		slideReponse.setDisplayTime(slide.getDisplayTime());
 		slideReponse.setHeaderColor(slide.getHeaderColor());
 		slideReponse.setTitleColor(slide.getTitleColor());
-		slideReponse.setOptions(slide.getOptions().stream().map(Option::getOption).collect(Collectors.toList()));
+		slideReponse.setOptions(slide.getOptions());
 		return slideReponse;
 	}
 }

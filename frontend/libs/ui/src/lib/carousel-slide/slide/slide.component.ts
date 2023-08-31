@@ -18,6 +18,7 @@ import StringFormatter from 'libs/shared/src/lib/utils/string-formatter';
 import ColorFormatter from '../../../../../shared/src/lib/utils/color-formatter';
 import { SlideService } from '../../../../../shared/src/lib/services/slide.service';
 import StorageRealod from '../../../../../shared/src/lib/utils/storage-reload';
+import { OptionModel } from 'libs/shared/src/lib/models/option.model';
 
 @Component({
   selector: 'project-slide',
@@ -54,8 +55,8 @@ export class SlideComponent extends CarouselSlideComponent {
       },
       {
         icon: 'edit',
-        func: (arg: string[]) => this.openEditSlidePopup(arg),
-        arg: this.data.options,
+        func: (arg: OptionModel[]) => this.openEditSlidePopup(arg),
+        arg: JSON.parse(JSON.stringify(this.data.options)),
         tooltip: TooltipTexts.edit,
       },
       {
@@ -65,10 +66,15 @@ export class SlideComponent extends CarouselSlideComponent {
         tooltip: TooltipTexts.delete,
       },
     ];
+
+    const updateSuccessMessage = localStorage.getItem('Success-Message');
+    if (updateSuccessMessage) {
+      this.toastrService.success(updateSuccessMessage);
+      localStorage.removeItem('Success-Message');
+    }
   }
 
-  private openEditSlidePopup(options: string[]): void {
-    const copiedOptions = [...options];
+  private openEditSlidePopup(options: OptionModel[]): void {
     const inputs: Record<string, InputPopupModel> = {
       ['title']: {
         value: this.data.title,
@@ -102,7 +108,7 @@ export class SlideComponent extends CarouselSlideComponent {
       {
         type: ButtonTypes.PRIMARY,
         text: 'Edit',
-        onClick: () => this.updateSlide(inputs, copiedOptions),
+        onClick: () => this.updateSlide(inputs, options),
       },
       {
         type: ButtonTypes.SECONDARY,
@@ -115,7 +121,7 @@ export class SlideComponent extends CarouselSlideComponent {
       description: '',
       inputs: inputs,
       buttons: buttons,
-      options: copiedOptions,
+      options: options,
     };
     this.dialog.open(PopupWithInputsComponent, {
       data: fullPopupData,
@@ -124,7 +130,7 @@ export class SlideComponent extends CarouselSlideComponent {
 
   private updateSlide(
     inputs: Record<string, InputPopupModel>,
-    options: string[]
+    options: OptionModel[]
   ): void {
     const updatedSlide: SlideModel = {
       title: String(inputs['title'].value),
@@ -136,8 +142,9 @@ export class SlideComponent extends CarouselSlideComponent {
       ),
       displayTime: String(inputs['displayTime'].value),
       type: String(inputs['type'].value),
-      options: options,
+      options: options.filter(value => value.option != ''),
     };
+    console.log(updatedSlide.options);
     if (this.isSlideNotChanged(updatedSlide)) {
       this.toastrService.warning('You did not edit any data.');
       return;
@@ -148,7 +155,6 @@ export class SlideComponent extends CarouselSlideComponent {
       );
       return;
     }
-
     this.slideService.updateSlide(updatedSlide, this.data.id).subscribe(
       res => {
         if (res) {
@@ -156,7 +162,6 @@ export class SlideComponent extends CarouselSlideComponent {
             'Success-Message',
             'Slide updated successfully'
           );
-          //console.log(res);
         } else this.toastrService.error('Wrong current password.', 'Error');
       },
       error => {
@@ -178,8 +183,10 @@ export class SlideComponent extends CarouselSlideComponent {
     return false;
   }
 
-  private filterNonBlankOptions(updatedArray: string[]) {
-    const nonEmptyUpdatedArray = updatedArray.filter(value => value !== '');
+  private filterNonBlankOptions(updatedArray: OptionModel[]) {
+    const nonEmptyUpdatedArray = updatedArray.filter(
+      value => value.option !== ''
+    );
     if (nonEmptyUpdatedArray.length < 2) return true;
     return false;
   }
@@ -199,11 +206,13 @@ export class SlideComponent extends CarouselSlideComponent {
   }
 
   private areArrayEquals(
-    updatedArray: string[],
-    originalArray: string[]
+    updatedArray: OptionModel[],
+    originalArray: OptionModel[]
   ): boolean {
     if (updatedArray.length < originalArray.length) return false;
-    const nonEmptyUpdatedArray = updatedArray.filter(value => value !== '');
+    const nonEmptyUpdatedArray = updatedArray.filter(
+      value => value.option !== ''
+    );
 
     if (nonEmptyUpdatedArray.length !== originalArray.length) return false;
 

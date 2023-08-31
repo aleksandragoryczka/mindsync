@@ -1,3 +1,5 @@
+import { OptionModel } from './option.model';
+
 export interface InputPopupModel {
   type: string;
   placeholder?: string;
@@ -26,5 +28,5 @@ export interface InputPopupFullDataModel {
   description?: string;
   buttons?: ButtonPopupModel[];
   inputs: Record<string, InputPopupModel>;
-  options?: string[];
+  options?: OptionModel[];
 }

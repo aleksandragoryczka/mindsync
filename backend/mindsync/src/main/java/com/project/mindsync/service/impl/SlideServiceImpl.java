@@ -75,6 +75,7 @@ public class SlideServiceImpl implements SlideService {
 				for (Option existingOption : existingOptions) {
 					if (existingOption.getId() != null && existingOption.getId().equals(updatedOption.getId())) {
 						existingOption.setOption(updatedOption.getOption());
+						existingOption.setIsCorrect(updatedOption.getIsCorrect());
 						break;
 					}
 				}
@@ -111,6 +112,7 @@ public class SlideServiceImpl implements SlideService {
 			if (updatedOption.getId() == null) {
 				Option newOption = new Option();
 				newOption.setOption(updatedOption.getOption());
+				newOption.setIsCorrect(updatedOption.getIsCorrect());
 				newOption.setSlide(existingSlide);
 				existingOptions.add(newOption);
 				optionRepository.save(newOption);
@@ -118,5 +120,4 @@ public class SlideServiceImpl implements SlideService {
 		}
 		return existingOptions;
 	}
-
 }
