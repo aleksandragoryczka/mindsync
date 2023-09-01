@@ -1,4 +1,4 @@
 export enum SlideTypes {
   MULTIPLE_CHOICE = 'MULTIPLE_CHOICE',
-  WORDCLOUD = 'WORDCLOUD',
+  WORD_CLOUD = 'WORD_CLOUD',
 }

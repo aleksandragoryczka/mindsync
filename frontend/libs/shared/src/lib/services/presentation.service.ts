@@ -32,4 +32,10 @@ export class PresentationService {
       `${environment.apiUrl}/presentation/${id}/slides`
     );
   }
+
+  deletePresentation(id: string): Observable<boolean> {
+    return this.http.delete<boolean>(
+      `${environment.apiUrl}/presentation/${id}`
+    );
+  }
 }

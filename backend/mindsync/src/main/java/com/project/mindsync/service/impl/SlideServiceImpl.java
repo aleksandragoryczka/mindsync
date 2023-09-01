@@ -93,6 +93,15 @@ public class SlideServiceImpl implements SlideService {
 			existingOptions = updateOptions(existingOptions, updatedOptions, slide);
 
 			slide.setOptions(existingOptions);
+		} else {
+			if (slide.getOptions().size() != 0) {
+				List<Option> existingOptions = slide.getOptions();
+				for (Option existingOption : existingOptions) {
+					existingOption.setSlide(null);
+					optionRepository.delete(existingOption);
+				}
+				slide.setOptions(null);
+			}
 		}
 		return slideRepository.save(slide);
 	}

@@ -18,7 +18,7 @@ export class SlideService {
     );
   }
 
-  public deleteSlide(id: string): Observable<boolean> {
+  deleteSlide(id: string): Observable<boolean> {
     return this.http.delete<boolean>(`${environment.apiUrl}/slide/${id}`);
   }
 }

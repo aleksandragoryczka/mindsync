@@ -9,17 +9,17 @@ import { PaginatedResult } from '../models/paginated-result.model';
 export class ShowService {
   constructor(private http: HttpClient) {}
 
-  public deleteShow(id: string): Observable<boolean> {
+  deleteShow(id: string): Observable<boolean> {
     return this.http.delete<boolean>(`${environment.apiUrl}/show/${id}`);
   }
 
-  public getExcelFile(id: string): Observable<Blob> {
+  getExcelFile(id: string): Observable<Blob> {
     return this.http.get(`${environment.apiUrl}/show/${id}/excel`, {
       responseType: 'blob',
     });
   }
 
-  public getScreenshotsByShowId(
+  getScreenshotsByShowId(
     id: string
   ): Observable<PaginatedResult<ScreenshotModel>> {
     return this.http.get<PaginatedResult<ScreenshotModel>>(
