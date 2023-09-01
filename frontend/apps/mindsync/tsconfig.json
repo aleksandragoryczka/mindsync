@@ -10,7 +10,10 @@
     "noFallthroughCasesInSwitch": true
   },
   "files": [],
-  "include": [],
+  "include": [
+    "node_modules/@amcharts/amcharts4/core",
+    "node_modules/@amcharts/amcharts4/charts"
+  ],
   "references": [
     {
       "path": "./tsconfig.app.json"

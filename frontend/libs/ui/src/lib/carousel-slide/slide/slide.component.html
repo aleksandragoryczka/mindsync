@@ -12,12 +12,13 @@
         </div>
         <div class="mindsync-default-content-data data-slide"
             [style.background-color]="ColorFormatter.lightenColor(data.headerColor)">
-            <div class=" options-container" *ngIf="data.type==='MULTIPLE_CHOICE'">
+            <div *ngIf="data.type==='MULTIPLE_CHOICE'" class="options-container">
                 <div class="option" [style.color]="data.titleColor" *ngFor="let opt of data.options">
                     <mat-checkbox disabled="true" class="checkbox" [checked]="opt.isCorrect"></mat-checkbox>
                     {{opt.option}}
                 </div>
             </div>
+            <div *ngIf="data.type==='WORD_CLOUD'" id="chartdiv-{{data.id}}" class="chartdiv"></div>
         </div>
     </div>
 </div>

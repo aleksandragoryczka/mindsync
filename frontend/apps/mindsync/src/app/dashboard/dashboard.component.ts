@@ -24,7 +24,7 @@ export class DashboardComponent {
   slideConfig = {
     slidesToShow: 4,
     slidesToScroll: 4,
-    autoplay: true,
+    //autoplay: true,
     arrows: true,
     autoplaySpeed: 3400,
     infinite: true,
