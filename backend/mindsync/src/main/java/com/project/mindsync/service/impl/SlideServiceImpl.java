@@ -1,5 +1,6 @@
 package com.project.mindsync.service.impl;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -19,11 +20,13 @@ import com.project.mindsync.dto.response.PagedResponseDto;
 import com.project.mindsync.exception.ResourceNotFoundException;
 import com.project.mindsync.exception.UnauthorizedException;
 import com.project.mindsync.model.Option;
+import com.project.mindsync.model.Presentation;
 import com.project.mindsync.model.Show;
 import com.project.mindsync.model.Slide;
 import com.project.mindsync.model.SlideType;
 import com.project.mindsync.model.enums.SlideTypeName;
 import com.project.mindsync.repository.OptionRepository;
+import com.project.mindsync.repository.PresentationRepository;
 import com.project.mindsync.repository.SlideRepository;
 import com.project.mindsync.repository.SlideTypeRepository;
 import com.project.mindsync.security.UserPrincipal;
@@ -39,6 +42,9 @@ public class SlideServiceImpl implements SlideService {
 	private SlideRepository slideRepository;
 
 	@Autowired
+	private PresentationRepository presentationRepository;
+
+	@Autowired
 	private SlideTypeRepository slideTypeRepository;
 
 	@Autowired
@@ -46,6 +52,32 @@ public class SlideServiceImpl implements SlideService {
 
 	// TODO: isGetSLide() is needed?
 	// TODO: update single pslide is needed?
+
+	@Override
+	public ResponseEntity<Slide> addSlide(SlideRequestDto slideRequest, Long presentationId) {
+		Presentation presentation = presentationRepository.findById(presentationId).orElseThrow(
+				() -> new ResourceNotFoundException(AppConstants.PRESENTATION, AppConstants.ID, presentationId));
+		Slide slide = new Slide();
+		slide.setTitle(slideRequest.getTitle());
+		slide.setDisplayTime(slideRequest.getDisplayTime());
+		slide.setHeaderColor(slideRequest.getHeaderColor());
+		slide.setTitleColor(slideRequest.getTitleColor());
+		SlideType slideType = slideTypeRepository.findByName(SlideTypeName.valueOf(slideRequest.getType()));
+		slide.setType(slideType);
+		slide.setPresentation(presentation);
+
+		if (AppConstants.OPTIONS_SLIDES_TYPES.contains(slideType.getName())) {
+			List<Option> options = new ArrayList<Option>(slideRequest.getOptions().size());
+			for (Option option : slideRequest.getOptions()) {
+				Option newOption = this.createOption(option, slide);
+				slide.addOption(newOption);
+				options.add(newOption);
+			}
+			slide.setOptions(options);
+		}
+		Slide savedSlide = slideRepository.save(slide);
+		return ResponseEntity.ok().body(savedSlide);
+	}
 
 	@Override
 	public PagedResponseDto<Slide> getAllSlidesByPresentation(Long presentationId, int page, int size) {
@@ -145,5 +177,13 @@ public class SlideServiceImpl implements SlideService {
 			}
 		}
 		return existingOptions;
+	}
+
+	private Option createOption(Option optionRequest, Slide slide) {
+		Option newOption = new Option();
+		newOption.setIsCorrect(optionRequest.getIsCorrect());
+		newOption.setOption(optionRequest.getOption());
+		newOption.setSlide(slide);
+		return newOption;
 	}
 }

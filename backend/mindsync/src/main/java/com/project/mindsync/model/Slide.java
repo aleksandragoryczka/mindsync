@@ -55,7 +55,7 @@ public class Slide extends DateAudit {
 
 	@Column(name = "header_color")
 	private String headerColor;
-	
+
 	@Column(name = "title_color")
 	private String titleColor;
 
@@ -86,6 +86,13 @@ public class Slide extends DateAudit {
 		} else {
 			this.displayTime = displayTime;
 		}
+	}
+
+	public void addOption(Option option) {
+		if (options == null)
+			this.options = new ArrayList<Option>();
+		options.add(option);
+		option.setSlide(this);
 	}
 
 }
