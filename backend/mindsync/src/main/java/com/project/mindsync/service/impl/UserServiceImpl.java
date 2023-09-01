@@ -147,7 +147,7 @@ public class UserServiceImpl implements UserService {
 	private UserWithRoleResponseDto mapUserToUserWithRoleResponseDto(User user) {
 		List<String> roleNames = user.getRoles().stream().map(role -> role.getName().toString())
 				.collect(Collectors.toList());
-		return new UserWithRoleResponseDto(user.getName(), user.getSurname(), user.getUsername(), user.getEmail(),
-				roleNames);
+		return new UserWithRoleResponseDto(user.getId(), user.getName(), user.getSurname(), user.getUsername(),
+				user.getEmail(), roleNames);
 	}
 }

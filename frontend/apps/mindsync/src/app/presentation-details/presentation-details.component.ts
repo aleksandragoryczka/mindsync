@@ -186,12 +186,11 @@ export class PresentationDetailsComponent implements OnInit {
       this.presentationService
         .deletePresentation(this.presentationId)
         .subscribe(isDeleted => {
-          if (!isDeleted) this.toastrService.warning('Something went wrong');
-          else {
+          if (isDeleted) {
             this.dialog.closeAll();
             this.router.navigateByUrl('/dashboard');
             this.toastrService.success('Show deleted successfully');
-          }
+          } else this.toastrService.warning('Something went wrong');
         });
     }
   }

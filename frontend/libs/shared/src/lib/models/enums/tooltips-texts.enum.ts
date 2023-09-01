@@ -6,4 +6,6 @@ export enum TooltipTexts {
   edit = 'Edit',
   backgroundColor = 'Main theme',
   textColor = 'Text color',
+  giveAdmin = 'Give Admin',
+  removeAdmin = 'Remove Admin',
 }

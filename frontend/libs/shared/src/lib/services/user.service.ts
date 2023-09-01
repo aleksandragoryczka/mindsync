@@ -10,6 +10,7 @@ import { environment } from '../../../../../apps/mindsync/src/environments/envir
 import { RegisterModel } from '../models/register.model';
 import { UpdatedUserModel } from '../models/updated-user.model';
 import { UpdatedPasswordModel } from '../models/updated-password.model';
+import { PaginatedResult } from '../models/paginated-result.model';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
@@ -91,6 +92,26 @@ export class UserService {
     return this.http.put<boolean>(
       `${environment.apiUrl}/user/${userId}/password`,
       updatedPasswordModel
+    );
+  }
+
+  getAllUsers(page = 0, size = 8): Observable<PaginatedResult<User>> {
+    return this.http.get<PaginatedResult<User>>(
+      `${environment.apiUrl}/user/all?page=${page}&size=${size}`
+    );
+  }
+
+  giveAdmin(idUser: string): Observable<boolean> {
+    return this.http.put<boolean>(
+      `${environment.apiUrl}/user/${idUser}/giveAdmin`,
+      null
+    );
+  }
+
+  removeAdmin(idUser: string): Observable<boolean> {
+    return this.http.put<boolean>(
+      `${environment.apiUrl}/user/${idUser}/removeAdmin`,
+      null
     );
   }
 

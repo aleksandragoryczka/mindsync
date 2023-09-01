@@ -1,1 +1,13 @@
-<p>admin-panel works!</p>
+<div class="mindsync-default-container">
+    <div class="mindsync-default-content-container">
+        <div class="mindsync-default-content-heading">
+            Users
+        </div>
+        <div class="mindsync-default-content-data">
+            <project-shared-table [caption]="caption" [headers]="headers" [data]="(listOfUsers$ | async) ?? []"
+                [currentPage]="(currentPage$ | async) ?? 1" [totalNumberOfPages]="totalNumberOfPages"
+                [rowsPerPage]="rowsPerPage" (nextPageEvent)="setPage($event)"
+                (prevPageEvent)="setPage($event)"></project-shared-table>
+        </div>
+    </div>
+</div>

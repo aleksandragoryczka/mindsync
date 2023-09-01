@@ -59,9 +59,6 @@ export class SlideComponent
     this.slideActions = [
       {
         icon: 'timer',
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        func: () => {},
-        arg: '',
         tooltip: `Time of display: ${this.data.displayTime}s`,
       },
       {
@@ -109,13 +106,12 @@ export class SlideComponent
 
   private deleteSlide(slideId: string) {
     this.slideService.deleteSlide(slideId).subscribe(isDeleted => {
-      if (!isDeleted) this.toastrService.warning('Something went wrong');
-      else {
+      if (isDeleted)
         StorageRealod.reloadWithMessage(
           'Success-Message',
           'Slide deleted successfully'
         );
-      }
+      else this.toastrService.warning('Something went wrong');
     });
   }
 

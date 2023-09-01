@@ -6,7 +6,7 @@
             <div class=" nav-section">
                 <ng-container *ngFor="let action of slideActions">
                     <mat-icon class="mindsync-icon mx-1 tooltip-message" [ngbTooltip]="action.tooltip"
-                        (click)="action.func(action.arg)">{{ action.icon }}</mat-icon>
+                        (click)="action?.func(action.arg)">{{ action.icon }}</mat-icon>
                 </ng-container>
             </div>
         </div>

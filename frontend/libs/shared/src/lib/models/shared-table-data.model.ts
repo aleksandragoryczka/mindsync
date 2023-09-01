@@ -5,7 +5,7 @@ export interface SharedTableData {
 
 export interface SharedTableDataFunc {
   icon: string;
-  func: CallableFunction;
-  arg: string | object;
+  func?: CallableFunction;
+  arg?: string | object;
   tooltip?: string;
 }
