@@ -98,9 +98,10 @@
                                             <input type="file" accept="image/*" (change)="onFileSelected($event)"
                                                 class="file-input" #fileUpload>
                                             <div class="file-upload">
-                                                {{ uploadedFileName || "No file uploaded yet." }}
+                                                {{ StringFormatter.reduceString(uploadedFileName) || "No file uploaded
+                                                yet." }}
                                                 <button mat-fab class="upload-btn" (click)="fileUpload.click()">
-                                                    <mat-icon>attach_file</mat-icon>
+                                                    <mat-icon class="attach-icon">attach_file</mat-icon>
                                                 </button>
                                             </div>
                                         </div>

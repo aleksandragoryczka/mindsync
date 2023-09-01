@@ -18,7 +18,6 @@ import { SlideComponent } from './carousel-slide/slide/slide.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { EditSlidePopupComponent } from './carousel-slide/slide/edit-slide-popup/edit-slide-popup.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxColorsModule } from 'ngx-colors';
@@ -50,7 +49,6 @@ import { NgxColorsModule } from 'ngx-colors';
     ViewDirective,
     CarouselSlideComponent,
     SlideComponent,
-    EditSlidePopupComponent,
   ],
   exports: [
     CardSlideComponent,

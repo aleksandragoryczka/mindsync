@@ -20,7 +20,6 @@ import { RegisterModel } from 'libs/shared/src/lib/models/register.model';
 import { ToastrService } from 'ngx-toastr';
 import { SlideTypes } from 'libs/shared/src/lib/models/enums/slideTypes.enum';
 import { TooltipTexts } from 'libs/shared/src/lib/models/enums/tooltips-texts.enum';
-import { OptionModel } from 'libs/shared/src/lib/models/option.model';
 import StringFormatter from 'libs/shared/src/lib/utils/string-formatter';
 
 @Component({
@@ -36,6 +35,7 @@ export class PopupWithInputsComponent implements OnInit {
   isMultipleChoiceType!: boolean;
   TooltipTexts = TooltipTexts;
   uploadedFileName = '';
+  StringFormatter = StringFormatter;
 
   constructor(
     public dialogRef: MatDialogRef<PopupWithInputsComponent>,
@@ -47,7 +47,6 @@ export class PopupWithInputsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    //console.log(this.data);
     this.loginForm = this.formBuilder.group({
       email: ['', Validators.required],
       password: ['', Validators.required],

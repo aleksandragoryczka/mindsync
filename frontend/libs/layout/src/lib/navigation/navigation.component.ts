@@ -173,7 +173,6 @@ export class NavigationComponent implements OnInit {
         .addPresentation(formData)
         .subscribe(async isCreated => {
           if (isCreated) {
-            console.log(isCreated);
             await this.router.navigateByUrl(`/presentation/${isCreated.id}`);
             StorageRealod.reloadWithMessage(
               'Success-Message',

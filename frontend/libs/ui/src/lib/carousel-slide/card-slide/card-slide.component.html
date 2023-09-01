@@ -6,12 +6,14 @@
             <mat-card-subtitle>Created at: {{ StringFormatter.getDateFromISOString(data.createdAt ?? '') }}
             </mat-card-subtitle>
         </mat-card-header>
-        <img mat-card-image [src]="'data:image/png;base64, ' + data.picture">
+        <div class="img-container">
+            <img mat-card-image [src]="'data:image/png;base64, ' + data.picture">
+        </div>
         <mat-card-actions>
             <div class=" d-flex flex-column">
                 <div class="mindsync-btn mindsync-btn-primary">
                     <mat-icon>airplay</mat-icon>
-                    Start
+                    Start show
                 </div>
                 <div class="mindsync-btn mindsync-btn-secondary" (click)="getDetailsButton()">
                     <mat-icon>open_in_new</mat-icon>

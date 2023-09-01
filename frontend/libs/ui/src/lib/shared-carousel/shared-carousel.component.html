@@ -1,8 +1,17 @@
 <project-carousel-dynamic-element [hidden]="true"></project-carousel-dynamic-element>
-<div>
-    <ngx-slick-carousel class="carousel-container" #clickModal="slick-carousel" [config]="slideConfig">
-        <div ngxSlickItem *ngFor="let item of elements" class="shared-slide">
-            <ng-container *view="item.view"></ng-container>
-        </div>
-    </ngx-slick-carousel>
+<div *ngIf="elements.length === 0; else carouselContent" class="no-content">
+    <img src="libs/ui/src/assets/images/no-results.png">
+    <div>
+        <h2>No content yet</h2>
+        <h2>Add new slide first</h2>
+    </div>
 </div>
+<ng-template #carouselContent>
+    <div>
+        <ngx-slick-carousel class="carousel-container" #clickModal="slick-carousel" [config]="slideConfig">
+            <div ngxSlickItem *ngFor="let item of elements" class="shared-slide">
+                <ng-container *view="item.view"></ng-container>
+            </div>
+        </ngx-slick-carousel>
+    </div>
+</ng-template>

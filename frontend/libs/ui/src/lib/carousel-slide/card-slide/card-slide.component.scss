@@ -1,6 +1,5 @@
 .card-wrapper {
   width: 332px;
-  //height: 500px;
 }
 
 .mdc-card {
@@ -16,4 +15,17 @@
 .mindsync-btn {
   padding: 12px 20px;
   min-width: 260px;
+}
+
+.img-container {
+  width: 100%;
+  max-width: 400px;
+  height: 300px;
+  overflow: hidden;
+}
+
+img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }

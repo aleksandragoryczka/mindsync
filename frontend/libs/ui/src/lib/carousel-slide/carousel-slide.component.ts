@@ -10,7 +10,6 @@ export class CarouselSlideComponent implements OnInit {
 
   ngOnInit(): void {
     this._renderer.addClass(this._ngEl.nativeElement, 'project-carousel-slide');
-    // console.log('tutaj' + this.data.displayTime);
   }
 
   public get element(): any {

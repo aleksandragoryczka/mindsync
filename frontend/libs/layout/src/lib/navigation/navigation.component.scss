@@ -135,6 +135,11 @@ mat-icon {
   margin-bottom: 20px;
 }
 
+a:not([href]):not([class]):hover,
+a:not([href]):not([class]) {
+  color: $light-green !important;
+}
+
 @media screen and (max-width: 1100px) {
   .question-box-img {
     width: 500px;
