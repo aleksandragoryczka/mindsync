@@ -21,6 +21,7 @@ import { ToastrService } from 'ngx-toastr';
 import { SlideTypes } from 'libs/shared/src/lib/models/enums/slideTypes.enum';
 import { TooltipTexts } from 'libs/shared/src/lib/models/enums/tooltips-texts.enum';
 import { OptionModel } from 'libs/shared/src/lib/models/option.model';
+import StringFormatter from 'libs/shared/src/lib/utils/string-formatter';
 
 @Component({
   selector: 'project-popup-with-inputs',
@@ -34,6 +35,7 @@ export class PopupWithInputsComponent implements OnInit {
   submitted = false;
   isMultipleChoiceType!: boolean;
   TooltipTexts = TooltipTexts;
+  uploadedFileName = '';
 
   constructor(
     public dialogRef: MatDialogRef<PopupWithInputsComponent>,
@@ -169,6 +171,12 @@ export class PopupWithInputsComponent implements OnInit {
         'No option to be deleted'
       );
     else this.data.options?.pop();
+  }
+
+  onFileSelected(event: any): void {
+    const file: File = event.target.files[0];
+    this.uploadedFileName = file.name;
+    this.data.inputs['graphic'].value = file;
   }
 
   async buttonClick(button: ButtonPopupModel): Promise<void> {

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {
+  ButtonPopupModel,
+  ButtonTypes,
   InputPopupFullDataModel,
   InputPopupModel,
 } from '../../../../shared/src/lib/models/input-popup-data.model';
@@ -8,6 +10,10 @@ import { PopupWithInputsComponent } from '../../../../ui/src/lib/popup-with-inpu
 import { UserService } from '../../../../shared/src/lib/services/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { options } from '@amcharts/amcharts4/core';
+import { PresentationService } from 'libs/shared/src/lib/services/presentation.service';
+import { PresentationModel } from 'libs/shared/src/lib/models/presentation.model';
+import StorageRealod from 'libs/shared/src/lib/utils/storage-reload';
 
 @Component({
   selector: 'project-navigation',
@@ -24,7 +30,8 @@ export class NavigationComponent implements OnInit {
     public userService: UserService,
     public router: Router,
     private activatedRoute: ActivatedRoute,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private presentationService: PresentationService
   ) {}
 
   ngOnInit(): void {
@@ -95,6 +102,39 @@ export class NavigationComponent implements OnInit {
     ];
   }
 
+  openCreatePresentationPopup(): void {
+    const inputs: Record<string, InputPopupModel> = {
+      ['title']: {
+        value: '',
+        type: 'text',
+        placeholder: 'Presentation title',
+      },
+      ['graphic']: {
+        value: '',
+        type: 'img',
+        placeholder: 'Upload graphic',
+      },
+    };
+    const buttons: ButtonPopupModel[] = [
+      {
+        type: ButtonTypes.PRIMARY,
+        text: 'Create',
+        onClick: () => this.createPresentation(inputs),
+      },
+      {
+        type: ButtonTypes.SECONDARY,
+        text: 'Cancel',
+      },
+    ];
+    const data: InputPopupFullDataModel = {
+      title: 'New presentation',
+      description: 'Fill basic data about new presentation:',
+      inputs: inputs,
+      buttons: buttons,
+    };
+    this.dialog.open(PopupWithInputsComponent, { data: data });
+  }
+
   async logOut(text: string): Promise<void> {
     if (text === 'Log Out') {
       this.userService.logOut();
@@ -115,6 +155,33 @@ export class NavigationComponent implements OnInit {
 
   closeDropdown(): void {
     this.isDropdownOpen = false;
+  }
+
+  private createPresentation(inputs: Record<string, InputPopupModel>): void {
+    if (inputs['graphic'].value == '')
+      this.toastrService.warning('Upload a presentation graphic first');
+    else {
+      const formData = new FormData();
+      formData.append(
+        'picture',
+        inputs['graphic'].value as Blob,
+        (inputs['graphic'].value as File).name
+      );
+      formData.append('title', String(inputs['title'].value));
+
+      this.presentationService
+        .addPresentation(formData)
+        .subscribe(async isCreated => {
+          if (isCreated) {
+            console.log(isCreated);
+            await this.router.navigateByUrl(`/presentation/${isCreated.id}`);
+            StorageRealod.reloadWithMessage(
+              'Success-Message',
+              'Presentation added successfully'
+            );
+          }
+        });
+    }
   }
 
   private verifyUser(): void {

@@ -4,7 +4,7 @@ export interface InputPopupModel {
   type: string;
   placeholder?: string;
   selectOptions?: SelectOptionPopupModel[];
-  value?: number | string | string[];
+  value?: number | string | string[] | File;
 }
 
 export interface SelectOptionPopupModel {

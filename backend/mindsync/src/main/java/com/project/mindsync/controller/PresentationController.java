@@ -10,6 +10,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -50,8 +51,10 @@ public class PresentationController {
 
 	@PostMapping("")
 	@PreAuthorize("hasRole('USER')")
-	public ResponseEntity<Presentation> addPresentation(@Valid @RequestBody PresentationRequestDto presentationRequest,
-			@CurrentUser UserPrincipal currentUser) throws IOException {
+	public ResponseEntity<Presentation> addPresentation(
+			@ModelAttribute @Valid PresentationRequestDto presentationRequest, @CurrentUser UserPrincipal currentUser)
+			throws IOException {
+		System.out.println(presentationRequest.getTitle());
 		return presentationService.addPresentation(presentationRequest, currentUser);
 	}
 

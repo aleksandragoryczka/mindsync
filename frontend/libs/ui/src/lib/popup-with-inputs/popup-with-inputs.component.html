@@ -94,6 +94,16 @@
                                                 </mat-option>
                                             </mat-select>
                                         </mat-form-field>
+                                        <div *ngSwitchCase="'img'" class="img-upload-container">
+                                            <input type="file" accept="image/*" (change)="onFileSelected($event)"
+                                                class="file-input" #fileUpload>
+                                            <div class="file-upload">
+                                                {{ uploadedFileName || "No file uploaded yet." }}
+                                                <button mat-fab class="upload-btn" (click)="fileUpload.click()">
+                                                    <mat-icon>attach_file</mat-icon>
+                                                </button>
+                                            </div>
+                                        </div>
                                     </ng-container>
                                 </div>
                             </ng-container>

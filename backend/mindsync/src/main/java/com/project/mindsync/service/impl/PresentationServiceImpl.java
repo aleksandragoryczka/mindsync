@@ -136,15 +136,13 @@ public class PresentationServiceImpl implements PresentationService {
 		presentation.setUser(user);
 		presentation.setCode(generateCode());
 
-		List<Slide> slides = new ArrayList<Slide>(presentationRequest.getSlides().size());
-
-		for (SlideRequestDto slideRequest : presentationRequest.getSlides()) {
-			Slide newSlide = createSlide(slideRequest, presentation);
-
-			presentation.addSlide(newSlide);
-			slides.add(newSlide);
-		}
-
+		/*
+		 * List<Slide> slides = new
+		 * ArrayList<Slide>(presentationRequest.getSlides().size()); for
+		 * (SlideRequestDto slideRequest : presentationRequest.getSlides()) { Slide
+		 * newSlide = createSlide(slideRequest, presentation);
+		 * presentation.addSlide(newSlide); slides.add(newSlide); }
+		 */
 		Presentation savedPresentation = presentationRepository.save(presentation);
 		return ResponseEntity.ok().body(savedPresentation);
 	}

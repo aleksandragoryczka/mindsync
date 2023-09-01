@@ -26,7 +26,7 @@ import StorageRealod from 'libs/shared/src/lib/utils/storage-reload';
   templateUrl: './presentation-details.component.html',
   styleUrls: ['./presentation-details.component.scss'],
 })
-export class PresentationDetailsComponent {
+export class PresentationDetailsComponent implements OnInit {
   defaultHedaerColor = '#538d22';
   defualtTitleColor = '#FFFFFF';
   defaultDisplayTime = '20';
@@ -56,6 +56,14 @@ export class PresentationDetailsComponent {
     if (this.presentationId) {
       this.listOfSlides$ = this.loadSlides(this.presentationId); //TODO: to be replaced with 'id'
       //console.log(this.listOfSlides$);
+    }
+  }
+
+  ngOnInit(): void {
+    const updateUserSuccessMessage = localStorage.getItem('Success-Message');
+    if (updateUserSuccessMessage) {
+      this.toastrService.success(updateUserSuccessMessage);
+      localStorage.removeItem('Success-Message');
     }
   }
 

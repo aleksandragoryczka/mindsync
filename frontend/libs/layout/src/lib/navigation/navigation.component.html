@@ -16,7 +16,7 @@
                                     <div *ngIf="isDropdownOpen" (mouseleave)="closeDropdown()">
                                         <ul class="dropdown-menu">
                                             <li><a routerLink="/dashboard">My presentations</a></li>
-                                            <li><a routerLink="/new">Create new</a>
+                                            <li><a (click)="openCreatePresentationPopup()">Create new</a>
                                             </li>
                                         </ul>
                                     </div>

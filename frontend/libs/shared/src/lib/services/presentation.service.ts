@@ -11,6 +11,13 @@ import { PresentationWithSlides } from '../models/presentation-with-slides.model
 export class PresentationService {
   constructor(private http: HttpClient) {}
 
+  addPresentation(newPresentation: FormData): Observable<PresentationModel> {
+    return this.http.post<PresentationModel>(
+      `${environment.apiUrl}/presentation`,
+      newPresentation
+    );
+  }
+
   getPresentationsForUser(): Observable<PaginatedResult<PresentationModel>> {
     return this.http.get<PaginatedResult<PresentationModel>>(
       `${environment.apiUrl}/user/presentations`
