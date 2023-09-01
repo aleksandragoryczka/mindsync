@@ -135,6 +135,12 @@ export class PresentationDetailsComponent {
     this.dialog.open(PopupWithInputsComponent, { data: data });
   }
 
+  async getShowsButton() {
+    await this.router.navigate([`/${this.presentationId}/shows`], {
+      queryParams: { title: this.presentation.title },
+    });
+  }
+
   private addSlide(
     inputs: Record<string, InputPopupModel>,
     options: OptionModel[]

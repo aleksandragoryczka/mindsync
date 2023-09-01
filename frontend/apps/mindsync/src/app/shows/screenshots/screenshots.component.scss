@@ -19,3 +19,8 @@ img {
   width: 600px;
   height: 400px;
 }
+
+::ng-deep .mat-mdc-dialog-container .mdc-dialog__surface,
+.screenshots-content-container {
+  min-width: 900px !important;
+}

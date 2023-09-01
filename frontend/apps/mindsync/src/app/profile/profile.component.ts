@@ -98,6 +98,7 @@ export class ProfileComponent implements OnInit {
       inputs: inputs,
       buttons: buttons,
     };
+    console.log(fullPopupData);
     this.dialog.open(PopupWithInputsComponent, { data: fullPopupData });
   }
 

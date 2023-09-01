@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.mindsync.model.audit.DateAudit;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -31,7 +32,9 @@ public class Presentation extends DateAudit {
 
 	private String title;
 	private String code;
-	private String thumbnailUrl;
+	
+	@Column(name = "picture", columnDefinition = "BYTEA")
+	private byte[] picture;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_id", nullable = false)

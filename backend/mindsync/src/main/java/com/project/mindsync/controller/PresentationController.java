@@ -1,5 +1,7 @@
 package com.project.mindsync.controller;
 
+import java.io.IOException;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +51,7 @@ public class PresentationController {
 	@PostMapping("")
 	@PreAuthorize("hasRole('USER')")
 	public ResponseEntity<Presentation> addPresentation(@Valid @RequestBody PresentationRequestDto presentationRequest,
-			@CurrentUser UserPrincipal currentUser) {
+			@CurrentUser UserPrincipal currentUser) throws IOException {
 		return presentationService.addPresentation(presentationRequest, currentUser);
 	}
 
@@ -57,7 +59,7 @@ public class PresentationController {
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	public ResponseEntity<Presentation> updatePresentation(@PathVariable(name = "id") Long id,
 			@Valid @RequestBody PresentationRequestDto updatedPresentationRequest,
-			@CurrentUser UserPrincipal currentUser) {
+			@CurrentUser UserPrincipal currentUser) throws IOException {
 		Presentation presentation = presentationService.updatePresentation(id, updatedPresentationRequest, currentUser);
 
 		return ResponseEntity.ok().body(presentation);

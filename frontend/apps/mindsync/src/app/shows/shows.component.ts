@@ -150,7 +150,7 @@ export class ShowsComponent implements OnInit {
         ],
         actions: [
           {
-            icon: 'slideshow',
+            icon: 'photo',
             func: (arg: string) => {
               this.openScreenshotsShowPreview(arg);
             },

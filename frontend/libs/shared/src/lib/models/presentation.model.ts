@@ -5,7 +5,7 @@ export interface PresentationModel {
   title?: string;
   code?: string;
   createdAt?: string;
-  thumbnailUrl?: string;
+  picture?: string;
   slides?: SlideModel[];
   shows?: ShowModel[];
 }

@@ -85,7 +85,7 @@ export class PopupWithInputsComponent implements OnInit {
   getRecordValues(
     record: Record<string, InputPopupModel>
   ): [string, InputPopupModel][] {
-    record['type'].value === SlideTypes.MULTIPLE_CHOICE
+    record['type'] && record['type'].value === SlideTypes.MULTIPLE_CHOICE
       ? (this.isMultipleChoiceType = true)
       : (this.isMultipleChoiceType = false);
     return Object.entries(record);

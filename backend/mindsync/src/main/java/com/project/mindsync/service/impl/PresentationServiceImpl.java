@@ -1,5 +1,6 @@
 package com.project.mindsync.service.impl;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -125,12 +126,12 @@ public class PresentationServiceImpl implements PresentationService {
 
 	@Override
 	public ResponseEntity<Presentation> addPresentation(PresentationRequestDto presentationRequest,
-			UserPrincipal currentUser) {
+			UserPrincipal currentUser) throws IOException {
 		User user = userRepository.getUser(currentUser);
 
 		Presentation presentation = new Presentation();
 		presentation.setTitle(presentationRequest.getTitle());
-		presentation.setThumbnailUrl(presentationRequest.getThumbnailUrl());
+		presentation.setPicture(presentationRequest.getPicture().getBytes());
 
 		presentation.setUser(user);
 		presentation.setCode(generateCode());
@@ -151,12 +152,12 @@ public class PresentationServiceImpl implements PresentationService {
 	@Override
 	@Transactional
 	public Presentation updatePresentation(Long id, PresentationRequestDto updatedPresentationRequest,
-			UserPrincipal currentUser) {
+			UserPrincipal currentUser) throws IOException {
 		Presentation presentation = presentationRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException(AppConstants.PRESENTATION, AppConstants.ID, id));
 		if (AppUtils.checkUserIsCurrentUserOrAdmin(presentation.getUser(), currentUser)) {
 			presentation.setTitle(updatedPresentationRequest.getTitle());
-			presentation.setThumbnailUrl(updatedPresentationRequest.getThumbnailUrl());
+			presentation.setPicture(updatedPresentationRequest.getPicture().getBytes());
 			List<Slide> existingSlides = presentation.getSlides();
 			List<SlideRequestDto> updatedSlides = updatedPresentationRequest.getSlides();
 

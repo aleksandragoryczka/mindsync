@@ -1,5 +1,7 @@
 package com.project.mindsync.service;
 
+import java.io.IOException;
+
 import org.springframework.http.ResponseEntity;
 import com.project.mindsync.dto.request.PresentationRequestDto;
 import com.project.mindsync.dto.response.ApiResponseDto;
@@ -14,10 +16,10 @@ public interface PresentationService {
 
 	Presentation getPresentation(Long id);
 
-	ResponseEntity<Presentation> addPresentation(PresentationRequestDto presentationRequest, UserPrincipal currentUser);
+	ResponseEntity<Presentation> addPresentation(PresentationRequestDto presentationRequest, UserPrincipal currentUser) throws IOException;
 
 	Presentation updatePresentation(Long id, PresentationRequestDto updatedPresentationRequest,
-			UserPrincipal currentUser);
+			UserPrincipal currentUser) throws IOException;
 
 	ApiResponseDto deletePresentation(Long id, UserPrincipal currentUser);
 
