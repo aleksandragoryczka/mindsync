@@ -21,6 +21,7 @@ import { ProfilePopupComponent } from './profile/profile-popup/profile-popup.com
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ReactiveFormsModule } from '@angular/forms';
+import { StartShowComponent } from './start-show/start-show.component';
 
 export function tokenGetter() {
   return localStorage.getItem('Access-Token');
@@ -36,6 +37,7 @@ export function tokenGetter() {
     ProfileComponent,
     AdminPanelComponent,
     ProfilePopupComponent,
+    StartShowComponent,
   ],
   imports: [
     BrowserModule,

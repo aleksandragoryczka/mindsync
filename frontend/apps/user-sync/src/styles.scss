@@ -1,0 +1,19 @@
+/* You can add global styles to this file, and also import other style files */
+@import '../../../libs/ui/src/lib/variables';
+@import '../../../libs/ui/src/lib/containers.scss';
+@import '../../../libs/ui/src/lib/utilities.scss';
+@import 'material-icons/iconfont/material-icons.css';
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
+@import '../../../node_modules/ngx-toastr/toastr.css';
+
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+  font-family: 'Open Sans';
+}
+body {
+  margin: 0;
+  background-color: $white;
+  min-width: 900px;
+}

@@ -6,7 +6,6 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
-import { SlideComponent } from './slide/slide.component';
 
 @NgModule({
   imports: [
@@ -18,6 +17,6 @@ import { SlideComponent } from './slide/slide.component';
     MatDialogModule,
   ],
   exports: [NavigationComponent, RouterModule],
-  declarations: [NavigationComponent, SlideComponent],
+  declarations: [NavigationComponent],
 })
 export class LayoutModule {}
