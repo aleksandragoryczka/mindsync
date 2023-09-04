@@ -8,6 +8,7 @@ import { StartComponent } from './start/start.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { SlidesComponent } from './slides/slides.component';
 import { AppRoutingModule } from './app-routing.module';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [AppComponent, StartComponent, SlidesComponent],
@@ -18,6 +19,14 @@ import { AppRoutingModule } from './app-routing.module';
     SharedModule,
     LayoutModule,
     MatProgressSpinnerModule,
+    ToastrModule.forRoot({
+      timeOut: 3500,
+      closeButton: true,
+      preventDuplicates: true,
+      resetTimeoutOnDuplicate: true,
+      progressBar: true,
+      progressAnimation: 'decreasing',
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent],

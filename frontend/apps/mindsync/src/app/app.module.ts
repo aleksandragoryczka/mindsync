@@ -24,7 +24,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { StartShowComponent } from './start-show/start-show.component';
 import { StartShowPopupComponent } from './start-show/start-show-popup/start-show-popup.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { ShowSlideComponent } from './start-show/show-slide/show-slide.component';
+import { StatisticsComponent } from './start-show/statistics/statistics.component';
 
 export function tokenGetter() {
   return localStorage.getItem('Access-Token');
@@ -42,7 +42,7 @@ export function tokenGetter() {
     ProfilePopupComponent,
     StartShowComponent,
     StartShowPopupComponent,
-    ShowSlideComponent,
+    StatisticsComponent,
   ],
   imports: [
     BrowserModule,

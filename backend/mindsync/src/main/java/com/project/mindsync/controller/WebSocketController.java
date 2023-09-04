@@ -22,9 +22,10 @@ public class WebSocketController {
 
 		return message;
 	}
-	
+
 	@MessageMapping("send/start-button")
 	public boolean sendStartShowButton(boolean message) {
-		
+		messagingTemplate.convertAndSend("/topic/start-button", message);
+		return message;
 	}
 }

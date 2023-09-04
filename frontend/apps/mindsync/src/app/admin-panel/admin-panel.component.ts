@@ -143,10 +143,7 @@ export class AdminPanelComponent {
   }
 
   private giveAdmin(user: User): void {
-    console.log('tutaj');
-    console.log(user.id);
     if (user.id) {
-      console.log('ggg');
       this.userService.giveAdmin(user?.id).subscribe(res => {
         if (res) {
           this.dialog.closeAll();

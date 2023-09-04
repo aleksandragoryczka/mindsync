@@ -30,6 +30,8 @@ import { OptionModel } from 'libs/shared/src/lib/models/option.model';
 import * as am4core from '@amcharts/amcharts4/core';
 import * as am4charts from '@amcharts/amcharts4/charts';
 import * as am4plugins_wordCloud from '@amcharts/amcharts4/plugins/wordCloud';
+import { ViewChild } from '@angular/core';
+import { CountdownComponent } from 'ngx-countdown';
 
 @Component({
   selector: 'project-slide',
@@ -45,10 +47,11 @@ export class SlideComponent
   slideActions: SharedTableDataFunc[] = [];
   ColorFormatter = ColorFormatter;
   chart: am4plugins_wordCloud.WordCloud | undefined;
-  @Input() checkboxShowed = true;
+  @Input() checkboxShowed = 'default';
   @Input() actionsShowed = true;
   @Input() timerShowed = false;
   @Output() countdownEnded: EventEmitter<void> = new EventEmitter<void>();
+  @ViewChild('cd', { static: false }) countdown!: CountdownComponent;
   alphabet: string[] = ['a.', 'b.', 'c.', 'd.', 'e.', 'f.'];
 
   constructor(
@@ -100,6 +103,10 @@ export class SlideComponent
 
   handleCountdownEvent(event: any): void {
     if (event.action === 'done') this.countdownEnded.emit();
+  }
+
+  startCountdown(): void {
+    this.countdown.begin();
   }
 
   private wordCloudSetup(): void {

@@ -10,7 +10,8 @@
                 </ng-container>
                 <ng-container *ngIf="timerShowed">
                     <mat-icon class="mr-2">timer</mat-icon>
-                    <countdown [config]="{ leftTime: 12, format: 's' }" (event)="handleCountdownEvent($event)">
+                    <countdown #cd [config]="{ leftTime: 3, format: 's', demand: true }"
+                        (event)="handleCountdownEvent($event)">
                     </countdown>
                 </ng-container>
             </div>
@@ -18,20 +19,32 @@
         <div class="mindsync-default-content-data data-slide"
             [style.background-color]="ColorFormatter.lightenColor(data.headerColor)">
             <div *ngIf="data.type==='MULTIPLE_CHOICE'" class="options-container">
-                <ng-container *ngIf="checkboxShowed">
-                    <div class="option" [style.color]="data.titleColor" *ngFor="let opt of data.options; let i = index">
-                        <mat-checkbox disabled="true" class="checkbox" [checked]="opt.isCorrect"></mat-checkbox>
-                        {{ alphabet[i] }} {{ opt.option }}
-                    </div>
-                </ng-container>
-                <ng-container *ngIf="!checkboxShowed">
-                    <div class="option" [style.color]="data.titleColor" *ngFor="let opt of data.options; let i = index">
-                        <mat-checkbox disabled="true" class="checkbox"></mat-checkbox>
-                        {{ alphabet[i] }} {{opt.option}}
-                    </div>
+                <ng-container [ngSwitch]="checkboxShowed">
+                    <ng-container *ngSwitchCase="'default'">
+                        <div class="option" [style.color]="data.titleColor"
+                            *ngFor="let opt of data.options; let i = index">
+                            <mat-checkbox disabled="true" class="checkbox" [checked]="opt.isCorrect"></mat-checkbox>
+                            {{ alphabet[i] }} {{ opt.option }}
+                        </div>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="'unchecked'">
+                        <div class="option" [style.color]="data.titleColor"
+                            *ngFor="let opt of data.options; let i = index">
+                            <mat-checkbox disabled="true" class="checkbox"></mat-checkbox>
+                            {{ alphabet[i] }} {{opt.option}}
+                        </div>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="'enabled-checkbox'">
+                        <div class="option" [style.color]="data.titleColor"
+                            *ngFor="let opt of data.options; let i = index">
+                            <mat-checkbox disabled="false" class="checkbox"></mat-checkbox>
+                            {{ alphabet[i] }} {{opt.option}}
+                        </div>
+                    </ng-container>
                 </ng-container>
             </div>
-            <div *ngIf="checkboxShowed && data.type==='WORD_CLOUD'" id="chartdiv-{{data.id}}" class="chartdiv"></div>
+            <div *ngIf="checkboxShowed==='default' && data.type==='WORD_CLOUD'" id="chartdiv-{{data.id}}"
+                class="chartdiv"></div>
         </div>
     </div>
 </div>

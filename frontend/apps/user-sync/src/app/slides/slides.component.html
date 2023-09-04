@@ -1,9 +1,30 @@
-<div class="mindsync-default-container">
+<div *ngIf="!webSocketService.startButtonPushed" class="mindsync-default-container">
     <div class="mindsync-default-content-container">
         <div class="mindsync-default-content-heading">Waiting...</div>
         <div class="mindsync-default-content-data usersync-start-content-data">
             <mat-spinner></mat-spinner>
             <h2>Wait till Presenter starts the show</h2>
+            {{webSocketService.startButtonPushed}}
+        </div>
+    </div>
+</div>
+<div *ngIf="webSocketService.startButtonPushed" class="mindsync-default-container">
+    <div class="mindsync-default-content-container">
+        <div class="mindsync-default-content-heading">{{presentation.title}}</div>
+        <div class="mindsync-default-content-data usersync-start-content-data">
+            <div class="carousel-main-container">
+                <div *ngFor="let slide of listOfSlides$ | async as slides; let i = index">
+                    <ng-container *ngIf="i===currentSlideIndex">
+                        <ng-container *ngIf="!isCountdownFinished">
+                            <project-slide [data]="slides[i]" [actionsShowed]="false"
+                                [checkboxShowed]="'enabled-checkbox'"></project-slide>
+                        </ng-container>
+                        <ng-container *ngIf="isCountdownFinished">
+                            <mat-spinner></mat-spinner>
+                        </ng-container>
+                    </ng-container>
+                </div>
+            </div>
         </div>
     </div>
 </div>

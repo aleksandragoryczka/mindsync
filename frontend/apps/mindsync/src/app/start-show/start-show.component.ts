@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { StartShowPopupComponent } from './start-show-popup/start-show-popup.component';
 import { ActivatedRoute } from '@angular/router';
@@ -7,6 +7,9 @@ import { PresentationModel } from 'libs/shared/src/lib/models/presentation.model
 import { SlideModel } from 'libs/shared/src/lib/models/slide.model';
 import { Observable, tap, map, EMPTY } from 'rxjs';
 import { PresentationService } from 'libs/shared/src/lib/services/presentation.service';
+import { CountdownComponent } from 'ngx-countdown';
+import { SlideComponent } from 'libs/ui/src/lib/carousel-slide/slide/slide.component';
+import { WebSocketService } from 'libs/shared/src/lib/services/web-socket.service';
 
 @Component({
   selector: 'project-start-show',
@@ -14,6 +17,7 @@ import { PresentationService } from 'libs/shared/src/lib/services/presentation.s
   styleUrls: ['./start-show.component.scss'],
 })
 export class StartShowComponent implements OnInit {
+  @ViewChild('cd') slide!: SlideComponent;
   currentSlideIndex = 0;
   listOfSlides$: Observable<SlideModel[]> = EMPTY;
   attendeesNumber = 0;
@@ -24,36 +28,30 @@ export class StartShowComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
     private activatedRoute: ActivatedRoute,
-    private presentationService: PresentationService
-  ) {
-    console.log('tuaj: ' + this.presentationId);
-    //if (this.presentationId)
-    // this.listOfSlides$ = this.loadSlides(this.presentationId);
-  }
+    private presentationService: PresentationService,
+    private webSocketService: WebSocketService
+  ) {}
 
   ngOnInit(): void {
-    //this.openDialog();
+    this.openDialog();
     if (this.presentationId)
       this.listOfSlides$ = this.loadSlides(this.presentationId);
   }
 
-  nextSlide(): void {
-    console.log('f');
+  private startCountdown(): void {
+    this.slide.startCountdown();
   }
 
   handleCountdownEnded() {
     this.answersShowed = true;
-    console.log('counting completed');
   }
 
   private openDialog(): void {
     const dialogRef = this.dialog.open(StartShowPopupComponent);
     dialogRef.afterClosed().subscribe(res => {
       this.attendeesNumber = res;
-      if (this.presentationId) {
-        this.listOfSlides$ = this.loadSlides(this.presentationId);
-      }
-      console.log(this.listOfSlides$);
+      this.webSocketService.sendPushStartButtonMessage(true);
+      this.startCountdown();
     });
   }
 
