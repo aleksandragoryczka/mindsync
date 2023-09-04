@@ -32,7 +32,7 @@ import com.project.mindsync.service.PresentationService;
 import com.project.mindsync.service.SlideService;
 import com.project.mindsync.utils.AppConstants;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = { "http://localhost:4200", "http://localhost:4300", "http://localhost:4000" })
 @RestController
 @RequestMapping("/api/presentation")
 public class PresentationController {
@@ -47,6 +47,13 @@ public class PresentationController {
 		Presentation presentation = presentationService.getPresentation(id);
 
 		return ResponseEntity.ok().body(presentation);
+	}
+
+	@GetMapping("")
+	public ResponseEntity<Long> getPresentationByVerificationCode(
+			@RequestParam(name = "verificationCode", required = true) String verificationCode) {
+		Long presentationId = presentationService.getPresentationByVerificationCode(verificationCode);
+		return ResponseEntity.ok().body(presentationId);
 	}
 
 	@PostMapping("")

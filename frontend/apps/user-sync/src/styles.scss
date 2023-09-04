@@ -16,4 +16,7 @@ body {
   margin: 0;
   background-color: $white;
   min-width: 900px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }

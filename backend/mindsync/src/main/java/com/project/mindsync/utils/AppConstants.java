@@ -25,4 +25,5 @@ public class AppConstants {
 			+ "Please click the link below to verify your Account:<br>"
 			+ "<h3><a href=\"[[URL]]\" target=\"_self\">VERIFY</a></h3>" + "Thank you,<br>" + MAIL_SENDER;
 	public static final String USER_ID_CLAIM = "id";
+	public static final String CODE = "Code";
 }

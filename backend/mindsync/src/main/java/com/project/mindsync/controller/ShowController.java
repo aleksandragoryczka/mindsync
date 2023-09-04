@@ -27,7 +27,7 @@ import com.project.mindsync.security.UserPrincipal;
 import com.project.mindsync.service.ShowService;
 import com.project.mindsync.utils.AppConstants;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = { "http://localhost:4200", "http://localhost:4300", "http://localhost:4000" })
 @RestController
 @RequestMapping("/api/show")
 public class ShowController {

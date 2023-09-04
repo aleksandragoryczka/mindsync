@@ -28,4 +28,10 @@ export class CardSlideComponent extends CarouselSlideComponent {
       queryParams: { title: this.data.title },
     });
   }
+
+  async startShow() {
+    await this.router.navigate([`/${this.data.id}/start-show`], {
+      queryParams: { code: this.data.code },
+    });
+  }
 }

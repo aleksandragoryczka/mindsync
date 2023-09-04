@@ -7,6 +7,7 @@ import { PresentationDetailsComponent } from './presentation-details/presentatio
 import { ShowsComponent } from './shows/shows.component';
 import { ProfileComponent } from './profile/profile.component';
 import { AdminPanelComponent } from './admin-panel/admin-panel.component';
+import { StartShowComponent } from './start-show/start-show.component';
 
 const routes: Routes = [
   { path: 'verify', component: NavigationComponent },
@@ -27,6 +28,10 @@ const routes: Routes = [
       {
         path: ':id/shows',
         component: ShowsComponent,
+      },
+      {
+        path: ':id/start-show',
+        component: StartShowComponent,
       },
     ],
   },

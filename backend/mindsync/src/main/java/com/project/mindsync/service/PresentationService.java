@@ -16,7 +16,8 @@ public interface PresentationService {
 
 	Presentation getPresentation(Long id);
 
-	ResponseEntity<Presentation> addPresentation(PresentationRequestDto presentationRequest, UserPrincipal currentUser) throws IOException;
+	ResponseEntity<Presentation> addPresentation(PresentationRequestDto presentationRequest, UserPrincipal currentUser)
+			throws IOException;
 
 	Presentation updatePresentation(Long id, PresentationRequestDto updatedPresentationRequest,
 			UserPrincipal currentUser) throws IOException;
@@ -26,4 +27,6 @@ public interface PresentationService {
 	PresentationWithShowsResponseDto getPresentationWithShows(Long presentationId, int page, int size);
 
 	PresentationWithSlidesResponseDto getPresentationWithSlides(Long presentationId);
+
+	Long getPresentationByVerificationCode(String verificationCode);
 }

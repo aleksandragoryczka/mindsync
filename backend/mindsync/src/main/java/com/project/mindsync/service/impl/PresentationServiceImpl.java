@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -22,12 +23,14 @@ import com.project.mindsync.dto.response.ApiResponseDto;
 import com.project.mindsync.dto.response.PagedResponseDto;
 import com.project.mindsync.dto.response.PresentationWithShowsResponseDto;
 import com.project.mindsync.dto.response.PresentationWithSlidesResponseDto;
+import com.project.mindsync.dto.response.ScreenshotResponseDto;
 import com.project.mindsync.dto.response.ShowResponseDto;
 import com.project.mindsync.dto.response.SlideResponseDto;
 import com.project.mindsync.exception.ResourceNotFoundException;
 import com.project.mindsync.exception.UnauthorizedException;
 import com.project.mindsync.model.Option;
 import com.project.mindsync.model.Presentation;
+import com.project.mindsync.model.Screenshot;
 import com.project.mindsync.model.Show;
 import com.project.mindsync.model.Slide;
 import com.project.mindsync.model.SlideType;
@@ -93,16 +96,7 @@ public class PresentationServiceImpl implements PresentationService {
 	public PresentationWithSlidesResponseDto getPresentationWithSlides(Long presentationId) {
 		Presentation presentation = presentationRepository.findById(presentationId).orElseThrow(
 				() -> new ResourceNotFoundException(AppConstants.PRESENTATION, AppConstants.ID, presentationId));
-		List<Slide> slides = slideRepository.findByPresentationId(presentationId);
-		List<SlideResponseDto> slidesResponses = slides.stream().map(this::mapToSlideResponseDto)
-				.sorted(Comparator.comparingLong(SlideResponseDto::getId)).collect(Collectors.toList());
-		PresentationWithSlidesResponseDto presentationWithSlidesResponse = new PresentationWithSlidesResponseDto();
-		presentationWithSlidesResponse.setId(presentationId);
-		presentationWithSlidesResponse.setCode(presentation.getCode());
-		presentationWithSlidesResponse.setCreatedAt(presentation.getCreatedAt().toString());
-		presentationWithSlidesResponse.setTitle(presentation.getTitle());
-		presentationWithSlidesResponse.setSlides(slidesResponses);
-		return presentationWithSlidesResponse;
+		return this.mapPresentationToPresentationWithSlides(presentationId, presentation);
 	}
 
 	@Override
@@ -193,6 +187,30 @@ public class PresentationServiceImpl implements PresentationService {
 		ApiResponseDto apiResponse = new ApiResponseDto(false,
 				"You do not have permissions to delete that presentation.");
 		throw new UnauthorizedException(apiResponse);
+	}
+
+	@Override
+	public Long getPresentationByVerificationCode(String verificationCode) {
+		Optional<Presentation> optionalPresentation = this.presentationRepository.findByCode(verificationCode);
+		if (optionalPresentation.isPresent()) {
+			Presentation presentation = optionalPresentation.get();
+			return presentation.getId();
+		}
+		return null;
+	}
+
+	private PresentationWithSlidesResponseDto mapPresentationToPresentationWithSlides(Long presentationId,
+			Presentation presentation) {
+		List<Slide> slides = slideRepository.findByPresentationId(presentationId);
+		List<SlideResponseDto> slidesResponses = slides.stream().map(this::mapToSlideResponseDto)
+				.sorted(Comparator.comparingLong(SlideResponseDto::getId)).collect(Collectors.toList());
+		PresentationWithSlidesResponseDto presentationWithSlidesResponse = new PresentationWithSlidesResponseDto();
+		presentationWithSlidesResponse.setId(presentationId);
+		presentationWithSlidesResponse.setCode(presentation.getCode());
+		presentationWithSlidesResponse.setCreatedAt(presentation.getCreatedAt().toString());
+		presentationWithSlidesResponse.setTitle(presentation.getTitle());
+		presentationWithSlidesResponse.setSlides(slidesResponses);
+		return presentationWithSlidesResponse;
 	}
 
 	private Slide updateSlide(Slide existingSlide, SlideRequestDto updatedSlide) {
@@ -332,4 +350,5 @@ public class PresentationServiceImpl implements PresentationService {
 		slideReponse.setOptions(slide.getOptions());
 		return slideReponse;
 	}
+
 }

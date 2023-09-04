@@ -24,7 +24,7 @@ import com.project.mindsync.service.EmailService;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = { "http://localhost:4200", "http://localhost:4300", "http://localhost:4000" })
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -35,11 +35,12 @@ public class AuthController {
 	private EmailService emailService;
 
 	@PostMapping("/register")
-	public ResponseEntity<User> registerUser(@Valid @RequestBody RegisterRequestDto registerRequest,HttpServletRequest httpServletRequest) throws UnsupportedEncodingException, MessagingException {
+	public ResponseEntity<User> registerUser(@Valid @RequestBody RegisterRequestDto registerRequest,
+			HttpServletRequest httpServletRequest) throws UnsupportedEncodingException, MessagingException {
 		User userRegistrated = authService.registerUser(registerRequest);
 		if (userRegistrated != null) {
 			emailService.sendVerificationEmail(userRegistrated, httpServletRequest);
-			
+
 			return ResponseEntity.ok().body(userRegistrated);
 
 		}
@@ -48,7 +49,8 @@ public class AuthController {
 	}
 
 	@PostMapping("/signin")
-	public ResponseEntity<JwtAuthenticationResponseDto> signInUser(HttpServletRequest request, @Valid @RequestBody SignInRequestDto signInRequest) {
+	public ResponseEntity<JwtAuthenticationResponseDto> signInUser(HttpServletRequest request,
+			@Valid @RequestBody SignInRequestDto signInRequest) {
 		return ResponseEntity.ok().body(authService.signInUser(request, signInRequest));
 	}
 
@@ -56,7 +58,7 @@ public class AuthController {
 	public ResponseEntity<Boolean> verifyUser(@Param("code") String code) {
 		if (authService.verifyUser(code)) {
 			return ResponseEntity.ok().body(true);
-		}else{
+		} else {
 			return ResponseEntity.badRequest().body(false);
 		}
 	}

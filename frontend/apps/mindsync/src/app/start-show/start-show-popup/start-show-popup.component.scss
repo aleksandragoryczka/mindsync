@@ -1,0 +1,13 @@
+.start-show-container {
+  min-width: 550px;
+}
+
+mat-spinner {
+  width: 40px !important;
+  height: 40px !important;
+  margin: 20px;
+}
+
+.mat-mdc-progress-spinner {
+  --mdc-circular-progress-active-indicator-color: #1a4301;
+}

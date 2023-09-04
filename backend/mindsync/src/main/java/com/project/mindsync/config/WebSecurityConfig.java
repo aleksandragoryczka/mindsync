@@ -13,6 +13,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
 import com.project.mindsync.security.AuthEntryPointJwt;
 import com.project.mindsync.security.AuthTokenFilter;
 import com.project.mindsync.security.service.UserDetailsServiceImpl;
@@ -58,12 +60,13 @@ public class WebSecurityConfig {
 				.exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				// .authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
-				.authorizeHttpRequests(auth -> auth.requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
-						.requestMatchers("/api/auth/**").permitAll()
-						.requestMatchers("/api/user/**").permitAll()
-						.requestMatchers("/api/presentation/**").permitAll()
-						.requestMatchers("/api/slide/**").permitAll()
-						.requestMatchers("/api/show/**").permitAll());
+				.authorizeHttpRequests(auth -> auth.requestMatchers(
+						// Permit access to your WebSocket endpoint
+						new AntPathRequestMatcher("/ws/**")).permitAll()
+						.requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
+						.requestMatchers("/api/auth/**").permitAll().requestMatchers("/api/user/**").permitAll()
+						.requestMatchers("/api/presentation/**").permitAll().requestMatchers("/api/slide/**")
+						.permitAll().requestMatchers("/api/show/**").permitAll());
 		// auth.requestMatchers("/api/auth/**").permitAll()
 		// .requestMatchers("/api/user/**").permitAll().anyRequest().authenticated());
 		http.authenticationProvider(authenticationProvider());

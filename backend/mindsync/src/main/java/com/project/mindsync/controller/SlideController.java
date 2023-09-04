@@ -23,7 +23,7 @@ import com.project.mindsync.security.CurrentUser;
 import com.project.mindsync.security.UserPrincipal;
 import com.project.mindsync.service.SlideService;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = { "http://localhost:4200", "http://localhost:4300", "http://localhost:4000" })
 @RestController
 @RequestMapping("/api/slide")
 public class SlideController {

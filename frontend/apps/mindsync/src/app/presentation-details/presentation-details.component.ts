@@ -54,8 +54,7 @@ export class PresentationDetailsComponent implements OnInit {
     private slideService: SlideService
   ) {
     if (this.presentationId) {
-      this.listOfSlides$ = this.loadSlides(this.presentationId); //TODO: to be replaced with 'id'
-      //console.log(this.listOfSlides$);
+      this.listOfSlides$ = this.loadSlides(this.presentationId);
     }
   }
 

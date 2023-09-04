@@ -10,10 +10,10 @@ import { PopupWithInputsComponent } from '../../../../ui/src/lib/popup-with-inpu
 import { UserService } from '../../../../shared/src/lib/services/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { options } from '@amcharts/amcharts4/core';
 import { PresentationService } from 'libs/shared/src/lib/services/presentation.service';
-import { PresentationModel } from 'libs/shared/src/lib/models/presentation.model';
 import StorageRealod from 'libs/shared/src/lib/utils/storage-reload';
+import { WebSocketService } from '../../../../shared/src/lib/services/web-socket.service';
+import { AttendeeMessageModel } from '../../../../shared/src/lib/models/attendee-message.model';
 
 @Component({
   selector: 'project-navigation',
@@ -31,7 +31,8 @@ export class NavigationComponent implements OnInit {
     public router: Router,
     private activatedRoute: ActivatedRoute,
     private toastrService: ToastrService,
-    private presentationService: PresentationService
+    private presentationService: PresentationService,
+    private webSocketService: WebSocketService
   ) {}
 
   ngOnInit(): void {
@@ -80,6 +81,53 @@ export class NavigationComponent implements OnInit {
         data: data,
       });
     }
+  }
+
+  openJoinPresentationPopup(): void {
+    const inputs: Record<string, InputPopupModel> = {
+      ['code']: { value: '', type: 'text', placeholder: 'Code' },
+      ['name']: { value: '', type: 'text', placeholder: 'Name' },
+      ['surname']: { value: '', type: 'text', placeholder: 'Surname' },
+    };
+    const buttons: ButtonPopupModel[] = [
+      {
+        type: ButtonTypes.PRIMARY,
+        text: 'Join',
+        onClick: () => this.joinPresentation(inputs),
+      },
+
+      {
+        type: ButtonTypes.SECONDARY,
+        text: 'Cancel',
+      },
+    ];
+    const fullPopupData: InputPopupFullDataModel = {
+      title: 'Join presentation',
+      description:
+        'Type presentation code you want to join, your name and surname:',
+      inputs: inputs,
+      buttons: buttons,
+    };
+    this.dialog.open(PopupWithInputsComponent, { data: fullPopupData });
+  }
+
+  joinPresentation(inputs: Record<string, InputPopupModel>): void {
+    this.presentationService
+      .joinPresentationByCode(String(inputs['code'].value))
+      .subscribe(res => {
+        if (res) {
+          const attendee: AttendeeMessageModel = {
+            name: String(inputs['name'].value),
+            surname: String(inputs['surname'].value),
+          };
+          this.webSocketService.sendMessage(JSON.stringify(attendee));
+          document.location.href = `http://localhost:4300/${res}?name=${String(
+            inputs['name'].value
+          )}&surname=${String(inputs['surname'].value)}`;
+        } else {
+          this.toastrService.error('Please try again.', 'Wrong Joining Code');
+        }
+      });
   }
 
   get defaultMenu() {

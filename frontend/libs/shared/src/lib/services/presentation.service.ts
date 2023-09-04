@@ -24,6 +24,12 @@ export class PresentationService {
     );
   }
 
+  joinPresentationByCode(code: string): Observable<string> {
+    return this.http.get<string>(
+      `${environment.apiUrl}/presentation?verificationCode=${code}`
+    );
+  }
+
   getPresentationsWithShows(
     id: string,
     page = 0,

@@ -1,5 +1,9 @@
 <div class="mindsync-default-container">
-    <project-shared-carousel *ngIf="(listOfPresentations$ | async) as presentations" [slideConfig]="slideConfig"
-        [data]="presentations" [slideType]="'CardSlide'">
-    </project-shared-carousel>
+    <ng-container *ngIf="(listOfPresentations$ | async) as presentations; else loading">
+        <project-shared-carousel [slideConfig]="slideConfig" [data]="presentations"
+            [slideType]="'CardSlide'"></project-shared-carousel>
+    </ng-container>
+    <ng-template #loading>
+        <mat-spinner></mat-spinner>
+    </ng-template>
 </div>

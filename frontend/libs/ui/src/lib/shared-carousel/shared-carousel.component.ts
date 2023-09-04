@@ -36,6 +36,7 @@ export class SharedCarouselComponent implements AfterViewInit {
   ) {}
 
   ngAfterViewInit(): void {
+    console.log(this.elements);
     this.data.forEach(item => {
       const component = this.carouselDynamicElementComponent.addComponent(
         this.SlideTypes[this.slideType],

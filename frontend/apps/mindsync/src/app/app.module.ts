@@ -22,6 +22,8 @@ import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ReactiveFormsModule } from '@angular/forms';
 import { StartShowComponent } from './start-show/start-show.component';
+import { StartShowPopupComponent } from './start-show/start-show-popup/start-show-popup.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 export function tokenGetter() {
   return localStorage.getItem('Access-Token');
@@ -38,6 +40,7 @@ export function tokenGetter() {
     AdminPanelComponent,
     ProfilePopupComponent,
     StartShowComponent,
+    StartShowPopupComponent,
   ],
   imports: [
     BrowserModule,
@@ -49,6 +52,7 @@ export function tokenGetter() {
     SlickCarouselModule,
     MatDialogModule,
     ReactiveFormsModule,
+    MatProgressSpinnerModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
