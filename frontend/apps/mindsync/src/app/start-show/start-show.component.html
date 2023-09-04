@@ -1,0 +1,25 @@
+<div class="mindsync-default-container">
+    <div class="mindsync-default-content-container main-presentation-container">
+        <div class="mindsync-default-content-heading">
+            Presentation: {{ presentation.title }}
+        </div>
+        <div class="mindsync-default-content-data">
+            <div class="container-navigation">
+                <div class="buttons-container">
+                    <!--<button class="mindsync-btn mindsync-btn-primary" (click)="nextSlide()">Next slide</button>-->
+                </div>
+            </div>
+            <div class="carousel-main-container">
+                <div *ngFor="let slide of listOfSlides$ | async as slides; let i = index">
+                    <ng-container *ngIf="i===currentSlideIndex">
+                        <project-slide *ngIf="!answersShowed" [data]="slides[i]" [checkboxShowed]="false"
+                            [actionsShowed]="false" [timerShowed]="true"
+                            (countdownEnded)="handleCountdownEnded()"></project-slide>
+                        <project-slide *ngIf="answersShowed" [data]="slides[i]" [checkboxShowed]="true"
+                            [actionsShowed]="false"></project-slide>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

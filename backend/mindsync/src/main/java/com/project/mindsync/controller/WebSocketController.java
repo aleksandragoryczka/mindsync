@@ -17,11 +17,14 @@ public class WebSocketController {
 	private SimpMessagingTemplate messagingTemplate;
 
 	@MessageMapping("send/attendees")
-	//@SendTo("/attendees")
 	public AttendeeMessage sendAttendeeData(AttendeeMessage message) {
-		System.out.println(message.getName());
 		messagingTemplate.convertAndSend("/topic/attendees", message);
-		
+
 		return message;
+	}
+	
+	@MessageMapping("send/start-button")
+	public boolean sendStartShowButton(boolean message) {
+		
 	}
 }

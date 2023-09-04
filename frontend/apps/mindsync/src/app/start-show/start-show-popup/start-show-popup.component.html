@@ -9,7 +9,7 @@
                 <div *ngFor="let attendee of attendees" class="d-flex mt-2 mb-2">
                     <mat-icon>person_outline</mat-icon>{{ attendee.name }} {{ attendee.surname }}
                 </div>
-                <button class="mindsync-btn mindsync-btn-secondary">Start show</button>
+                <button class="mindsync-btn mindsync-btn-secondary" (click)="startShow()">Start show</button>
             </ng-container>
         </div>
     </div>

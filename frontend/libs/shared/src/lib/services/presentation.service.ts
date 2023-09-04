@@ -41,6 +41,7 @@ export class PresentationService {
   }
 
   getPresentationWithSlides(id: string): Observable<PresentationWithSlides> {
+    console.log('w srokdu');
     return this.http.get<PresentationWithSlides>(
       `${environment.apiUrl}/presentation/${id}/slides`
     );

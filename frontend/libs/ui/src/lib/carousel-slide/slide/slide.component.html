@@ -3,22 +3,35 @@
         <div class="mindsync-default-content-heading heading-slide" [style.background-color]="data.headerColor"
             [style.color]="data.titleColor">
             {{ data.title }}
-            <div class=" nav-section">
+            <div class="nav-section">
                 <ng-container *ngFor="let action of slideActions">
                     <mat-icon class="mindsync-icon mx-1 tooltip-message" [ngbTooltip]="action.tooltip"
                         (click)="action?.func(action.arg)">{{ action.icon }}</mat-icon>
+                </ng-container>
+                <ng-container *ngIf="timerShowed">
+                    <mat-icon class="mr-2">timer</mat-icon>
+                    <countdown [config]="{ leftTime: 12, format: 's' }" (event)="handleCountdownEvent($event)">
+                    </countdown>
                 </ng-container>
             </div>
         </div>
         <div class="mindsync-default-content-data data-slide"
             [style.background-color]="ColorFormatter.lightenColor(data.headerColor)">
             <div *ngIf="data.type==='MULTIPLE_CHOICE'" class="options-container">
-                <div class="option" [style.color]="data.titleColor" *ngFor="let opt of data.options">
-                    <mat-checkbox disabled="true" class="checkbox" [checked]="opt.isCorrect"></mat-checkbox>
-                    {{opt.option}}
-                </div>
+                <ng-container *ngIf="checkboxShowed">
+                    <div class="option" [style.color]="data.titleColor" *ngFor="let opt of data.options; let i = index">
+                        <mat-checkbox disabled="true" class="checkbox" [checked]="opt.isCorrect"></mat-checkbox>
+                        {{ alphabet[i] }} {{ opt.option }}
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="!checkboxShowed">
+                    <div class="option" [style.color]="data.titleColor" *ngFor="let opt of data.options; let i = index">
+                        <mat-checkbox disabled="true" class="checkbox"></mat-checkbox>
+                        {{ alphabet[i] }} {{opt.option}}
+                    </div>
+                </ng-container>
             </div>
-            <div *ngIf="data.type==='WORD_CLOUD'" id="chartdiv-{{data.id}}" class="chartdiv"></div>
+            <div *ngIf="checkboxShowed && data.type==='WORD_CLOUD'" id="chartdiv-{{data.id}}" class="chartdiv"></div>
         </div>
     </div>
 </div>

@@ -1,4 +1,12 @@
-import { AfterViewInit, Component, ElementRef, Renderer2 } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  Output,
+  Renderer2,
+} from '@angular/core';
 import { CarouselSlideComponent } from '../carousel-slide.component';
 import { PresentationService } from 'libs/shared/src/lib/services/presentation.service';
 import { SharedTableDataFunc } from 'libs/shared/src/lib/models/shared-table-data.model';
@@ -37,6 +45,11 @@ export class SlideComponent
   slideActions: SharedTableDataFunc[] = [];
   ColorFormatter = ColorFormatter;
   chart: am4plugins_wordCloud.WordCloud | undefined;
+  @Input() checkboxShowed = true;
+  @Input() actionsShowed = true;
+  @Input() timerShowed = false;
+  @Output() countdownEnded: EventEmitter<void> = new EventEmitter<void>();
+  alphabet: string[] = ['a.', 'b.', 'c.', 'd.', 'e.', 'f.'];
 
   constructor(
     private presentationService: PresentationService,
@@ -74,12 +87,19 @@ export class SlideComponent
         tooltip: TooltipTexts.delete,
       },
     ];
+    if (!this.actionsShowed) {
+      this.slideActions = [];
+    }
 
     const updateSuccessMessage = localStorage.getItem('Success-Message');
     if (updateSuccessMessage) {
       this.toastrService.success(updateSuccessMessage);
       localStorage.removeItem('Success-Message');
     }
+  }
+
+  handleCountdownEvent(event: any): void {
+    if (event.action === 'done') this.countdownEnded.emit();
   }
 
   private wordCloudSetup(): void {

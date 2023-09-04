@@ -21,6 +21,15 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxColorsModule } from 'ngx-colors';
+import {
+  CountdownConfig,
+  CountdownGlobalConfig,
+  CountdownModule,
+} from 'ngx-countdown';
+
+function countdownConfigFactory(): CountdownConfig {
+  return { format: `ss` };
+}
 
 @NgModule({
   imports: [
@@ -38,6 +47,7 @@ import { NgxColorsModule } from 'ngx-colors';
     MatFormFieldModule,
     BrowserAnimationsModule,
     NgxColorsModule,
+    CountdownModule,
   ],
   declarations: [
     PopupWithInputsComponent,
@@ -57,6 +67,9 @@ import { NgxColorsModule } from 'ngx-colors';
     SharedCarouselComponent,
     CarouselDynamicElementComponent,
     SlideComponent,
+  ],
+  providers: [
+    { provide: CountdownGlobalConfig, useFactory: countdownConfigFactory },
   ],
 })
 export class UiModule {}
