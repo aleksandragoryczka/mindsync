@@ -5,17 +5,18 @@
         </div>
         <div class="mindsync-default-content-data">
             <div class="carousel-main-container">
-                <div *ngIf="answersShowed" class="d-flex justify-content-end mr-3">
-                    <button class="mindsync-btn mindsync-btn-primary">Statistics</button>
-                </div>
                 <div *ngFor="let slide of listOfSlides$ | async as slides; let i = index">
                     <ng-container *ngIf="i===currentSlideIndex">
                         <project-slide #cd *ngIf="!answersShowed" [data]="slides[i]" [checkboxShowed]="'unchecked'"
                             [actionsShowed]="false" [timerShowed]="true"
-                            (countdownEnded)="handleCountdownEnded()"></project-slide>
+                            (countdownEnded)="handleCountdownEnded(slides[i])"></project-slide>
                         <project-slide *ngIf="answersShowed" [data]="slides[i]" [checkboxShowed]="'default'"
                             [actionsShowed]="false"></project-slide>
                     </ng-container>
+                </div>
+                <div *ngIf="!answersShowed" class="d-flex justify-content-end mr-3">
+                    <button class="mindsync-btn mindsync-btn-primary"
+                        (click)="openStatisticsPopup()">Statistics</button>
                 </div>
             </div>
         </div>

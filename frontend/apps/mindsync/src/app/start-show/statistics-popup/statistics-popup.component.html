@@ -1,0 +1,19 @@
+<div class="mindsync-default-container">
+    <div class="mindsync-default-content-container">
+        <div class="mindsync-default-content-heading">Statistics</div>
+        <div class="mindsync-default-content-data">
+            <div id="chart"
+                *ngIf="chartOptions.series && chartOptions.chart && chartOptions.dataLabels 
+            && chartOptions.plotOptions && chartOptions.xaxis && chartOptions.title && chartOptions.yaxis && chartOptions.fill && chartOptions.tooltip">
+                <apx-chart [series]=" chartOptions.series" [chart]="chartOptions.chart"
+                    [dataLabels]="chartOptions.dataLabels" [plotOptions]="chartOptions.plotOptions"
+                    [xaxis]="chartOptions.xaxis" [yaxis]="chartOptions.yaxis" [fill]="chartOptions.fill"
+                    [title]="chartOptions.title" [tooltip]="chartOptions.tooltip"></apx-chart>
+            </div>
+            <project-shared-table [caption]="caption" [headers]="headers" [data]="(listOfShows$ | async) ?? []"
+                [currentPage]="(currentPage$ | async) ?? 1" [totalNumberOfPages]="totalShowsNumberOfPages"
+                [rowsPerPage]="rowsPerPage" (nextPageEvent)="setPage($event)"
+                (prevPageEvent)="setPage($event)"></project-shared-table>
+        </div>
+    </div>
+</div>

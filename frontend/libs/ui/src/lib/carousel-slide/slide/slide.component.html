@@ -10,7 +10,7 @@
                 </ng-container>
                 <ng-container *ngIf="timerShowed">
                     <mat-icon class="mr-2">timer</mat-icon>
-                    <countdown #cd [config]="{ leftTime: 3, format: 's', demand: true }"
+                    <countdown #cd [config]="{ leftTime: 14, format: 's', demand: timerOnDemand }"
                         (event)="handleCountdownEvent($event)">
                     </countdown>
                 </ng-container>
@@ -37,7 +37,8 @@
                     <ng-container *ngSwitchCase="'enabled-checkbox'">
                         <div class="option" [style.color]="data.titleColor"
                             *ngFor="let opt of data.options; let i = index">
-                            <mat-checkbox disabled="false" class="checkbox"></mat-checkbox>
+                            <mat-checkbox disabled="false" class="checkbox"
+                                (change)="updateUserSelectedOptions($event.checked, opt)"></mat-checkbox>
                             {{ alphabet[i] }} {{opt.option}}
                         </div>
                     </ng-container>

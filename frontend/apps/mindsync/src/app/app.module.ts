@@ -24,7 +24,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { StartShowComponent } from './start-show/start-show.component';
 import { StartShowPopupComponent } from './start-show/start-show-popup/start-show-popup.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { StatisticsComponent } from './start-show/statistics/statistics.component';
+import { StatisticsPopupComponent } from './start-show/statistics-popup/statistics-popup.component';
+import { NgApexchartsModule } from 'ng-apexcharts';
 
 export function tokenGetter() {
   return localStorage.getItem('Access-Token');
@@ -42,7 +43,7 @@ export function tokenGetter() {
     ProfilePopupComponent,
     StartShowComponent,
     StartShowPopupComponent,
-    StatisticsComponent,
+    StatisticsPopupComponent,
   ],
   imports: [
     BrowserModule,
@@ -55,6 +56,7 @@ export function tokenGetter() {
     MatDialogModule,
     ReactiveFormsModule,
     MatProgressSpinnerModule,
+    NgApexchartsModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,

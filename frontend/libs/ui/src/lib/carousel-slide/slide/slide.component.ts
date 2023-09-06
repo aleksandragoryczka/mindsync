@@ -32,6 +32,9 @@ import * as am4charts from '@amcharts/amcharts4/charts';
 import * as am4plugins_wordCloud from '@amcharts/amcharts4/plugins/wordCloud';
 import { ViewChild } from '@angular/core';
 import { CountdownComponent } from 'ngx-countdown';
+import { WebSocketService } from 'libs/shared/src/lib/services/web-socket.service';
+import { SelectedOptionsMessageModel } from '../../../../../shared/src/lib/models/selected-options-message.model';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'project-slide',
@@ -42,6 +45,7 @@ export class SlideComponent
   extends CarouselSlideComponent
   implements AfterViewInit
 {
+  userSelectedOptions: OptionModel[] = [];
   slideTypes = SlideTypes;
   slides: any[] = [];
   slideActions: SharedTableDataFunc[] = [];
@@ -50,7 +54,10 @@ export class SlideComponent
   @Input() checkboxShowed = 'default';
   @Input() actionsShowed = true;
   @Input() timerShowed = false;
+  @Input() timerOnDemand = true;
   @Output() countdownEnded: EventEmitter<void> = new EventEmitter<void>();
+  @Output() userSelectedOptionsEmitter: EventEmitter<OptionModel[]> =
+    new EventEmitter<OptionModel[]>();
   @ViewChild('cd', { static: false }) countdown!: CountdownComponent;
   alphabet: string[] = ['a.', 'b.', 'c.', 'd.', 'e.', 'f.'];
 
@@ -60,7 +67,9 @@ export class SlideComponent
     private renderer: Renderer2,
     private dialog: MatDialog,
     private toastrService: ToastrService,
-    private slideService: SlideService
+    private slideService: SlideService,
+    private webSocketService: WebSocketService,
+    private activatedRoute: ActivatedRoute
   ) {
     super(ngEl, renderer);
   }
@@ -101,8 +110,28 @@ export class SlideComponent
     }
   }
 
+  updateUserSelectedOptions(selected: boolean, option: OptionModel): void {
+    if (selected) {
+      this.userSelectedOptions.push(option);
+    } else {
+      const index = this.userSelectedOptions.indexOf(option);
+      if (index !== -1) this.userSelectedOptions.splice(index, 1);
+    }
+  }
+
   handleCountdownEvent(event: any): void {
-    if (event.action === 'done') this.countdownEnded.emit();
+    if (event.action === 'done') {
+      console.log(this.activatedRoute.snapshot.paramMap);
+      const userOptions: SelectedOptionsMessageModel = {
+        name: this.activatedRoute.snapshot.queryParamMap.get('name') ?? '',
+        surname:
+          this.activatedRoute.snapshot.queryParamMap.get('surname') ?? '',
+        selectedOptions: this.userSelectedOptions,
+      };
+      this.webSocketService.sendSelectedOptions(JSON.stringify(userOptions));
+      //this.userSelectedOptionsEmitter.emit(this.userSelectedOptions);
+      this.countdownEnded.emit();
+    }
   }
 
   startCountdown(): void {

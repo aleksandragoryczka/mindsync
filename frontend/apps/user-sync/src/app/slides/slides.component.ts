@@ -6,6 +6,7 @@ import { SlideModel } from 'libs/shared/src/lib/models/slide.model';
 import { PresentationService } from 'libs/shared/src/lib/services/presentation.service';
 import { Observable, EMPTY, map, tap } from 'rxjs';
 import { WebSocketService } from '../../../../../libs/shared/src/lib/services/web-socket.service';
+import { OptionModel } from 'libs/shared/src/lib/models/option.model';
 
 @Component({
   selector: 'project-slides',
@@ -19,7 +20,7 @@ export class SlidesComponent implements OnInit {
   presentationId = this.activatedRoute.snapshot.paramMap.get('id');
   slides: SlideModel[] = [];
   isStarted = false;
-  isCountdownFinished = false;
+  isCountdownEnded = false;
 
   constructor(
     private presentationService: PresentationService,
@@ -33,7 +34,12 @@ export class SlidesComponent implements OnInit {
   }
 
   handleCountdownEnded(): void {
-    this.isCountdownFinished = true;
+    this.isCountdownEnded = true;
+    
+  }
+
+  handleUserSelectedOptions(options: OptionModel[]): void {
+    console.log('selected options: ' + options);
   }
 
   private loadSlides(id: string): Observable<SlideModel[]> {
