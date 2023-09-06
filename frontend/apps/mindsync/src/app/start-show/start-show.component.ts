@@ -18,8 +18,6 @@ import {
 import { User } from 'libs/shared/src/lib/models/user.model';
 import { StatisticsPopupComponent } from './statistics-popup/statistics-popup.component';
 import { OptionModel } from 'libs/shared/src/lib/models/option.model';
-import { SharedTableData } from 'libs/shared/src/lib/models/shared-table-data.model';
-import { UserAnswer } from '../../../../../libs/shared/src/lib/models/chart-data.model';
 
 @Component({
   selector: 'project-start-show',
@@ -30,7 +28,8 @@ export class StartShowComponent implements OnInit {
   @ViewChild('cd') slide!: SlideComponent;
   currentSlideIndex = 0;
   currentSlide?: SlideModel;
-  listOfSlides$: Observable<SlideModel[]> = EMPTY;
+  listOfSlides: SlideModel[] = [];
+  //slidesLength = 0;
   attendeesNumber = 0;
   presentation: PresentationModel = { title: '' };
   answersShowed = false;
@@ -44,15 +43,21 @@ export class StartShowComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    //this.openDialog();
-    if (this.presentationId)
-      this.listOfSlides$ = this.loadSlides(this.presentationId);
+    this.openDialog();
+    if (this.presentationId) this.loadSlides(this.presentationId);
+  }
+
+  nextSlide(): void {
+    if (this.currentSlideIndex < this.listOfSlides.length - 1) {
+      this.currentSlideIndex++;
+      this.answersShowed = false;
+    }
   }
 
   handleCountdownEnded(slide: SlideModel) {
     this.answersShowed = true;
-    this.currentSlide = slide;
-    //this.webSocketService.sendTimeEnded(slideId);
+    //this.currentSlide = slide;
+    //this.webSocketService.sendTimeEnded(slid);
   }
 
   openStatisticsPopup(): void {
@@ -92,28 +97,12 @@ export class StartShowComponent implements OnInit {
         ],
       },
     ];
-    const tableData: SharedTableData = {
-      cols: [userAnswer.]
-    }
-    const chartData: ChartData = this.mapToChartData(userAnswer);
-    this.dialog.open(StatisticsPopupComponent, { data: chartData });
-  }
+    const chartData = this.mapToChartData(this.webSocketService.userOptions);
+    //const chartData: ChartData = this.mapToChartData(userAnswer);
 
-  private mapToSharedTableData(userOptions: SelectedOptionsMessageModel[]): SharedTableData[] {
-    const results: SharedTableData[] = []
-    userOptions.forEach(user => {
-      const userPoints = this.countSlidePointsForUser(user.selectedOptions);
-      const result: SharedTableData = {
-        cols: [`${user.name} ${user.surname}`, userPoints[0], userPoints[1]]
-      }
-    })
-  }
-
-  private countSlidePointsForUser(selectedOptions: OptionModel[]): n[]{
-    let correctAnswers = 0;
-    let wrongAnswers = 0
-    selectedOptions.forEach(opt => opt.isCorrect ? correctAnswers++ : wrongAnswers++);
-    return [correctAnswers, wrongAnswers];
+    this.dialog.open(StatisticsPopupComponent, {
+      data: chartData,
+    });
   }
 
   private mapToChartData(
@@ -142,12 +131,6 @@ export class StartShowComponent implements OnInit {
       }
     }
     for (const optionId in optionMap) answersCount.push(optionMap[optionId]);
-    /*
-    const chartData: ChartData = {
-      slideTitle: this.currentSlide?.title ?? '',
-      answersCount: answersCount,
-      allOptions: this.currentSlide?.options ?? [],
-    };*/
 
     const mockAllOptions: OptionModel[] = [
       {
@@ -167,16 +150,24 @@ export class StartShowComponent implements OnInit {
       },
       // Add more mock data as needed
     ];
-    const chartData: ChartData = {
+    /*const chartData: ChartData = {
       slideTitle: 'dddddddddddd',
       answersCount: answersCount,
       allOptions: mockAllOptions,
+    };*/
+    const chartData: ChartData = {
+      slideTitle: this.currentSlide?.title ?? '',
+      answersCount: answersCount,
+      allOptions: this.currentSlide?.options ?? [],
     };
 
     return chartData;
   }
 
   private startCountdown(): void {
+    this.webSocketService.sendCurrentSlideMessage(
+      this.listOfSlides[this.currentSlideIndex].id ?? ''
+    );
     this.slide.startCountdown();
   }
 
@@ -184,20 +175,24 @@ export class StartShowComponent implements OnInit {
     const dialogRef = this.dialog.open(StartShowPopupComponent);
     dialogRef.afterClosed().subscribe(res => {
       this.attendeesNumber = res;
-      this.webSocketService.sendPushStartButtonMessage(true);
       this.startCountdown();
     });
   }
 
-  private loadSlides(id: string): Observable<SlideModel[]> {
-    return this.presentationService.getPresentationWithSlides(id).pipe(
-      tap((res: PresentationWithSlides) => {
-        const presentation: PresentationModel = {
-          title: res.title,
-        };
-        this.presentation = presentation;
-      }),
-      map((res: PresentationWithSlides) => res.slides)
-    );
+  private loadSlides(id: string): void {
+    this.presentationService
+      .getPresentationWithSlides(id)
+      .pipe(
+        tap((res: PresentationWithSlides) => {
+          const presentation: PresentationModel = {
+            title: res.title,
+          };
+          console.log(res.slides.length);
+          //this.slidesLength = res.slides.length;
+          this.presentation = presentation;
+        }),
+        map((res: PresentationWithSlides) => res.slides)
+      )
+      .subscribe((slides: SlideModel[]) => (this.listOfSlides = slides));
   }
 }

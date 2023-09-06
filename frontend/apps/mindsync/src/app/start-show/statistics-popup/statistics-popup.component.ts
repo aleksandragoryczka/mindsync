@@ -17,6 +17,8 @@ import {
 } from 'ng-apexcharts';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { BehaviorSubject } from 'rxjs';
+import { SharedTableData } from '../../../../../../libs/shared/src/lib/models/shared-table-data.model';
+import { User } from 'libs/shared/src/lib/models/user.model';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -41,19 +43,21 @@ export class StatisticsPopupComponent {
   caption = 'Users answers';
   totalShowsNumberOfPages = 1;
   rowsPerPage = 10;
-  headers = ['User', 'Correct answers', 'Wrong answers', 'Total points'];
+  headers = ['User', 'Total points'];
   currentPage$ = new BehaviorSubject<number>(0);
   public chartOptions: Partial<ChartOptions>;
 
   constructor(
     public dialogRef: MatDialogRef<StatisticsPopupComponent>,
-    @Inject(MAT_DIALOG_DATA) public chartData: ChartData
+    @Inject(MAT_DIALOG_DATA)
+    public chartData: ChartData
   ) {
+    const colors = ['#538d22', '#ff0000', '#538d22', '#ff0000'];
     this.chartOptions = {
       series: [
         {
           name: 'Answers',
-          data: this.chartData.answersCount.map(a => a.count),
+          data: this.chartData.answersCount.map((a: { count: any }) => a.count),
         },
       ],
       chart: { height: 340, type: 'bar' },
@@ -74,7 +78,7 @@ export class StatisticsPopupComponent {
       tooltip: {
         y: {
           title: {
-            formatter: function (seriesName) {
+            formatter: function (seriesName: any) {
               return '';
             },
           },
@@ -84,16 +88,26 @@ export class StatisticsPopupComponent {
           ) {
             const userAnswer = chartData.answersCount[dataPointIndex];
             const users = userAnswer.users
-              .map(user => `${user.name} ${user.surname}`)
+              .map((user: User) => `${user.name} ${user.surname}`)
               .join('<br>');
             return `${users}`;
           },
         },
       },
       xaxis: {
-        categories: this.chartData.allOptions.map(opt => opt.option),
+        categories: this.chartData.allOptions.map(
+          (opt: { option: any }) => opt.option
+        ),
         position: 'bottom',
-
+        labels: {
+          style: {
+            colors: this.chartData.allOptions.map(opt =>
+              opt.isCorrect ? '#538d22' : '#ff0000'
+            ),
+            fontWeight: 600,
+            fontSize: '13px',
+          },
+        },
         axisBorder: {
           show: false,
         },
@@ -140,5 +154,9 @@ export class StatisticsPopupComponent {
 
   setPage(pageNumber: number): void {
     this.currentPage$.next(pageNumber);
+  }
+
+  closePopup(): void {
+    this.dialogRef.close();
   }
 }

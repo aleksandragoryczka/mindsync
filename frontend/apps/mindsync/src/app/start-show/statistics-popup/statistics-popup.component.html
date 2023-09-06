@@ -1,5 +1,8 @@
 <div class="mindsync-default-container">
     <div class="mindsync-default-content-container">
+        <div class="mindsync-popup-close-btn statistics-popup-close-btn" (click)="closePopup()">
+            <mat-icon>close</mat-icon>
+        </div>
         <div class="mindsync-default-content-heading">Statistics</div>
         <div class="mindsync-default-content-data">
             <div id="chart"
@@ -10,10 +13,6 @@
                     [xaxis]="chartOptions.xaxis" [yaxis]="chartOptions.yaxis" [fill]="chartOptions.fill"
                     [title]="chartOptions.title" [tooltip]="chartOptions.tooltip"></apx-chart>
             </div>
-            <project-shared-table [caption]="caption" [headers]="headers" [data]="(listOfShows$ | async) ?? []"
-                [currentPage]="(currentPage$ | async) ?? 1" [totalNumberOfPages]="totalShowsNumberOfPages"
-                [rowsPerPage]="rowsPerPage" (nextPageEvent)="setPage($event)"
-                (prevPageEvent)="setPage($event)"></project-shared-table>
         </div>
     </div>
 </div>

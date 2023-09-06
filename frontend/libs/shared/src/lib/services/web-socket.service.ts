@@ -10,9 +10,10 @@ import { SelectedOptionsMessageModel } from '../models/selected-options-message.
 export class WebSocketService {
   msg: any[] = [];
   userOptions: any[] = [];
-  startButtonPushed = false; //TODO: to be false
+  //startButtonPushed = false; //TODO: to be false
   slideTimeEnded: string | undefined;
   stompClient: any;
+  currentSlideId: number | undefined;
 
   constructor() {
     this.initializeWebSocketConnection();
@@ -35,10 +36,10 @@ export class WebSocketService {
         }
       );
       that.stompClient.subscribe(
-        '/topic/start-button',
+        '/topic/current-slide',
         (message: { body: any }) => {
           if (message.body) {
-            that.startButtonPushed = message.body;
+            that.currentSlideId = message.body;
           }
         }
       );
@@ -66,9 +67,13 @@ export class WebSocketService {
     this.stompClient.send('/app/send/attendees', {}, message);
   }
 
+  sendCurrentSlideMessage(message: string) {
+    this.stompClient.send('/app/send/current-slide', {}, parseInt(message));
+  }
+  /*
   sendPushStartButtonMessage(message: boolean) {
     this.stompClient.send('/app/send/start-button', {}, message);
-  }
+  }*/
 
   sendTimeEnded(slideIdMessage: string) {
     this.stompClient.send('/app/send/time-end', {}, slideIdMessage);

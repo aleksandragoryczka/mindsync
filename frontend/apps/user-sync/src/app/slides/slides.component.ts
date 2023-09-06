@@ -35,7 +35,7 @@ export class SlidesComponent implements OnInit {
 
   handleCountdownEnded(): void {
     this.isCountdownEnded = true;
-    
+    this.currentSlideIndex = this.webSocketService.currentSlideId ?? 0;
   }
 
   handleUserSelectedOptions(options: OptionModel[]): void {

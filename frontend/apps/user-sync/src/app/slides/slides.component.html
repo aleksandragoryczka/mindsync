@@ -1,4 +1,4 @@
-<div *ngIf="!webSocketService.startButtonPushed" class="mindsync-default-container">
+<div *ngIf="!webSocketService.currentSlideId" class="mindsync-default-container">
     <div class="mindsync-default-content-container">
         <div class="mindsync-default-content-heading">Waiting...</div>
         <div class="mindsync-default-content-data usersync-start-content-data">
@@ -7,7 +7,7 @@
         </div>
     </div>
 </div>
-<div *ngIf="webSocketService.startButtonPushed" class="mindsync-default-container">
+<div *ngIf="webSocketService.currentSlideId" class="mindsync-default-container">
     <div class="mindsync-default-content-container">
         <div class="mindsync-default-content-heading">{{presentation.title}}</div>
         <div class="mindsync-default-content-data usersync-start-content-data-presentation">
