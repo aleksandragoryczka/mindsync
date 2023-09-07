@@ -14,12 +14,9 @@ import { OptionModel } from 'libs/shared/src/lib/models/option.model';
   styleUrls: ['./slides.component.scss'],
 })
 export class SlidesComponent implements OnInit {
-  currentSlideIndex = 0;
-  listOfSlides$: Observable<SlideModel[]> | null = null;
   presentation: PresentationModel = { title: '', code: '', createdAt: '' };
   presentationId = this.activatedRoute.snapshot.paramMap.get('id');
-  slides: SlideModel[] = [];
-  isStarted = false;
+  listOfSlides: SlideModel[] = [];
   isCountdownEnded = false;
 
   constructor(
@@ -27,32 +24,31 @@ export class SlidesComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     public webSocketService: WebSocketService
   ) {}
-
   ngOnInit(): void {
-    if (this.presentationId)
-      this.listOfSlides$ = this.loadSlides(this.presentationId);
+    console.log('this.presentationId: ' + this.presentationId);
+    if (this.presentationId) {
+      this.loadSlides(this.presentationId);
+    }
   }
 
   handleCountdownEnded(): void {
     this.isCountdownEnded = true;
-    this.currentSlideIndex = this.webSocketService.currentSlideId ?? 0;
   }
 
-  handleUserSelectedOptions(options: OptionModel[]): void {
-    console.log('selected options: ' + options);
-  }
-
-  private loadSlides(id: string): Observable<SlideModel[]> {
-    return this.presentationService.getPresentationWithSlides(id).pipe(
-      tap((res: PresentationWithSlides) => {
-        const presentation: PresentationModel = {
-          title: res.title,
-          code: res.code,
-          createdAt: res.createdAt,
-        };
-        this.presentation = presentation;
-      }),
-      map((res: PresentationWithSlides) => res.slides)
-    );
+  private loadSlides(id: string): void {
+    this.presentationService
+      .getPresentationWithSlides(id)
+      .pipe(
+        tap((res: PresentationWithSlides) => {
+          const presentation: PresentationModel = {
+            title: res.title,
+          };
+          this.presentation = presentation;
+        }),
+        map((res: PresentationWithSlides) => res.slides)
+      )
+      .subscribe((slides: SlideModel[]) => {
+        this.listOfSlides = slides;
+      });
   }
 }

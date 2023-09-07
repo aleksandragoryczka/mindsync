@@ -25,9 +25,8 @@ import { OptionModel } from 'libs/shared/src/lib/models/option.model';
   styleUrls: ['./start-show.component.scss'],
 })
 export class StartShowComponent implements OnInit {
-  @ViewChild('cd') slide!: SlideComponent;
   currentSlideIndex = 0;
-  currentSlide?: SlideModel;
+  //currentSlide?: SlideModel;
   listOfSlides: SlideModel[] = [];
   //slidesLength = 0;
   attendeesNumber = 0;
@@ -44,13 +43,20 @@ export class StartShowComponent implements OnInit {
 
   ngOnInit(): void {
     this.openDialog();
-    if (this.presentationId) this.loadSlides(this.presentationId);
+    if (this.presentationId) {
+      this.loadSlides(this.presentationId);
+    }
   }
 
   nextSlide(): void {
     if (this.currentSlideIndex < this.listOfSlides.length - 1) {
-      this.currentSlideIndex++;
+      //this.webSocketService.sendCurrentSlideMessage(this.currentSlideIndex);
+      this.webSocketService.sendCurrentSlideIndexMessage(
+        this.currentSlideIndex + 1
+      );
       this.answersShowed = false;
+      this.currentSlideIndex++;
+      //this.webSocketService.sendCurrentSlideMessage(this.currentSlideIndex);
     }
   }
 
@@ -156,26 +162,26 @@ export class StartShowComponent implements OnInit {
       allOptions: mockAllOptions,
     };*/
     const chartData: ChartData = {
-      slideTitle: this.currentSlide?.title ?? '',
+      slideTitle: this.listOfSlides[this.currentSlideIndex].title ?? '',
       answersCount: answersCount,
-      allOptions: this.currentSlide?.options ?? [],
+      allOptions: this.listOfSlides[this.currentSlideIndex].options ?? [],
     };
 
     return chartData;
   }
 
-  private startCountdown(): void {
-    this.webSocketService.sendCurrentSlideMessage(
-      this.listOfSlides[this.currentSlideIndex].id ?? ''
-    );
-    this.slide.startCountdown();
-  }
-
   private openDialog(): void {
-    const dialogRef = this.dialog.open(StartShowPopupComponent);
+    const dialogRef = this.dialog.open(StartShowPopupComponent, {
+      disableClose: true,
+    });
     dialogRef.afterClosed().subscribe(res => {
       this.attendeesNumber = res;
-      this.startCountdown();
+      this.webSocketService.sendPushStartButtonMessage(true);
+      //this.webSocketService.sendCurrentSlideMessage(this.currentSlideIndex);
+      this.webSocketService.sendCurrentSlideIndexMessage(
+        this.currentSlideIndex
+      );
+
     });
   }
 
@@ -187,7 +193,6 @@ export class StartShowComponent implements OnInit {
           const presentation: PresentationModel = {
             title: res.title,
           };
-          console.log(res.slides.length);
           //this.slidesLength = res.slides.length;
           this.presentation = presentation;
         }),

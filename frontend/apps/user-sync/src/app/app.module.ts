@@ -9,6 +9,12 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { SlidesComponent } from './slides/slides.component';
 import { AppRoutingModule } from './app-routing.module';
 import { ToastrModule } from 'ngx-toastr';
+import { JwtModule } from '@auth0/angular-jwt';
+import { environment } from 'apps/mindsync/src/environments/environment.development';
+
+export function tokenGetter() {
+  return localStorage.getItem('Access-Token');
+}
 
 @NgModule({
   declarations: [AppComponent, StartComponent, SlidesComponent],
@@ -26,6 +32,13 @@ import { ToastrModule } from 'ngx-toastr';
       resetTimeoutOnDuplicate: true,
       progressBar: true,
       progressAnimation: 'decreasing',
+    }),
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: tokenGetter,
+        allowedDomains: [environment.allowedDomains],
+        disallowedRoutes: [],
+      },
     }),
   ],
   providers: [],

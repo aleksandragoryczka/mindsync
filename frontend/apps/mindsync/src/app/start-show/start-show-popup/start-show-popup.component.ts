@@ -12,7 +12,6 @@ import { ActivatedRoute } from '@angular/router';
 export class StartShowPopupComponent implements OnInit {
   attendees: AttendeeMessageModel[] = [];
   code = '';
-  @Output() attendeesNumber: EventEmitter<number> = new EventEmitter<number>();
   constructor(
     public webSocketService: WebSocketService,
     private activatedRoute: ActivatedRoute,

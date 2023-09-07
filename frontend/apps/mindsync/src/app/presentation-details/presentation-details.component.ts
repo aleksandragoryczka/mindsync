@@ -188,7 +188,7 @@ export class PresentationDetailsComponent implements OnInit {
           if (isDeleted) {
             this.dialog.closeAll();
             this.router.navigateByUrl('/dashboard');
-            this.toastrService.success('Show deleted successfully');
+            this.toastrService.success('Presentation deleted successfully');
           } else this.toastrService.warning('Something went wrong');
         });
     }

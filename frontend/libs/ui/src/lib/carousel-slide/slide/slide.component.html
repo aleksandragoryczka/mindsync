@@ -10,7 +10,7 @@
                 </ng-container>
                 <ng-container *ngIf="timerShowed">
                     <mat-icon class="mr-2">timer</mat-icon>
-                    <countdown #cd [config]="{ leftTime: 14, format: 's', demand: timerOnDemand }"
+                    <countdown #cd [config]="{ leftTime: 15, format: 's', demand: timerOnDemand }"
                         (event)="handleCountdownEvent($event)">
                     </countdown>
                 </ng-container>
@@ -18,7 +18,7 @@
         </div>
         <div class="mindsync-default-content-data data-slide"
             [style.background-color]="ColorFormatter.lightenColor(data.headerColor)">
-            <div *ngIf="data.type==='MULTIPLE_CHOICE'" class="options-container">
+            <div *ngIf="data.type==='MULTIPLE_CHOICE' || data.type.name==='MULTIPLE_CHOICE'" class="options-container">
                 <ng-container [ngSwitch]="checkboxShowed">
                     <ng-container *ngSwitchCase="'default'">
                         <div class="option" [style.color]="data.titleColor"

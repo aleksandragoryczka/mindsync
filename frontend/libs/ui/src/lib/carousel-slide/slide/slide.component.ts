@@ -4,8 +4,10 @@ import {
   ElementRef,
   EventEmitter,
   Input,
+  OnChanges,
   Output,
   Renderer2,
+  SimpleChanges,
 } from '@angular/core';
 import { CarouselSlideComponent } from '../carousel-slide.component';
 import { PresentationService } from 'libs/shared/src/lib/services/presentation.service';
@@ -76,6 +78,9 @@ export class SlideComponent
 
   ngAfterViewInit(): void {
     this.wordCloudSetup();
+    this.webSocketService.startButtonPushed.subscribe(res => {
+      if (res) this.startCountdown();
+    });
   }
 
   override ngOnInit(): void {
@@ -121,7 +126,6 @@ export class SlideComponent
 
   handleCountdownEvent(event: any): void {
     if (event.action === 'done') {
-      console.log(this.activatedRoute.snapshot.paramMap);
       const userOptions: SelectedOptionsMessageModel = {
         name: this.activatedRoute.snapshot.queryParamMap.get('name') ?? '',
         surname:

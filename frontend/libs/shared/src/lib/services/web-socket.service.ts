@@ -3,6 +3,7 @@ import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
 import { AttendeeMessageModel } from '../models/attendee-message.model';
 import { SelectedOptionsMessageModel } from '../models/selected-options-message.model';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -11,9 +12,12 @@ export class WebSocketService {
   msg: any[] = [];
   userOptions: any[] = [];
   //startButtonPushed = false; //TODO: to be false
+  startButtonPushed: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
+    false
+  );
   slideTimeEnded: string | undefined;
   stompClient: any;
-  currentSlideId: number | undefined;
+  currentSlideId: BehaviorSubject<number> = new BehaviorSubject<number>(0);
 
   constructor() {
     this.initializeWebSocketConnection();
@@ -39,7 +43,15 @@ export class WebSocketService {
         '/topic/current-slide',
         (message: { body: any }) => {
           if (message.body) {
-            that.currentSlideId = message.body;
+            that.currentSlideId.next(+message.body);
+          }
+        }
+      );
+      that.stompClient.subscribe(
+        '/topic/start-button',
+        (message: { body: any }) => {
+          if (message.body) {
+            that.startButtonPushed.next(message.body);
           }
         }
       );
@@ -67,13 +79,13 @@ export class WebSocketService {
     this.stompClient.send('/app/send/attendees', {}, message);
   }
 
-  sendCurrentSlideMessage(message: string) {
-    this.stompClient.send('/app/send/current-slide', {}, parseInt(message));
+  sendCurrentSlideIndexMessage(message: number) {
+    this.stompClient.send('/app/send/current-slide', {}, message);
   }
-  /*
+
   sendPushStartButtonMessage(message: boolean) {
     this.stompClient.send('/app/send/start-button', {}, message);
-  }*/
+  }
 
   sendTimeEnded(slideIdMessage: string) {
     this.stompClient.send('/app/send/time-end', {}, slideIdMessage);

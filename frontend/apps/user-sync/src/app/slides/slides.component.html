@@ -1,4 +1,4 @@
-<div *ngIf="!webSocketService.currentSlideId" class="mindsync-default-container">
+<div *ngIf="(webSocketService.startButtonPushed | async) === false" class="mindsync-default-container">
     <div class="mindsync-default-content-container">
         <div class="mindsync-default-content-heading">Waiting...</div>
         <div class="mindsync-default-content-data usersync-start-content-data">
@@ -7,20 +7,19 @@
         </div>
     </div>
 </div>
-<div *ngIf="webSocketService.currentSlideId" class="mindsync-default-container">
+<div *ngIf="webSocketService.startButtonPushed | async" class="mindsync-default-container">
     <div class="mindsync-default-content-container">
         <div class="mindsync-default-content-heading">{{presentation.title}}</div>
         <div class="mindsync-default-content-data usersync-start-content-data-presentation">
-            <div *ngFor="let slide of listOfSlides$ | async as slides; let i = index">
-                <ng-container *ngIf="i===currentSlideIndex">
+            <div *ngFor="let slide of listOfSlides; let i = index">
+                <ng-container *ngIf="i===(webSocketService.currentSlideId | async)">
+                    <!--
                     <div *ngIf="isCountdownEnded">
                         <mat-spinner></mat-spinner>
-                    </div>
-                    <ng-container *ngIf="!isCountdownEnded">
-                        <project-slide [data]="slides[i]" [actionsShowed]="false" [checkboxShowed]="'enabled-checkbox'"
-                            [timerShowed]="true" [timerOnDemand]="false" (countdownEnded)="handleCountdownEnded()"
-                            (userSelectedOptionsEmitter)="handleUserSelectedOptions($event)"></project-slide>
-                    </ng-container>
+                    </div>-->
+                    <project-slide [data]="listOfSlides[i]" [actionsShowed]="false"
+                        [checkboxShowed]="'enabled-checkbox'" [timerShowed]="true" [timerOnDemand]="false"
+                        (countdownEnded)="handleCountdownEnded()"></project-slide>
                 </ng-container>
             </div>
         </div>

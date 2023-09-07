@@ -7,8 +7,8 @@
             <div class="carousel-main-container">
                 <div *ngFor="let slide of listOfSlides; let i = index">
                     <ng-container *ngIf="i===currentSlideIndex">
-                        <project-slide #cd *ngIf="!answersShowed" [data]="listOfSlides[i]"
-                            [checkboxShowed]="'unchecked'" [actionsShowed]="false" [timerShowed]="true"
+                        <project-slide *ngIf="!answersShowed" [data]="listOfSlides[i]" [checkboxShowed]="'unchecked'"
+                            [actionsShowed]="false" [timerShowed]="true"
                             (countdownEnded)="handleCountdownEnded(listOfSlides[i])"></project-slide>
                         <project-slide *ngIf="answersShowed" [data]="listOfSlides[i]" [checkboxShowed]="'default'"
                             [actionsShowed]="false"></project-slide>

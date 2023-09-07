@@ -67,6 +67,7 @@ function countdownConfigFactory(): CountdownConfig {
     SharedCarouselComponent,
     CarouselDynamicElementComponent,
     SlideComponent,
+    PopupWithInputsComponent,
   ],
   providers: [
     { provide: CountdownGlobalConfig, useFactory: countdownConfigFactory },

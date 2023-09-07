@@ -59,6 +59,11 @@ export class NavigationComponent implements OnInit {
         placeholder: 'Repeat password',
       },
     },
+    join: {
+      ['code']: { value: '', type: 'text', placeholder: 'Code' },
+      ['name']: { value: '', type: 'text', placeholder: 'Name' },
+      ['surname']: { value: '', type: 'text', placeholder: 'Surname' },
+    },
   };
 
   homepageInputPopupFullData: Record<string, InputPopupFullDataModel> = {
@@ -72,6 +77,25 @@ export class NavigationComponent implements OnInit {
       description: '',
       inputs: this.homepageInputsPopup['register'],
     },
+    join: {
+      title: 'Join presentation',
+      description:
+        'Type presentation code you want to join, your name and surname:',
+      inputs: this.homepageInputsPopup['join'],
+      buttons: [
+        {
+          type: ButtonTypes.PRIMARY,
+          text: 'Join',
+          onClick: () =>
+            this.joinPresentation(this.homepageInputsPopup['join']),
+        },
+
+        {
+          type: ButtonTypes.SECONDARY,
+          text: 'Cancel',
+        },
+      ],
+    },
   };
 
   openPopup(popup_name: string | null): void {
@@ -81,34 +105,6 @@ export class NavigationComponent implements OnInit {
         data: data,
       });
     }
-  }
-
-  openJoinPresentationPopup(): void {
-    const inputs: Record<string, InputPopupModel> = {
-      ['code']: { value: '', type: 'text', placeholder: 'Code' },
-      ['name']: { value: '', type: 'text', placeholder: 'Name' },
-      ['surname']: { value: '', type: 'text', placeholder: 'Surname' },
-    };
-    const buttons: ButtonPopupModel[] = [
-      {
-        type: ButtonTypes.PRIMARY,
-        text: 'Join',
-        onClick: () => this.joinPresentation(inputs),
-      },
-
-      {
-        type: ButtonTypes.SECONDARY,
-        text: 'Cancel',
-      },
-    ];
-    const fullPopupData: InputPopupFullDataModel = {
-      title: 'Join presentation',
-      description:
-        'Type presentation code you want to join, your name and surname:',
-      inputs: inputs,
-      buttons: buttons,
-    };
-    this.dialog.open(PopupWithInputsComponent, { data: fullPopupData });
   }
 
   joinPresentation(inputs: Record<string, InputPopupModel>): void {
@@ -145,7 +141,7 @@ export class NavigationComponent implements OnInit {
       {
         text: 'Join presentation',
         router_link: '',
-        popup_name: null,
+        popup_name: 'join',
       },
     ];
   }

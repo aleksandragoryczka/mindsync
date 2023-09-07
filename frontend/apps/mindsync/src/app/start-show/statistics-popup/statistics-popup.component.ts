@@ -52,7 +52,6 @@ export class StatisticsPopupComponent {
     @Inject(MAT_DIALOG_DATA)
     public chartData: ChartData
   ) {
-    const colors = ['#538d22', '#ff0000', '#538d22', '#ff0000'];
     this.chartOptions = {
       series: [
         {
