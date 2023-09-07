@@ -71,11 +71,6 @@ export class StartComponent {
               surname: `${String(inputs['surname'].value)}`,
             },
           });
-          /*this.router.navigate([
-            `${res}?name=${String(inputs['name'].value)}&surname=${String(
-              inputs['surname'].value
-            )}`,
-          ]);*/
           this.dialog.closeAll();
         } else {
           this.toastrService.error('Please try again.', 'Wrong Joining Code');

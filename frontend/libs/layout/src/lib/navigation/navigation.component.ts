@@ -117,6 +117,7 @@ export class NavigationComponent implements OnInit {
             surname: String(inputs['surname'].value),
           };
           this.webSocketService.sendMessage(JSON.stringify(attendee));
+          this.dialog.closeAll();
           document.location.href = `http://localhost:4300/${res}?name=${String(
             inputs['name'].value
           )}&surname=${String(inputs['surname'].value)}`;

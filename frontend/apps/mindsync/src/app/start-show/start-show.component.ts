@@ -50,24 +50,19 @@ export class StartShowComponent implements OnInit {
 
   nextSlide(): void {
     if (this.currentSlideIndex < this.listOfSlides.length - 1) {
-      //this.webSocketService.sendCurrentSlideMessage(this.currentSlideIndex);
       this.webSocketService.sendCurrentSlideIndexMessage(
         this.currentSlideIndex + 1
       );
       this.answersShowed = false;
       this.currentSlideIndex++;
-      //this.webSocketService.sendCurrentSlideMessage(this.currentSlideIndex);
     }
   }
 
   handleCountdownEnded(slide: SlideModel) {
     this.answersShowed = true;
-    //this.currentSlide = slide;
-    //this.webSocketService.sendTimeEnded(slid);
   }
 
   openStatisticsPopup(): void {
-    //const userAnswer = this.webSocketService.userOptions;
     //const chartData = this.mapToChartData(this.webSocketService.userOptions);
     const userAnswer: SelectedOptionsMessageModel[] = [
       {
@@ -78,11 +73,6 @@ export class StartShowComponent implements OnInit {
             id: '1',
             option: 'Option A',
             isCorrect: true,
-          },
-          {
-            id: '2',
-            option: 'Option B',
-            isCorrect: false,
           },
         ],
       },
@@ -105,39 +95,14 @@ export class StartShowComponent implements OnInit {
     ];
     const chartData = this.mapToChartData(this.webSocketService.userOptions);
     //const chartData: ChartData = this.mapToChartData(userAnswer);
-
     this.dialog.open(StatisticsPopupComponent, {
       data: chartData,
     });
   }
 
   private mapToChartData(
-    userOptions: SelectedOptionsMessageModel[]
+    userSelectedOptions: SelectedOptionsMessageModel[]
   ): ChartData {
-    const answersCount: UserAnswer[] = [];
-    const optionMap: { [optionId: string]: UserAnswer } = {};
-
-    for (const selectedOption of userOptions) {
-      for (const option of selectedOption.selectedOptions) {
-        if (option.id) {
-          const optionId = option.id;
-          if (!optionMap[optionId]) {
-            optionMap[optionId] = {
-              users: [],
-              count: 0,
-            };
-          }
-          const user: User = {
-            name: selectedOption.name,
-            surname: selectedOption.surname,
-          };
-          optionMap[optionId].users.push(user);
-          optionMap[optionId].count++;
-        }
-      }
-    }
-    for (const optionId in optionMap) answersCount.push(optionMap[optionId]);
-
     const mockAllOptions: OptionModel[] = [
       {
         id: '1',
@@ -156,11 +121,60 @@ export class StartShowComponent implements OnInit {
       },
       // Add more mock data as needed
     ];
-    /*const chartData: ChartData = {
+    const answersCount: UserAnswer[] = [];
+    const optionMap: { [optionId: string]: UserAnswer } = {};
+    this.listOfSlides[this.currentSlideIndex].options?.forEach(option => {
+      //mockAllOptions.forEach(option => {
+      if (option.id) {
+        const optionId = option.id;
+        if (!optionMap[optionId]) {
+          optionMap[optionId] = {
+            users: [],
+            count: 0,
+          };
+        }
+      }
+    });
+    userSelectedOptions.forEach(res =>
+      res.selectedOptions.forEach(opt => {
+        if (opt.id) {
+          const optionId = opt.id;
+          const user: User = {
+            name: res.name,
+            surname: res.surname,
+          };
+          optionMap[optionId].users.push(user);
+          optionMap[optionId].count++;
+        }
+      })
+    );
+    /*for (const selectedOption of userOptions) {
+      for (const option of selectedOption.selectedOptions) {
+        if (option.id) {
+          const optionId = option.id;
+          if (!optionMap[optionId]) {
+            optionMap[optionId] = {
+              users: [],
+              count: 0,
+            };
+          }
+          const user: User = {
+            name: selectedOption.name,
+            surname: selectedOption.surname,
+          };
+          optionMap[optionId].users.push(user);
+          optionMap[optionId].count++;
+        }
+      }
+    }*/
+    for (const optionId in optionMap) answersCount.push(optionMap[optionId]);
+    /*
+    const chartData: ChartData = {
       slideTitle: 'dddddddddddd',
       answersCount: answersCount,
       allOptions: mockAllOptions,
     };*/
+
     const chartData: ChartData = {
       slideTitle: this.listOfSlides[this.currentSlideIndex].title ?? '',
       answersCount: answersCount,
@@ -181,7 +195,6 @@ export class StartShowComponent implements OnInit {
       this.webSocketService.sendCurrentSlideIndexMessage(
         this.currentSlideIndex
       );
-
     });
   }
 
