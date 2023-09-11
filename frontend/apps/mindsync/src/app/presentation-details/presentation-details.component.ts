@@ -142,6 +142,12 @@ export class PresentationDetailsComponent implements OnInit {
     this.dialog.open(PopupWithInputsComponent, { data: data });
   }
 
+  async startShow() {
+    await this.router.navigate([`/${this.presentationId}/start-show`], {
+      queryParams: { code: this.presentation.code },
+    });
+  }
+
   async getShowsButton() {
     await this.router.navigate([`/${this.presentationId}/shows`], {
       queryParams: { title: this.presentation.title },

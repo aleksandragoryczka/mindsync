@@ -2,7 +2,10 @@ import { Injectable } from '@angular/core';
 import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
 import { AttendeeMessageModel } from '../models/attendee-message.model';
-import { SelectedOptionsMessageModel } from '../models/selected-options-message.model';
+import {
+  SelectedOptionsMessageModel,
+  UserAnswerMessageModel,
+} from '../models/selected-options-message.model';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
@@ -11,6 +14,12 @@ import { BehaviorSubject } from 'rxjs';
 export class WebSocketService {
   msg: any[] = [];
   userOptions: any[] = [];
+  x: any[] = [];
+  userAnswers$: BehaviorSubject<UserAnswerMessageModel[]> = new BehaviorSubject<
+    UserAnswerMessageModel[]
+  >([]);
+  userAnswers = this.userAnswers$.asObservable();
+
   //startButtonPushed = false; //TODO: to be false
   startButtonPushed: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
     false
@@ -72,6 +81,20 @@ export class WebSocketService {
           }
         }
       );
+      that.stompClient.subscribe(
+        '/topic/user-answer',
+        (message: { body: any }) => {
+          if (message.body) {
+            that.x.push(JSON.parse(message.body));
+            const currentUserAnswers = that.userAnswers$.getValue();
+            currentUserAnswers.push(JSON.parse(message.body));
+            console.log(currentUserAnswers);
+            that.userAnswers$.next(currentUserAnswers);
+            //that.userAnswers$.next(Object.assign([], JSON.parse(message.body)));
+            //that.userAnswers.push(JSON.parse(message.body));
+          }
+        }
+      );
     });
   }
 
@@ -93,5 +116,9 @@ export class WebSocketService {
 
   sendSelectedOptions(message: any) {
     this.stompClient.send('/app/send/selected-options', {}, message);
+  }
+
+  sendUserAnswer(message: any) {
+    this.stompClient.send('/app/send/user-answer', {}, message);
   }
 }

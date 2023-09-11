@@ -11,6 +11,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { ToastrModule } from 'ngx-toastr';
 import { JwtModule } from '@auth0/angular-jwt';
 import { environment } from 'apps/mindsync/src/environments/environment.development';
+import { FormsModule } from '@angular/forms';
 
 export function tokenGetter() {
   return localStorage.getItem('Access-Token');
@@ -25,6 +26,7 @@ export function tokenGetter() {
     SharedModule,
     LayoutModule,
     MatProgressSpinnerModule,
+    FormsModule,
     ToastrModule.forRoot({
       timeOut: 3500,
       closeButton: true,

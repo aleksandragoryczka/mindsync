@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.project.mindsync.dto.webSocketMessage.AttendeeMessage;
 import com.project.mindsync.dto.webSocketMessage.SelectedOptionsMessage;
+import com.project.mindsync.dto.webSocketMessage.UserAnswerMessageModel;
 
 @CrossOrigin(origins = { "http://localhost:4200", "http://localhost:4300", "http://localhost:4000" })
 @Controller
@@ -46,6 +47,12 @@ public class WebSocketController {
 	@MessageMapping("send/selected-options")
 	public SelectedOptionsMessage sendSelectedOptions(SelectedOptionsMessage message) {
 		messagingTemplate.convertAndSend("/topic/selected-options", message);
+		return message;
+	}
+
+	@MessageMapping("send/user-answer")
+	public UserAnswerMessageModel sendUserAnswer(UserAnswerMessageModel message) {
+		messagingTemplate.convertAndSend("/topic/user-answer", message);
 		return message;
 	}
 }

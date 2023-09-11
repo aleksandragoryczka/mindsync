@@ -11,4 +11,5 @@ public class SelectedOptionsMessage {
 	private String name;
 	private String surname;
 	private List<Option> selectedOptions;
+	//private String answer;
 }

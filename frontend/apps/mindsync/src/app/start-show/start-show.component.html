@@ -15,7 +15,7 @@
                     </ng-container>
                 </div>
                 <div *ngIf="answersShowed" class="buttons-container">
-                    <button class="mindsync-btn mindsync-btn-secondary"
+                    <button *ngIf="isMultipleChoice" class="mindsync-btn mindsync-btn-secondary"
                         (click)="openStatisticsPopup()">Statistics</button>
                     <button class="mindsync-btn mindsync-btn-primary" (click)="nextSlide()">Next slide</button>
                 </div>

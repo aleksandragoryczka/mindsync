@@ -25,7 +25,6 @@ export class StartShowPopupComponent implements OnInit {
   }
 
   startShow(): void {
-    //this.attendeesNumber.emit(this.attendees.length);
     this.dialogRef.close(this.attendees.length);
   }
 }

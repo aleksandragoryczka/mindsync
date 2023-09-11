@@ -32,6 +32,7 @@ export class StartShowComponent implements OnInit {
   attendeesNumber = 0;
   presentation: PresentationModel = { title: '' };
   answersShowed = false;
+  isMultipleChoice = false;
   presentationId = this.activatedRoute.snapshot.paramMap.get('id');
 
   constructor(
@@ -60,6 +61,9 @@ export class StartShowComponent implements OnInit {
 
   handleCountdownEnded(slide: SlideModel) {
     this.answersShowed = true;
+    slide.type === 'WORD_CLOUD'
+      ? (this.isMultipleChoice = false)
+      : (this.isMultipleChoice = true);
   }
 
   openStatisticsPopup(): void {
@@ -135,19 +139,22 @@ export class StartShowComponent implements OnInit {
         }
       }
     });
-    userSelectedOptions.forEach(res =>
-      res.selectedOptions.forEach(opt => {
-        if (opt.id) {
-          const optionId = opt.id;
-          const user: User = {
-            name: res.name,
-            surname: res.surname,
-          };
-          optionMap[optionId].users.push(user);
-          optionMap[optionId].count++;
-        }
-      })
-    );
+    userSelectedOptions.forEach(res => {
+      if (res.selectedOptions)
+        res.selectedOptions.forEach(opt => {
+          if (opt.id) {
+            const optionId = opt.id;
+            if (optionMap[optionId]) {
+              const user: User = {
+                name: res.name,
+                surname: res.surname,
+              };
+              optionMap[optionId].users.push(user);
+              optionMap[optionId].count++;
+            }
+          }
+        });
+    });
     /*for (const selectedOption of userOptions) {
       for (const option of selectedOption.selectedOptions) {
         if (option.id) {
