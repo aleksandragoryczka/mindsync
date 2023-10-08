@@ -17,7 +17,12 @@
                 <div *ngIf="answersShowed" class="buttons-container">
                     <button *ngIf="isMultipleChoice" class="mindsync-btn mindsync-btn-secondary"
                         (click)="openStatisticsPopup()">Statistics</button>
-                    <button class="mindsync-btn mindsync-btn-primary" (click)="nextSlide()">Next slide</button>
+                    <ng-container [ngSwitch]="this.currentSlideIndex">
+                        <button *ngSwitchCase="this.listOfSlides.length - 1" class="mindsync-btn mindsync-btn-primary"
+                            (click)="finishShow()">Finish</button>
+                        <button *ngSwitchDefault class="mindsync-btn mindsync-btn-primary" (click)="nextSlide()">Next
+                            slide</button>
+                    </ng-container>
                 </div>
             </div>
         </div>

@@ -4,7 +4,7 @@ import { PresentationWithSlides } from 'libs/shared/src/lib/models/presentation-
 import { PresentationModel } from 'libs/shared/src/lib/models/presentation.model';
 import { SlideModel } from 'libs/shared/src/lib/models/slide.model';
 import { PresentationService } from 'libs/shared/src/lib/services/presentation.service';
-import { Observable, EMPTY, map, tap } from 'rxjs';
+import { Observable, EMPTY, map, tap, BehaviorSubject } from 'rxjs';
 import { WebSocketService } from '../../../../../libs/shared/src/lib/services/web-socket.service';
 import { OptionModel } from 'libs/shared/src/lib/models/option.model';
 import {
@@ -30,7 +30,10 @@ export class SlidesComponent implements OnInit, AfterViewInit {
   presentation: PresentationModel = { title: '', code: '', createdAt: '' };
   presentationId = this.activatedRoute.snapshot.paramMap.get('id');
   listOfSlides: SlideModel[] = [];
-  isCountdownEnded = false;
+  private isCountdownEndedSubject: BehaviorSubject<boolean> =
+    new BehaviorSubject<boolean>(false);
+  isCountdownEnded: Observable<boolean> =
+    this.isCountdownEndedSubject.asObservable();
 
   constructor(
     private presentationService: PresentationService,
@@ -50,16 +53,17 @@ export class SlidesComponent implements OnInit, AfterViewInit {
   }
 
   handleCountdownEnded(): void {
-    this.isCountdownEnded = true;
+    this.isCountdownEndedSubject.next(true);
   }
 
   sendUserAnswer(): void {
     const userAnswer: UserAnswerMessageModel = {
       name: this.activatedRoute.snapshot.queryParamMap.get('name') ?? '',
       surname: this.activatedRoute.snapshot.queryParamMap.get('surname') ?? '',
+      slideId:
+        this.listOfSlides[this.webSocketService.currentSlideId.getValue()].id,
       answer: this.userAnswer,
     };
-    console.log(userAnswer);
     this.webSocketService.sendUserAnswer(JSON.stringify(userAnswer));
   }
 

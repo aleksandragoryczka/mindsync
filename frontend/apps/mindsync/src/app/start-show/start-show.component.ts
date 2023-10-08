@@ -1,14 +1,12 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { StartShowPopupComponent } from './start-show-popup/start-show-popup.component';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PresentationWithSlides } from 'libs/shared/src/lib/models/presentation-with-slides.model';
 import { PresentationModel } from 'libs/shared/src/lib/models/presentation.model';
 import { SlideModel } from 'libs/shared/src/lib/models/slide.model';
-import { Observable, tap, map, EMPTY } from 'rxjs';
+import { tap, map } from 'rxjs';
 import { PresentationService } from 'libs/shared/src/lib/services/presentation.service';
-import { CountdownComponent } from 'ngx-countdown';
-import { SlideComponent } from 'libs/ui/src/lib/carousel-slide/slide/slide.component';
 import { WebSocketService } from 'libs/shared/src/lib/services/web-socket.service';
 import { SelectedOptionsMessageModel } from 'libs/shared/src/lib/models/selected-options-message.model';
 import {
@@ -18,6 +16,7 @@ import {
 import { User } from 'libs/shared/src/lib/models/user.model';
 import { StatisticsPopupComponent } from './statistics-popup/statistics-popup.component';
 import { OptionModel } from 'libs/shared/src/lib/models/option.model';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'project-start-show',
@@ -25,6 +24,7 @@ import { OptionModel } from 'libs/shared/src/lib/models/option.model';
   styleUrls: ['./start-show.component.scss'],
 })
 export class StartShowComponent implements OnInit {
+  nextButtonText = 'Next slide';
   currentSlideIndex = 0;
   //currentSlide?: SlideModel;
   listOfSlides: SlideModel[] = [];
@@ -39,7 +39,9 @@ export class StartShowComponent implements OnInit {
     private dialog: MatDialog,
     private activatedRoute: ActivatedRoute,
     private presentationService: PresentationService,
-    private webSocketService: WebSocketService
+    private webSocketService: WebSocketService,
+    private router: Router,
+    private toastrService: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -57,6 +59,13 @@ export class StartShowComponent implements OnInit {
       this.answersShowed = false;
       this.currentSlideIndex++;
     }
+  }
+
+  finishShow(): void {
+    this.router.navigate(['/dashboard']);
+    this.toastrService.success(
+      'Slides show completed. Please navigate to "Shows" to see details.'
+    );
   }
 
   handleCountdownEnded(slide: SlideModel) {

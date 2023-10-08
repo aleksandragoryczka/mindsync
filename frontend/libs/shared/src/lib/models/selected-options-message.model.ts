@@ -1,3 +1,4 @@
+import { BehaviorSubject } from 'rxjs';
 import { OptionModel } from './option.model';
 
 export interface SelectedOptionsMessageModel {
@@ -10,5 +11,6 @@ export interface SelectedOptionsMessageModel {
 export interface UserAnswerMessageModel {
   name: string;
   surname: string;
+  slideId?: string,
   answer: string;
 }

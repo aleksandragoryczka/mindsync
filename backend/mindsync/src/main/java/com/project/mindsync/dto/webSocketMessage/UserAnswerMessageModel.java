@@ -7,4 +7,5 @@ public class UserAnswerMessageModel {
 	private String name;
 	private String surname;
 	private String answer;
+	private String slideId;
 }

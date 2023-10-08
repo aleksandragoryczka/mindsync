@@ -12,16 +12,17 @@
         <div class="mindsync-default-content-heading">{{presentation.title}}</div>
         <div class="mindsync-default-content-data usersync-start-content-data-presentation">
             <div *ngFor="let slide of listOfSlides; let i = index">
-                <!--
-                                    <div *ngIf="isCountdownEnded">
-                                        <mat-spinner></mat-spinner>
-                                    </div>-->
-                <ng-container *ngIf="i===(webSocketService.currentSlideId | async)">
+                <ng-container *ngIf="i===(webSocketService.currentSlideId | async); ngIfChange: stopSpinner">
+                    <!--   <ng-container *ngIf="isCountdownEnded | async">
+                        <mat-spinner></mat-spinner>
+                    </ng-container>
+                    <ng-container *ngIf="(isCountdownEnded | async) === false"> -->
                     <ng-container [ngSwitch]="listOfSlides[i].type">
                         <ng-container *ngSwitchCase="'WORD_CLOUD'">
                             <div class="mindsync-default-container">
                                 <div class="mindsync-default-content-container">
-                                    <div class="mindsync-default-content-heading"> {{ listOfSlides[i].title }} </div>
+                                    <div class="mindsync-default-content-heading"> {{ listOfSlides[i].title }}
+                                    </div>
                                     <div class="mindsync-secondary-default-content-data answer-content-data">
                                         Type your answer:
                                         <input type="text" class="mindsync-input default-input" placeholder="Answer"
