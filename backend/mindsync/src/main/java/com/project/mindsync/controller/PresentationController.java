@@ -61,7 +61,6 @@ public class PresentationController {
 	public ResponseEntity<Presentation> addPresentation(
 			@ModelAttribute @Valid PresentationRequestDto presentationRequest, @CurrentUser UserPrincipal currentUser)
 			throws IOException {
-		System.out.println(presentationRequest.getTitle());
 		return presentationService.addPresentation(presentationRequest, currentUser);
 	}
 

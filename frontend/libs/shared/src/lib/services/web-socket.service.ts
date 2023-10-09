@@ -14,7 +14,6 @@ import { BehaviorSubject } from 'rxjs';
 export class WebSocketService {
   msg: any[] = [];
   userOptions: any[] = [];
-  x: any[] = [];
   userAnswers$: BehaviorSubject<UserAnswerMessageModel[]> = new BehaviorSubject<
     UserAnswerMessageModel[]
   >([]);
@@ -85,10 +84,8 @@ export class WebSocketService {
         '/topic/user-answer',
         (message: { body: any }) => {
           if (message.body) {
-            that.x.push(JSON.parse(message.body));
             const currentUserAnswers = that.userAnswers$.getValue();
             currentUserAnswers.push(JSON.parse(message.body));
-            console.log(currentUserAnswers);
             that.userAnswers$.next(currentUserAnswers);
             //that.userAnswers$.next(Object.assign([], JSON.parse(message.body)));
             //that.userAnswers.push(JSON.parse(message.body));

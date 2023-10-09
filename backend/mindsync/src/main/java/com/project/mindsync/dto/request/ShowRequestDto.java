@@ -16,13 +16,13 @@ import lombok.NoArgsConstructor;
 public class ShowRequestDto {
 	private String attendeesNumber;
 	private MultipartFile excelFile;
-	private List<MultipartFile> screenshots;
+	// private List<MultipartFile> screenshots;
 
 	public MultipartFile getExcelFile() {
 		return this.excelFile;
 	}
 
-	public List<MultipartFile> getScreenshots() {
-		return this.screenshots;
-	}
+	// public List<MultipartFile> getScreenshots() {
+	// return this.screenshots;
+	// }
 }

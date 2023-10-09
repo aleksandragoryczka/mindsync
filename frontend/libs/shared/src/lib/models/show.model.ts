@@ -1,5 +1,5 @@
 export interface ShowModel {
-  id: string;
+  id?: string;
   attendeesNumber: string;
   createdAt: string;
 }

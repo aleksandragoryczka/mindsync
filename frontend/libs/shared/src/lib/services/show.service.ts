@@ -4,10 +4,18 @@ import { Observable } from 'rxjs';
 import { environment } from 'apps/mindsync/src/environments/environment.development';
 import { ScreenshotModel } from '../models/screenshot.model';
 import { PaginatedResult } from '../models/paginated-result.model';
+import { ShowModel } from '../models/show.model';
 
 @Injectable({ providedIn: 'root' })
 export class ShowService {
   constructor(private http: HttpClient) {}
+
+  addShow(newShow: FormData, presentationId: string): Observable<ShowModel> {
+    return this.http.post<ShowModel>(
+      `${environment.apiUrl}/show?presentationId=${presentationId}`,
+      newShow
+    );
+  }
 
   deleteShow(id: string): Observable<boolean> {
     return this.http.delete<boolean>(`${environment.apiUrl}/show/${id}`);

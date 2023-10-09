@@ -68,7 +68,6 @@ export class SlidesComponent implements OnInit, AfterViewInit {
   }
 
   openUserInputPopup(currentIndex: number): void {
-    console.log(this.listOfSlides);
     const inputs: Record<string, InputPopupModel> = {
       ['answer']: {
         value: '',

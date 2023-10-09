@@ -17,6 +17,15 @@ import { User } from 'libs/shared/src/lib/models/user.model';
 import { StatisticsPopupComponent } from './statistics-popup/statistics-popup.component';
 import { OptionModel } from 'libs/shared/src/lib/models/option.model';
 import { ToastrService } from 'ngx-toastr';
+import * as XLSX from 'xlsx';
+import {
+  AttendeeInformation,
+  SlideStatistics,
+  Summary,
+} from '../../../../../libs/shared/src/lib/models/excel.model';
+import { ShowService } from '../../../../../libs/shared/src/lib/services/show.service';
+import { UserAnswerMessageModel } from '../../../../../libs/shared/src/lib/models/selected-options-message.model';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'project-start-show',
@@ -41,7 +50,8 @@ export class StartShowComponent implements OnInit {
     private presentationService: PresentationService,
     private webSocketService: WebSocketService,
     private router: Router,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private showService: ShowService
   ) {}
 
   ngOnInit(): void {
@@ -62,10 +72,22 @@ export class StartShowComponent implements OnInit {
   }
 
   finishShow(): void {
-    this.router.navigate(['/dashboard']);
-    this.toastrService.success(
-      'Slides show completed. Please navigate to "Shows" to see details.'
+    const excelFormData = this.generateExcel();
+    excelFormData.append(
+      'attendeesNumber',
+      String(this.webSocketService.msg.length)
     );
+    if (this.presentationId)
+      this.showService
+        .addShow(excelFormData, this.presentationId)
+        .subscribe(async isAdded => {
+          if (isAdded) {
+            await this.router.navigate(['/dashboard']);
+            this.toastrService.success(
+              'Slides show completed. Please navigate to "Shows" to see details.'
+            );
+          }
+        });
   }
 
   handleCountdownEnded(slide: SlideModel) {
@@ -73,6 +95,39 @@ export class StartShowComponent implements OnInit {
     slide.type === 'WORD_CLOUD'
       ? (this.isMultipleChoice = false)
       : (this.isMultipleChoice = true);
+  }
+
+  generateExcel(): FormData {
+    const showDetailsJson = this.mapShowDetailsToExcel();
+    const wsSummary: XLSX.WorkSheet = XLSX.utils.json_to_sheet([
+      showDetailsJson[0],
+    ]);
+    const wsAttendeeInformation: XLSX.WorkSheet = XLSX.utils.json_to_sheet(
+      showDetailsJson[1]
+    );
+    const wsSlideStatistics: XLSX.WorkSheet = XLSX.utils.json_to_sheet(
+      showDetailsJson[2]
+    );
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, wsSummary, 'Summary');
+    XLSX.utils.book_append_sheet(
+      wb,
+      wsAttendeeInformation,
+      'Attendee Information'
+    );
+    XLSX.utils.book_append_sheet(wb, wsSlideStatistics, 'Slide Statistics');
+    const excelBuffer = XLSX.write(wb, {
+      bookType: 'xlsx',
+      type: 'array',
+    });
+    const formData = new FormData();
+    formData.append(
+      'excelFile',
+      new Blob([excelBuffer], {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      })
+    );
+    return formData;
   }
 
   openStatisticsPopup(): void {
@@ -111,6 +166,79 @@ export class StartShowComponent implements OnInit {
     this.dialog.open(StatisticsPopupComponent, {
       data: chartData,
     });
+  }
+
+  private mapShowDetailsToExcel(): any[] {
+    const attendeesNumber = this.webSocketService.msg.length;
+    const summary: Summary = {
+      presentationTitle: this.presentation.title,
+      showTime: formatDate(new Date(), 'dd-MM-yyyy hh:mm:ss', 'en-US'),
+      attendeeNumber: attendeesNumber,
+    };
+
+    const attendeeInformations: AttendeeInformation[] = [];
+    for (let i = 0; i < attendeesNumber; i++) {
+      const attendee: AttendeeInformation = {
+        id: i + 1,
+        name: this.webSocketService.msg[i].name,
+        surname: this.webSocketService.msg[i].surname,
+      };
+      attendeeInformations.push(attendee);
+    }
+
+    const slidesStatistics: SlideStatistics[] = [];
+    for (let i = 0; i < this.listOfSlides.length; i++) {
+      const currentSlide: SlideModel = this.listOfSlides[i];
+      const slide: SlideStatistics = {
+        id: i + 1,
+        title: currentSlide.title,
+        displayTime: currentSlide.displayTime,
+        slideType: currentSlide.type,
+        wordcloudAnswers:
+          currentSlide.type === 'WORD_CLOUD'
+            ? this.generateWordCloudAnswer(currentSlide)
+            : '',
+        answersOptions:
+          currentSlide.type === 'MULTIPLE_CHOICE'
+            ? this.generateMultipleChoiceAnswers(currentSlide)
+            : '',
+        correctAnswers:
+          currentSlide.type === 'MULTIPLE_CHOICE'
+            ? this.generateCorrectAnwersList(currentSlide)
+            : '',
+      };
+      slidesStatistics.push(slide);
+    }
+    return [summary, attendeeInformations, slidesStatistics];
+  }
+
+  private generateCorrectAnwersList(slide: SlideModel): string {
+    const correctAnswers: string[] = [];
+    slide.options?.forEach(opt => {
+      if (opt.isCorrect) correctAnswers.push(opt.option);
+    });
+    return correctAnswers.join(',');
+  }
+
+  private generateMultipleChoiceAnswers(slide: SlideModel): string {
+    const allAnswers: string[] = [];
+    slide.options?.forEach(opt => {
+      allAnswers.push(opt.option);
+    });
+    return allAnswers.join(',');
+  }
+
+  private generateWordCloudAnswer(slide: SlideModel): string {
+    const wordcloudWords: string[] = [];
+    this.webSocketService.userAnswers.subscribe(
+      (res: UserAnswerMessageModel[]) => {
+        res.forEach((answer: UserAnswerMessageModel) => {
+          if (answer.slideId === String(slide.id))
+            wordcloudWords.push(answer.answer);
+        });
+      }
+    );
+    return wordcloudWords.join(',');
   }
 
   private mapToChartData(
