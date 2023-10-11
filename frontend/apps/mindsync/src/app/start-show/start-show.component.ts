@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { StartShowPopupComponent } from './start-show-popup/start-show-popup.component';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -26,6 +26,8 @@ import {
 import { ShowService } from '../../../../../libs/shared/src/lib/services/show.service';
 import { UserAnswerMessageModel } from '../../../../../libs/shared/src/lib/models/selected-options-message.model';
 import { formatDate } from '@angular/common';
+import html2canvas from 'html2canvas';
+import { resolve } from 'path';
 
 @Component({
   selector: 'project-start-show',
@@ -33,7 +35,7 @@ import { formatDate } from '@angular/common';
   styleUrls: ['./start-show.component.scss'],
 })
 export class StartShowComponent implements OnInit {
-  nextButtonText = 'Next slide';
+  @ViewChild('wordcloudSlide', { static: false }) wordcloudSlide!: ElementRef;
   currentSlideIndex = 0;
   //currentSlide?: SlideModel;
   listOfSlides: SlideModel[] = [];
@@ -43,6 +45,7 @@ export class StartShowComponent implements OnInit {
   answersShowed = false;
   isMultipleChoice = false;
   presentationId = this.activatedRoute.snapshot.paramMap.get('id');
+  slideScreenshots: Blob[] = [];
 
   constructor(
     private dialog: MatDialog,
@@ -63,6 +66,7 @@ export class StartShowComponent implements OnInit {
 
   nextSlide(): void {
     if (this.currentSlideIndex < this.listOfSlides.length - 1) {
+      //this.addScreenshotToList();
       this.webSocketService.sendCurrentSlideIndexMessage(
         this.currentSlideIndex + 1
       );
@@ -71,11 +75,83 @@ export class StartShowComponent implements OnInit {
     }
   }
 
-  finishShow(): void {
-    const excelFormData = this.generateExcel();
+  addScreenshotToList() {
+    const currentSlide = this.listOfSlides[this.currentSlideIndex];
+    console.log(currentSlide);
+    if (currentSlide.type === 'MULTIPLE_CHOICE') {
+      this.captureStatisticsScreenshot().then(screenshot =>
+        this.slideScreenshots.push(screenshot)
+      );
+    } else if (currentSlide.type === 'WORD_CLOUD') {
+      const projectSlideElement = this.wordcloudSlide.nativeElement;
+      this.captureScreenshot(projectSlideElement).then(screenshot => {
+        console.log(screenshot);
+        this.slideScreenshots.push(screenshot);
+      });
+    }
+    console.log('obecny slide screenshots');
+    console.log(this.slideScreenshots);
+
+    //this.finishShow();
+    if (this.slideScreenshots.length === this.listOfSlides.length)
+      this.finishShow();
+    else this.nextSlide();
+  }
+
+  private captureStatisticsScreenshot(): Promise<Blob> {
+    const chartData = this.mapToChartData(this.webSocketService.userOptions);
+    const dialgoRef = this.dialog.open(StatisticsPopupComponent, {
+      data: chartData,
+      position: { top: '-9999px', left: '-9999px' },
+      hasBackdrop: false,
+    });
+
+    return new Promise<Blob>(resolve => {
+      dialgoRef.afterOpened().subscribe(() => {
+        const dialogContent = document.querySelector('.chart') as HTMLElement;
+        this.captureScreenshot(dialogContent).then(screenshot => {
+          dialgoRef.close();
+          resolve(screenshot);
+        });
+      });
+    });
+  }
+
+  private captureScreenshot(element: HTMLElement) {
+    return html2canvas(element).then(canvas => {
+      return new Promise<Blob>(resolve => {
+        canvas.toBlob(blob => {
+          if (blob) {
+            resolve(blob);
+          }
+        }, 'image/png');
+      });
+    });
+  }
+
+  async finishShow(): Promise<void> {
+    //this.addScreenshotToList(this.list);
+    ///const screenshotsPromises = this.listOfSlides.map(
+    //  async (slide, index) => await this.addScreenshotToList(index)
+    //);
+    //await Promise.all(screenshotsPromises);
+
+    // this.addScreenshotToList();
+    console.log(this.slideScreenshots);
+    //this.slideScreenshots.forEach(res => console.log(res.arrayBuffer));
+    const excelFormData: FormData = this.generateExcel();
     excelFormData.append(
       'attendeesNumber',
       String(this.webSocketService.msg.length)
+    );
+    console.log('length');
+    console.log(this.slideScreenshots.length);
+    console.log('at 0');
+    console.log(this.slideScreenshots.at(0));
+    console.log(JSON.parse(JSON.stringify(this.slideScreenshots)));
+    //excelFormData.append('screenshots', this.slideScreenshots[0]);
+    this.slideScreenshots.forEach(screenshot =>
+      excelFormData.append('screenshots', screenshot)
     );
     if (this.presentationId)
       this.showService

@@ -104,7 +104,7 @@ public class ShowServiceImpl implements ShowService {
 			logger.error("Failed to add excel file: {}", e.getMessage());
 		}
 		List<Screenshot> screenshots = new ArrayList<Screenshot>();
-		/*try {
+		try {
 			for (MultipartFile screenshotFile : showRequest.getScreenshots()) {
 				Screenshot screenshot = new Screenshot();
 				screenshot.setPicture(screenshotFile.getBytes());
@@ -114,7 +114,7 @@ public class ShowServiceImpl implements ShowService {
 		} catch (IOException e) {
 			logger.error("Failed to process screenshot file: {}", e.getMessage());
 		}
-		show.setScreenshots(screenshots);*/
+		show.setScreenshots(screenshots);
 
 		Show savedShow = showRepository.save(show);
 		return ResponseEntity.ok().body(new ShowResponseDto(savedShow.getId(), savedShow.getAttendeesNumber(),
@@ -156,9 +156,10 @@ public class ShowServiceImpl implements ShowService {
 		screenshotResponse.setPicture(screenshot.getPicture());
 		// TODO: is it necessary? - byloby gdybym np. po kliknieciu na maly screenshot
 		// chciala go powiekszac - czy nie da sie tego dodac na forntendzie?
-		//String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/screenshots/")
-		//		.path(screenshotResponse.getId().toString()).toUriString();
-		//screenshotResponse.setUrl(fileDownloadUri);
+		// String fileDownloadUri =
+		// ServletUriComponentsBuilder.fromCurrentContextPath().path("/screenshots/")
+		// .path(screenshotResponse.getId().toString()).toUriString();
+		// screenshotResponse.setUrl(fileDownloadUri);
 		return screenshotResponse;
 	}
 }

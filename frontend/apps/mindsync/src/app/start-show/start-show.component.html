@@ -5,7 +5,7 @@
         </div>
         <div class="mindsync-default-content-data">
             <div class="carousel-main-container">
-                <div *ngFor="let slide of listOfSlides; let i = index">
+                <div *ngFor="let slide of listOfSlides; let i = index" #wordcloudSlide>
                     <ng-container *ngIf="i===currentSlideIndex">
                         <project-slide *ngIf="!answersShowed" [data]="listOfSlides[i]" [checkboxShowed]="'unchecked'"
                             [actionsShowed]="false" [timerShowed]="true"
@@ -19,8 +19,9 @@
                         (click)="openStatisticsPopup()">Statistics</button>
                     <ng-container [ngSwitch]="this.currentSlideIndex">
                         <button *ngSwitchCase="this.listOfSlides.length - 1" class="mindsync-btn mindsync-btn-primary"
-                            (click)="finishShow()">Finish</button>
-                        <button *ngSwitchDefault class="mindsync-btn mindsync-btn-primary" (click)="nextSlide()">Next
+                            (click)="addScreenshotToList()">Finish</button>
+                        <button *ngSwitchDefault class="mindsync-btn mindsync-btn-primary"
+                            (click)="addScreenshotToList()">Next
                             slide</button>
                     </ng-container>
                 </div>
