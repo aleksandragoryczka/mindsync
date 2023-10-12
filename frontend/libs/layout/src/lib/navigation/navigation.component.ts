@@ -207,11 +207,12 @@ export class NavigationComponent implements OnInit {
       this.toastrService.warning('Upload a presentation graphic first');
     else {
       const formData = new FormData();
-      const x = inputs['graphic'].value as Blob;
-      console.log(x);
-      formData.append('picture', x, (inputs['graphic'].value as File).name);
+      formData.append(
+        'picture',
+        inputs['graphic'].value as Blob,
+        (inputs['graphic'].value as File).name
+      );
       formData.append('title', String(inputs['title'].value));
-      /*
       this.presentationService
         .addPresentation(formData)
         .subscribe(async isCreated => {
@@ -222,7 +223,7 @@ export class NavigationComponent implements OnInit {
               'Presentation added successfully'
             );
           }
-        });*/
+        });
     }
   }
 

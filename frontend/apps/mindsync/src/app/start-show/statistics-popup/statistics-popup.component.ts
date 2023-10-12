@@ -1,8 +1,5 @@
 import { Component, Inject, Input, ViewChild } from '@angular/core';
-import {
-  ChartData,
-  UserAnswer,
-} from '../../../../../../libs/shared/src/lib/models/chart-data.model';
+import { ChartData } from '../../../../../../libs/shared/src/lib/models/chart-data.model';
 import {
   ApexAxisChartSeries,
   ApexChart,
@@ -17,7 +14,6 @@ import {
 } from 'ng-apexcharts';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { BehaviorSubject } from 'rxjs';
-import { SharedTableData } from '../../../../../../libs/shared/src/lib/models/shared-table-data.model';
 import { User } from 'libs/shared/src/lib/models/user.model';
 
 export type ChartOptions = {

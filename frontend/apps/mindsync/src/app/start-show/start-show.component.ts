@@ -27,7 +27,6 @@ import { ShowService } from '../../../../../libs/shared/src/lib/services/show.se
 import { UserAnswerMessageModel } from '../../../../../libs/shared/src/lib/models/selected-options-message.model';
 import { formatDate } from '@angular/common';
 import html2canvas from 'html2canvas';
-import { resolve } from 'path';
 
 @Component({
   selector: 'project-start-show',
@@ -35,11 +34,8 @@ import { resolve } from 'path';
   styleUrls: ['./start-show.component.scss'],
 })
 export class StartShowComponent implements OnInit {
-  @ViewChild('wordcloudSlide', { static: false }) wordcloudSlide!: ElementRef;
   currentSlideIndex = 0;
-  //currentSlide?: SlideModel;
   listOfSlides: SlideModel[] = [];
-  //slidesLength = 0;
   attendeesNumber = 0;
   presentation: PresentationModel = { title: '' };
   answersShowed = false;
@@ -66,7 +62,7 @@ export class StartShowComponent implements OnInit {
 
   nextSlide(): void {
     if (this.currentSlideIndex < this.listOfSlides.length - 1) {
-      //this.addScreenshotToList();
+      this.addScreenshotToList();
       this.webSocketService.sendCurrentSlideIndexMessage(
         this.currentSlideIndex + 1
       );
@@ -75,95 +71,28 @@ export class StartShowComponent implements OnInit {
     }
   }
 
-  addScreenshotToList() {
-    const currentSlide = this.listOfSlides[this.currentSlideIndex];
-    console.log(currentSlide);
-    if (currentSlide.type === 'MULTIPLE_CHOICE') {
-      this.captureStatisticsScreenshot().then(screenshot =>
-        this.slideScreenshots.push(screenshot)
+  async finishShow() {
+    await this.addScreenshotToList().then(() => {
+      const excelFormData: FormData = this.generateExcel();
+      excelFormData.append(
+        'attendeesNumber',
+        String(this.webSocketService.msg.length)
       );
-    } else if (currentSlide.type === 'WORD_CLOUD') {
-      const projectSlideElement = this.wordcloudSlide.nativeElement;
-      this.captureScreenshot(projectSlideElement).then(screenshot => {
-        console.log(screenshot);
-        this.slideScreenshots.push(screenshot);
-      });
-    }
-    console.log('obecny slide screenshots');
-    console.log(this.slideScreenshots);
-
-    //this.finishShow();
-    if (this.slideScreenshots.length === this.listOfSlides.length)
-      this.finishShow();
-    else this.nextSlide();
-  }
-
-  private captureStatisticsScreenshot(): Promise<Blob> {
-    const chartData = this.mapToChartData(this.webSocketService.userOptions);
-    const dialgoRef = this.dialog.open(StatisticsPopupComponent, {
-      data: chartData,
-      position: { top: '-9999px', left: '-9999px' },
-      hasBackdrop: false,
+      this.slideScreenshots.forEach(screenshot =>
+        excelFormData.append('screenshots', screenshot)
+      );
+      if (this.presentationId)
+        this.showService
+          .addShow(excelFormData, this.presentationId)
+          .subscribe(async isAdded => {
+            if (isAdded) {
+              await this.router.navigate(['/dashboard']);
+              this.toastrService.success(
+                'Slides show completed. Please navigate to "Shows" to see details.'
+              );
+            }
+          });
     });
-
-    return new Promise<Blob>(resolve => {
-      dialgoRef.afterOpened().subscribe(() => {
-        const dialogContent = document.querySelector('.chart') as HTMLElement;
-        this.captureScreenshot(dialogContent).then(screenshot => {
-          dialgoRef.close();
-          resolve(screenshot);
-        });
-      });
-    });
-  }
-
-  private captureScreenshot(element: HTMLElement) {
-    return html2canvas(element).then(canvas => {
-      return new Promise<Blob>(resolve => {
-        canvas.toBlob(blob => {
-          if (blob) {
-            resolve(blob);
-          }
-        }, 'image/png');
-      });
-    });
-  }
-
-  async finishShow(): Promise<void> {
-    //this.addScreenshotToList(this.list);
-    ///const screenshotsPromises = this.listOfSlides.map(
-    //  async (slide, index) => await this.addScreenshotToList(index)
-    //);
-    //await Promise.all(screenshotsPromises);
-
-    // this.addScreenshotToList();
-    console.log(this.slideScreenshots);
-    //this.slideScreenshots.forEach(res => console.log(res.arrayBuffer));
-    const excelFormData: FormData = this.generateExcel();
-    excelFormData.append(
-      'attendeesNumber',
-      String(this.webSocketService.msg.length)
-    );
-    console.log('length');
-    console.log(this.slideScreenshots.length);
-    console.log('at 0');
-    console.log(this.slideScreenshots.at(0));
-    console.log(JSON.parse(JSON.stringify(this.slideScreenshots)));
-    //excelFormData.append('screenshots', this.slideScreenshots[0]);
-    this.slideScreenshots.forEach(screenshot =>
-      excelFormData.append('screenshots', screenshot)
-    );
-    if (this.presentationId)
-      this.showService
-        .addShow(excelFormData, this.presentationId)
-        .subscribe(async isAdded => {
-          if (isAdded) {
-            await this.router.navigate(['/dashboard']);
-            this.toastrService.success(
-              'Slides show completed. Please navigate to "Shows" to see details.'
-            );
-          }
-        });
   }
 
   handleCountdownEnded(slide: SlideModel) {
@@ -208,7 +137,7 @@ export class StartShowComponent implements OnInit {
 
   openStatisticsPopup(): void {
     //const chartData = this.mapToChartData(this.webSocketService.userOptions);
-    const userAnswer: SelectedOptionsMessageModel[] = [
+    /*const userAnswer: SelectedOptionsMessageModel[] = [
       {
         name: 'John',
         surname: 'Doe',
@@ -236,11 +165,70 @@ export class StartShowComponent implements OnInit {
           },
         ],
       },
-    ];
+    ];*/
     const chartData = this.mapToChartData(this.webSocketService.userOptions);
     //const chartData: ChartData = this.mapToChartData(userAnswer);
     this.dialog.open(StatisticsPopupComponent, {
       data: chartData,
+    });
+  }
+
+  private async addScreenshotToList(): Promise<void> {
+    const currentSlide = this.listOfSlides[this.currentSlideIndex];
+    if (currentSlide.type === 'MULTIPLE_CHOICE') {
+      await this.captureStatisticsScreenshot().then(screenshot =>
+        this.slideScreenshots.push(screenshot)
+      );
+    } else if (currentSlide.type === 'WORD_CLOUD') {
+      await this.captureWordcloudScreenshot().then(screenshot =>
+        this.slideScreenshots.push(screenshot)
+      );
+    }
+  }
+
+  private captureWordcloudScreenshot(): Promise<Blob> {
+    return new Promise<Blob>(resolve => {
+      const wordcloudContent = document.querySelector(
+        '.wordcloudSlide'
+      ) as HTMLElement;
+      this.captureScreenshot(wordcloudContent).then(screenshot =>
+        resolve(screenshot)
+      );
+    });
+  }
+
+  private captureStatisticsScreenshot(): Promise<Blob> {
+    const chartData = this.mapToChartData(this.webSocketService.userOptions);
+    const dialgoRef = this.dialog.open(StatisticsPopupComponent, {
+      data: chartData,
+      position: { top: '-9999px', left: '-9999px' },
+      hasBackdrop: false,
+    });
+
+    return new Promise<Blob>(resolve => {
+      dialgoRef.afterOpened().subscribe(() => {
+        const dialogContent = document.querySelector('.chart') as HTMLElement;
+        this.captureScreenshot(dialogContent).then(screenshot => {
+          dialgoRef.close();
+          resolve(screenshot);
+        });
+      });
+    });
+  }
+
+  private captureScreenshot(element: HTMLElement) {
+    const options = {
+      width: 500,
+      height: 400,
+    };
+    return html2canvas(element, options).then(canvas => {
+      return new Promise<Blob>(resolve => {
+        canvas.toBlob(blob => {
+          if (blob) {
+            resolve(blob);
+          }
+        }, 'image/png');
+      });
     });
   }
 

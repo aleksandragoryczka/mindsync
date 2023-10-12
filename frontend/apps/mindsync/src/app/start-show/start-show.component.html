@@ -5,13 +5,17 @@
         </div>
         <div class="mindsync-default-content-data">
             <div class="carousel-main-container">
-                <div *ngFor="let slide of listOfSlides; let i = index" #wordcloudSlide>
+                <div *ngFor="let slide of listOfSlides; let i = index">
                     <ng-container *ngIf="i===currentSlideIndex">
-                        <project-slide *ngIf="!answersShowed" [data]="listOfSlides[i]" [checkboxShowed]="'unchecked'"
-                            [actionsShowed]="false" [timerShowed]="true"
-                            (countdownEnded)="handleCountdownEnded(listOfSlides[i])"></project-slide>
-                        <project-slide *ngIf="answersShowed" [data]="listOfSlides[i]" [checkboxShowed]="'default'"
-                            [actionsShowed]="false"></project-slide>
+                        <div class="wordcloudSlide" *ngIf="!answersShowed">
+                            <project-slide [data]="listOfSlides[i]" [checkboxShowed]="'unchecked'"
+                                [actionsShowed]="false" [timerShowed]="true"
+                                (countdownEnded)="handleCountdownEnded(listOfSlides[i])"></project-slide>
+                        </div>
+                        <div class="wordcloudSlide" *ngIf="answersShowed">
+                            <project-slide [data]="listOfSlides[i]" [checkboxShowed]="'default'"
+                                [actionsShowed]="false"></project-slide>
+                        </div>
                     </ng-container>
                 </div>
                 <div *ngIf="answersShowed" class="buttons-container">
@@ -19,9 +23,8 @@
                         (click)="openStatisticsPopup()">Statistics</button>
                     <ng-container [ngSwitch]="this.currentSlideIndex">
                         <button *ngSwitchCase="this.listOfSlides.length - 1" class="mindsync-btn mindsync-btn-primary"
-                            (click)="addScreenshotToList()">Finish</button>
-                        <button *ngSwitchDefault class="mindsync-btn mindsync-btn-primary"
-                            (click)="addScreenshotToList()">Next
+                            (click)="finishShow()">Finish</button>
+                        <button *ngSwitchDefault class="mindsync-btn mindsync-btn-primary" (click)="nextSlide()">Next
                             slide</button>
                     </ng-container>
                 </div>

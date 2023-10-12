@@ -1,5 +1,5 @@
-import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Component, OnInit } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
 import { AttendeeMessageModel } from 'libs/shared/src/lib/models/attendee-message.model';
 import { WebSocketService } from 'libs/shared/src/lib/services/web-socket.service';
 import { ActivatedRoute } from '@angular/router';
