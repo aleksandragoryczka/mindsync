@@ -3,7 +3,6 @@ package com.project.mindsync.service;
 import java.io.IOException;
 import java.util.List;
 
-import org.apache.catalina.connector.Response;
 import org.springframework.http.ResponseEntity;
 import com.project.mindsync.dto.request.PresentationRequestDto;
 import com.project.mindsync.dto.response.ApiResponseDto;

@@ -23,7 +23,6 @@ import com.project.mindsync.dto.response.ApiResponseDto;
 import com.project.mindsync.dto.response.PagedResponseDto;
 import com.project.mindsync.dto.response.PresentationWithShowsResponseDto;
 import com.project.mindsync.dto.response.PresentationWithSlidesResponseDto;
-import com.project.mindsync.dto.response.ScreenshotResponseDto;
 import com.project.mindsync.dto.response.ShowResponseDto;
 import com.project.mindsync.dto.response.SlideResponseDto;
 import com.project.mindsync.dto.response.UserWithPresentationsCountResponseDto;
@@ -31,7 +30,6 @@ import com.project.mindsync.exception.ResourceNotFoundException;
 import com.project.mindsync.exception.UnauthorizedException;
 import com.project.mindsync.model.Option;
 import com.project.mindsync.model.Presentation;
-import com.project.mindsync.model.Screenshot;
 import com.project.mindsync.model.Show;
 import com.project.mindsync.model.Slide;
 import com.project.mindsync.model.SlideType;
@@ -87,10 +85,6 @@ public class PresentationServiceImpl implements PresentationService {
 		presentationWithShowsResponse.setTitle(presentation.getTitle());
 		presentationWithShowsResponse.setShows(pagedShowsResponse);
 		return presentationWithShowsResponse;
-		// return new
-		// PagedResponseDto<PresentationWithShowsResponseDto>(List.of(presentationWithShowsResponse),
-		// shows.getNumber(), shows.getSize(), shows.getTotalElements(),
-		// shows.getTotalPages(), shows.isLast());
 	}
 
 	@Override

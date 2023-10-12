@@ -1,4 +1,4 @@
-import { Component, Inject, Input, ViewChild } from '@angular/core';
+import { Component, Inject, ViewChild } from '@angular/core';
 import { ChartData } from '../../../../../../libs/shared/src/lib/models/chart-data.model';
 import {
   ApexAxisChartSeries,

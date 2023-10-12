@@ -21,7 +21,6 @@ import com.project.mindsync.exception.ResourceNotFoundException;
 import com.project.mindsync.exception.UnauthorizedException;
 import com.project.mindsync.model.Option;
 import com.project.mindsync.model.Presentation;
-import com.project.mindsync.model.Show;
 import com.project.mindsync.model.Slide;
 import com.project.mindsync.model.SlideType;
 import com.project.mindsync.model.enums.SlideTypeName;
@@ -49,9 +48,6 @@ public class SlideServiceImpl implements SlideService {
 
 	@Autowired
 	private OptionRepository optionRepository;
-
-	// TODO: isGetSLide() is needed?
-	// TODO: update single pslide is needed?
 
 	@Override
 	public ResponseEntity<Slide> addSlide(SlideRequestDto slideRequest, Long presentationId) {
