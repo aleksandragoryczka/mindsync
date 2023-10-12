@@ -6,6 +6,7 @@ import { PresentationModel } from '../models/presentation.model';
 import { environment } from 'apps/mindsync/src/environments/environment.development';
 import { PresentationWithShows } from '../models/presentation-with-shows.model';
 import { PresentationWithSlides } from '../models/presentation-with-slides.model';
+import { UserWithPresentationsCountModel } from '../models/user-with-presentations-count.model';
 
 @Injectable({ providedIn: 'root' })
 export class PresentationService {
@@ -21,6 +22,14 @@ export class PresentationService {
   getPresentationsForUser(): Observable<PaginatedResult<PresentationModel>> {
     return this.http.get<PaginatedResult<PresentationModel>>(
       `${environment.apiUrl}/user/presentations`
+    );
+  }
+
+  getUsersWithPresentationsCount(): Observable<
+    UserWithPresentationsCountModel[]
+  > {
+    return this.http.get<UserWithPresentationsCountModel[]>(
+      `${environment.apiUrl}/user/presentations-count`
     );
   }
 

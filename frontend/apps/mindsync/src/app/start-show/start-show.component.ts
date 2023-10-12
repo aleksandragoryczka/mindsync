@@ -217,11 +217,7 @@ export class StartShowComponent implements OnInit {
   }
 
   private captureScreenshot(element: HTMLElement) {
-    const options = {
-      width: 500,
-      height: 400,
-    };
-    return html2canvas(element, options).then(canvas => {
+    return html2canvas(element).then(canvas => {
       return new Promise<Blob>(resolve => {
         canvas.toBlob(blob => {
           if (blob) {

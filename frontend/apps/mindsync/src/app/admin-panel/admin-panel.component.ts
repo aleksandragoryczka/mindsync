@@ -10,7 +10,9 @@ import {
 } from 'libs/shared/src/lib/models/input-popup-data.model';
 import { PaginatedResult } from 'libs/shared/src/lib/models/paginated-result.model';
 import { SharedTableData } from 'libs/shared/src/lib/models/shared-table-data.model';
+import { UserWithPresentationsCountModel } from 'libs/shared/src/lib/models/user-with-presentations-count.model';
 import { User } from 'libs/shared/src/lib/models/user.model';
+import { PresentationService } from 'libs/shared/src/lib/services/presentation.service';
 import { UserService } from 'libs/shared/src/lib/services/user.service';
 import { PopupWithInputsComponent } from 'libs/ui/src/lib/popup-with-inputs/popup-with-inputs.component';
 import { ToastrService } from 'ngx-toastr';
@@ -38,7 +40,8 @@ export class AdminPanelComponent {
   constructor(
     private userService: UserService,
     private toastrService: ToastrService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private presentationService: PresentationService
   ) {}
 
   setPage(pageNumber: number): void {
@@ -48,11 +51,19 @@ export class AdminPanelComponent {
   private loadUsers(): Observable<SharedTableData[]> {
     return this.currentPage$.pipe(
       switchMap(currentPage => this.userService.getAllUsers(currentPage)),
-      map((res: PaginatedResult<User>) => {
+      switchMap((res: PaginatedResult<User>) => {
         this.totalNumberOfPages = res.totalPages ?? 1;
         if (res.content.length === 0 && this.currentPage$.value - 1 > 0)
           this.currentPage$.next(this.currentPage$.value - 1);
-        return this.mapData(res);
+        return this.presentationService.getUsersWithPresentationsCount().pipe(
+          map(
+            (
+              usersWithPresentationsCounts: UserWithPresentationsCountModel[]
+            ) => {
+              return this.mapData(res, usersWithPresentationsCounts);
+            }
+          )
+        );
       })
     );
   }
@@ -64,7 +75,14 @@ export class AdminPanelComponent {
     return false;
   }
 
-  private mapData(data: PaginatedResult<User>): SharedTableData[] {
+  getUsersWithPresentationsCounts() {
+    return this.presentationService.getUsersWithPresentationsCount();
+  }
+
+  private mapData(
+    data: PaginatedResult<User>,
+    usersWithPresentationsCounts: UserWithPresentationsCountModel[]
+  ): SharedTableData[] {
     const users = data.content;
     const results: SharedTableData[] = [];
     users.forEach(user => {
@@ -74,7 +92,11 @@ export class AdminPanelComponent {
           `${user.name} ${user.surname}`,
           user.username ?? '',
           user.email ?? '',
-          '1',
+          String(
+            usersWithPresentationsCounts.filter(
+              count => count.user.id === user.id
+            )[0]?.presentationsCount ?? 0
+          ),
           isAdmin ? 'ADMIN' : 'USER',
         ],
         actions: [

@@ -1,5 +1,7 @@
 package com.project.mindsync.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,7 @@ import com.project.mindsync.dto.request.UserUpdatedRequestDto;
 import com.project.mindsync.dto.response.ApiResponseDto;
 import com.project.mindsync.dto.response.PagedResponseDto;
 import com.project.mindsync.dto.response.UserSummaryResponseDto;
+import com.project.mindsync.dto.response.UserWithPresentationsCountResponseDto;
 import com.project.mindsync.dto.response.UserWithRoleResponseDto;
 import com.project.mindsync.model.Presentation;
 import com.project.mindsync.model.User;
@@ -65,6 +68,12 @@ public class UserController {
 		return ResponseEntity.ok().body(response);
 	}
 
+	@GetMapping("/presentations-count")
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<List<UserWithPresentationsCountResponseDto>> getUserWithPresetationsCount() {
+		return ResponseEntity.ok().body(this.presentationService.getUsersWithPresentationsCount());
+	}
+
 	@PutMapping("/{id}")
 	public ResponseEntity<User> updateUser(@Valid @RequestBody UserUpdatedRequestDto newUser,
 			@PathVariable(value = "id") Long id, @CurrentUser UserPrincipal currentUser) {
@@ -74,7 +83,8 @@ public class UserController {
 	}
 
 	@PutMapping("/{id}/password")
-	public ResponseEntity<Boolean> updatePassword(@Valid @RequestBody PasswordUpdatedRequestDto passwordUpdated, @PathVariable(value = "id") Long id, @CurrentUser UserPrincipal currentUser){
+	public ResponseEntity<Boolean> updatePassword(@Valid @RequestBody PasswordUpdatedRequestDto passwordUpdated,
+			@PathVariable(value = "id") Long id, @CurrentUser UserPrincipal currentUser) {
 		boolean isPasswordUpdated = userService.updateUserPassword(passwordUpdated, id, currentUser);
 		return ResponseEntity.ok().body(isPasswordUpdated);
 	}

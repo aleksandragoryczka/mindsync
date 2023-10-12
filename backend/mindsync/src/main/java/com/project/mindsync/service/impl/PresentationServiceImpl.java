@@ -26,6 +26,7 @@ import com.project.mindsync.dto.response.PresentationWithSlidesResponseDto;
 import com.project.mindsync.dto.response.ScreenshotResponseDto;
 import com.project.mindsync.dto.response.ShowResponseDto;
 import com.project.mindsync.dto.response.SlideResponseDto;
+import com.project.mindsync.dto.response.UserWithPresentationsCountResponseDto;
 import com.project.mindsync.exception.ResourceNotFoundException;
 import com.project.mindsync.exception.UnauthorizedException;
 import com.project.mindsync.model.Option;
@@ -113,6 +114,17 @@ public class PresentationServiceImpl implements PresentationService {
 	}
 
 	@Override
+	public List<UserWithPresentationsCountResponseDto> getUsersWithPresentationsCount() {
+		List<User> users = userRepository.findAll();
+		List<UserWithPresentationsCountResponseDto> usersPresentationsCounts = new ArrayList<UserWithPresentationsCountResponseDto>();
+		for (User user : users) {
+			Long presentationsCount = presentationRepository.countByUser(user);
+			usersPresentationsCounts.add(new UserWithPresentationsCountResponseDto(user, presentationsCount));
+		}
+		return usersPresentationsCounts;
+	}
+
+	@Override
 	public Presentation getPresentation(Long id) {
 		return presentationRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException(AppConstants.PRESENTATION, AppConstants.ID, id));
@@ -129,14 +141,6 @@ public class PresentationServiceImpl implements PresentationService {
 
 		presentation.setUser(user);
 		presentation.setCode(generateCode());
-
-		/*
-		 * List<Slide> slides = new
-		 * ArrayList<Slide>(presentationRequest.getSlides().size()); for
-		 * (SlideRequestDto slideRequest : presentationRequest.getSlides()) { Slide
-		 * newSlide = createSlide(slideRequest, presentation);
-		 * presentation.addSlide(newSlide); slides.add(newSlide); }
-		 */
 		Presentation savedPresentation = presentationRepository.save(presentation);
 		return ResponseEntity.ok().body(savedPresentation);
 	}
