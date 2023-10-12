@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Roles } from 'libs/shared/src/lib/models/enums/roles.enum';
-import { TooltipTexts } from 'libs/shared/src/lib/models/enums/tooltips-texts.enum';
 import {
   InputPopupModel,
   ButtonPopupModel,
