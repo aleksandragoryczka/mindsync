@@ -22,7 +22,6 @@ public class Screenshot {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	// TODO: Add thumnail url ?
 	@Column(name = "picture", columnDefinition = "BYTEA")
 	private byte[] picture;
 
