@@ -65,7 +65,10 @@ export class StartComponent {
             name: String(inputs['name'].value),
             surname: String(inputs['surname'].value),
           };
-          this.webSocketService.sendMessage(JSON.stringify(attendee));
+          this.webSocketService.sendMessage(
+            '/app/send/attendees',
+            JSON.stringify(attendee)
+          );
           this.dialog.closeAll();
           this.router.navigate([`${res}`], {
             queryParams: {

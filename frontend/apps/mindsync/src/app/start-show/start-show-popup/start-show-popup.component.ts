@@ -21,7 +21,7 @@ export class StartShowPopupComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.attendees = this.webSocketService.msg;
+    this.attendees = this.webSocketService.attendees;
   }
 
   startShow(): void {

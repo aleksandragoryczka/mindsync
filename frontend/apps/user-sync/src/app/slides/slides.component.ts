@@ -64,7 +64,10 @@ export class SlidesComponent implements OnInit, AfterViewInit {
         this.listOfSlides[this.webSocketService.currentSlideId.getValue()].id,
       answer: this.userAnswer,
     };
-    this.webSocketService.sendUserAnswer(JSON.stringify(userAnswer));
+    this.webSocketService.sendMessage(
+      '/app/send/user-answer',
+      JSON.stringify(userAnswer)
+    );
   }
 
   openUserInputPopup(currentIndex: number): void {

@@ -62,7 +62,8 @@ export class StartShowComponent implements OnInit {
   nextSlide(): void {
     if (this.currentSlideIndex < this.listOfSlides.length - 1) {
       this.addScreenshotToList();
-      this.webSocketService.sendCurrentSlideIndexMessage(
+      this.webSocketService.sendMessage(
+        '/app/send/current-slide',
         this.currentSlideIndex + 1
       );
       this.answersShowed = false;
@@ -75,7 +76,7 @@ export class StartShowComponent implements OnInit {
       const excelFormData: FormData = this.generateExcel();
       excelFormData.append(
         'attendeesNumber',
-        String(this.webSocketService.msg.length)
+        String(this.webSocketService.attendees.length)
       );
       this.slideScreenshots.forEach(screenshot =>
         excelFormData.append('screenshots', screenshot)
@@ -197,7 +198,7 @@ export class StartShowComponent implements OnInit {
   }
 
   private mapShowDetailsToExcel(): any[] {
-    const attendeesNumber = this.webSocketService.msg.length;
+    const attendeesNumber = this.webSocketService.attendees.length;
     const summary: Summary = {
       presentationTitle: this.presentation.title,
       showTime: formatDate(new Date(), 'dd-MM-yyyy hh:mm:ss', 'en-US'),
@@ -208,8 +209,8 @@ export class StartShowComponent implements OnInit {
     for (let i = 0; i < attendeesNumber; i++) {
       const attendee: AttendeeInformation = {
         id: i + 1,
-        name: this.webSocketService.msg[i].name,
-        surname: this.webSocketService.msg[i].surname,
+        name: this.webSocketService.attendees[i].name,
+        surname: this.webSocketService.attendees[i].surname,
       };
       attendeeInformations.push(attendee);
     }
@@ -318,8 +319,9 @@ export class StartShowComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(res => {
       this.attendeesNumber = res;
-      this.webSocketService.sendPushStartButtonMessage(true);
-      this.webSocketService.sendCurrentSlideIndexMessage(
+      this.webSocketService.sendMessage('/app/send/start-button', true);
+      this.webSocketService.sendMessage(
+        '/app/send/current-slide',
         this.currentSlideIndex
       );
     });

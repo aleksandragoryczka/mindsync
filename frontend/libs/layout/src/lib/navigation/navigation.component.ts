@@ -116,7 +116,10 @@ export class NavigationComponent implements OnInit {
             name: String(inputs['name'].value),
             surname: String(inputs['surname'].value),
           };
-          this.webSocketService.sendMessage(JSON.stringify(attendee));
+          this.webSocketService.sendMessage(
+            '/app/send/attendees',
+            JSON.stringify(attendee)
+          );
           this.dialog.closeAll();
           document.location.href = `http://localhost:4300/${res}?name=${String(
             inputs['name'].value

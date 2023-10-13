@@ -137,7 +137,10 @@ export class SlideComponent
           this.activatedRoute.snapshot.queryParamMap.get('surname') ?? '',
         selectedOptions: this.userSelectedOptions,
       };
-      this.webSocketService.sendSelectedOptions(JSON.stringify(userOptions));
+      this.webSocketService.sendMessage(
+        '/app/send/selected-options',
+        JSON.stringify(userOptions)
+      );
       this.countdownEnded.emit();
     }
   }

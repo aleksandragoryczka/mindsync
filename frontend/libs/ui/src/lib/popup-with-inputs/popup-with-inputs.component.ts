@@ -114,16 +114,19 @@ export class PopupWithInputsComponent implements OnInit {
       password: this.loginForm.controls['password'].value,
     };
 
-    this.userService.login(credentials).subscribe(async loggedIn => {
-      if (loggedIn !== null) {
-        this.closePopup();
-        await this.router.navigate([`/dashboard`]);
-      } else {
-        this.toastrService.error(
-          'Your account is not verified. Please check your mail box'
-        );
-      }
-    });
+    this.userService.login(credentials).subscribe(
+      async loggedIn => {
+        if (loggedIn !== null) {
+          this.closePopup();
+          await this.router.navigate([`/dashboard`]);
+        } else {
+          this.toastrService.error(
+            'Your account is not verified. Please check your mail box'
+          );
+        }
+      },
+      error => this.toastrService.error('Wrong credentials provided. Try again')
+    );
   }
 
   onSubmitRegistration(): void {
