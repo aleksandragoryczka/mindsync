@@ -20,6 +20,7 @@ import ColorFormatter from 'libs/shared/src/lib/utils/color-formatter';
 import { OptionModel } from '../../../../../libs/shared/src/lib/models/option.model';
 import { SlideService } from 'libs/shared/src/lib/services/slide.service';
 import StorageRealod from 'libs/shared/src/lib/utils/storage-reload';
+import MultipleChoiceOptionsValidator from 'libs/shared/src/lib/utils/multiple-choice-options-validator';
 
 @Component({
   selector: 'project-presentation-details',
@@ -170,6 +171,16 @@ export class PresentationDetailsComponent implements OnInit {
       type: String(inputs['type'].value),
       options: options.filter(value => value.option != ''),
     };
+    if (
+      MultipleChoiceOptionsValidator.isMultipleChoiceWithOptions(
+        newSlideRequest
+      )
+    ) {
+      this.toastrService.warning(
+        'MULTIPLE_CHOICE type slide must have at least 2 non-blank options.'
+      );
+      return;
+    }
     if (this.presentationId) {
       this.slideService
         .addSlide(newSlideRequest, this.presentationId)

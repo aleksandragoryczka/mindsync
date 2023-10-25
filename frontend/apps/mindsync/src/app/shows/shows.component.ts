@@ -57,6 +57,7 @@ export class ShowsComponent implements OnInit {
   private deleteShow(id: string): void {
     this.showService.deleteShow(id).subscribe(isDeleted => {
       if (isDeleted) {
+        this.dialog.closeAll();
         this.listOfShows$ = this.loadShows();
         this.toastrService.success('Show deleted successfully');
       } else this.toastrService.warning('Something went wrong');

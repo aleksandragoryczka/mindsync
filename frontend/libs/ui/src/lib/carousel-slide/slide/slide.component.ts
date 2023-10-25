@@ -39,6 +39,7 @@ import { SelectedOptionsMessageModel } from '../../../../../shared/src/lib/model
 import { ActivatedRoute } from '@angular/router';
 import { loremIpsum } from 'lorem-ipsum';
 import { filter } from '@amcharts/amcharts4/.internal/core/utils/Iterator';
+import MultipleChoiceOptionsValidator from '../../../../../shared/src/lib/utils/multiple-choice-options-validator';
 
 @Component({
   selector: 'project-slide',
@@ -288,11 +289,15 @@ export class SlideComponent
       type: String(inputs['type'].value),
       options: options.filter(value => value.option != ''),
     };
-    if (this.isSlideNotChanged(updatedSlide)) {
+    if (
+      MultipleChoiceOptionsValidator.isSlideNotChanged(updatedSlide, this.data)
+    ) {
       this.toastrService.warning('You did not edit any data.');
       return;
     }
-    if (this.isMultipleChoiceWithOptions(updatedSlide)) {
+    if (
+      MultipleChoiceOptionsValidator.isMultipleChoiceWithOptions(updatedSlide)
+    ) {
       this.toastrService.warning(
         'MULTIPLE_CHOICE type slide must have at least 2 non-blank options.'
       );
@@ -313,54 +318,6 @@ export class SlideComponent
           'Error'
         );
       }
-    );
-  }
-
-  private isMultipleChoiceWithOptions(updatedSlide: SlideModel): boolean {
-    if (
-      updatedSlide.type === SlideTypes.MULTIPLE_CHOICE &&
-      updatedSlide.options &&
-      this.filterNonBlankOptions(updatedSlide.options)
-    )
-      return true;
-    return false;
-  }
-
-  private filterNonBlankOptions(updatedArray: OptionModel[]) {
-    const nonEmptyUpdatedArray = updatedArray.filter(
-      value => value.option !== ''
-    );
-    if (nonEmptyUpdatedArray.length < 2) return true;
-    return false;
-  }
-
-  private isSlideNotChanged(updatedSlide: SlideModel): boolean {
-    const originalSlide = this.data;
-    let val =
-      updatedSlide.title === originalSlide.title &&
-      updatedSlide.displayTime === originalSlide.displayTime &&
-      updatedSlide.headerColor === originalSlide.headerColor &&
-      updatedSlide.titleColor === originalSlide.titleColor &&
-      updatedSlide.type === originalSlide.type;
-    if (updatedSlide.options)
-      val =
-        val && this.areArrayEquals(updatedSlide.options, originalSlide.options);
-    return val;
-  }
-
-  private areArrayEquals(
-    updatedArray: OptionModel[],
-    originalArray: OptionModel[]
-  ): boolean {
-    if (updatedArray.length < originalArray.length) return false;
-    const nonEmptyUpdatedArray = updatedArray.filter(
-      value => value.option !== ''
-    );
-
-    if (nonEmptyUpdatedArray.length !== originalArray.length) return false;
-
-    return nonEmptyUpdatedArray.every(
-      (value, index) => value === originalArray[index]
     );
   }
 }

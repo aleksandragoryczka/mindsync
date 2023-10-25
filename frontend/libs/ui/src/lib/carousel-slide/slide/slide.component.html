@@ -10,7 +10,7 @@
                 </ng-container>
                 <ng-container *ngIf="timerShowed">
                     <mat-icon class="mr-2">timer</mat-icon>
-                    <countdown #cd [config]="{ leftTime: 7, format: 's', demand: timerOnDemand }"
+                    <countdown #cd [config]="{ leftTime: data.displayTime, format: 's', demand: timerOnDemand }"
                         (event)="handleCountdownEvent($event)">
                     </countdown>
                 </ng-container>
