@@ -26,7 +26,7 @@ export default class StringFormatter {
       const strValue = Object.values(SlideTypes)[i];
       types.push({
         value: strValue,
-        displayValue: strValue,
+        displayValue: strValue.replace('_', ' '),
       });
     }
     return types;
