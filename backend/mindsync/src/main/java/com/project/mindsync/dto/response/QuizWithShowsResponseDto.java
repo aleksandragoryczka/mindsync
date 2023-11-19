@@ -3,7 +3,7 @@ package com.project.mindsync.dto.response;
 import lombok.Data;
 
 @Data
-public class PresentationWithShowsResponseDto {
+public class QuizWithShowsResponseDto {
 	private Long id;
 	private String title;
 	private PagedResponseDto<ShowResponseDto> shows;

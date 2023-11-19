@@ -20,7 +20,7 @@ export class CardSlideComponent extends CarouselSlideComponent {
   }
 
   async getDetailsButton(): Promise<void> {
-    await this.router.navigate([`/presentation/${this.data.id}`]);
+    await this.router.navigate([`/quiz/${this.data.id}`]);
   }
 
   async getShowsButton() {

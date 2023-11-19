@@ -17,42 +17,42 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.project.mindsync.dto.request.PresentationRequestDto;
+import com.project.mindsync.dto.request.QuizRequestDto;
 import com.project.mindsync.dto.request.SlideRequestDto;
 import com.project.mindsync.dto.response.ApiResponseDto;
 import com.project.mindsync.dto.response.PagedResponseDto;
-import com.project.mindsync.dto.response.PresentationWithShowsResponseDto;
-import com.project.mindsync.dto.response.PresentationWithSlidesResponseDto;
+import com.project.mindsync.dto.response.QuizWithShowsResponseDto;
+import com.project.mindsync.dto.response.QuizWithSlidesResponseDto;
 import com.project.mindsync.dto.response.ShowResponseDto;
 import com.project.mindsync.dto.response.SlideResponseDto;
-import com.project.mindsync.dto.response.UserWithPresentationsCountResponseDto;
+import com.project.mindsync.dto.response.UserWithQuizzesCountResponseDto;
 import com.project.mindsync.exception.ResourceNotFoundException;
 import com.project.mindsync.exception.UnauthorizedException;
 import com.project.mindsync.model.Option;
-import com.project.mindsync.model.Presentation;
+import com.project.mindsync.model.Quiz;
 import com.project.mindsync.model.Show;
 import com.project.mindsync.model.Slide;
 import com.project.mindsync.model.SlideType;
 import com.project.mindsync.model.User;
 import com.project.mindsync.model.enums.SlideTypeName;
 import com.project.mindsync.repository.OptionRepository;
-import com.project.mindsync.repository.PresentationRepository;
+import com.project.mindsync.repository.QuizRepository;
 import com.project.mindsync.repository.ShowRepository;
 import com.project.mindsync.repository.SlideRepository;
 import com.project.mindsync.repository.SlideTypeRepository;
 import com.project.mindsync.repository.UserRepository;
 import com.project.mindsync.security.UserPrincipal;
-import com.project.mindsync.service.PresentationService;
+import com.project.mindsync.service.QuizService;
 import com.project.mindsync.utils.AppConstants;
 import com.project.mindsync.utils.AppUtils;
 
 import jakarta.transaction.Transactional;
 
 @Service
-public class PresentationServiceImpl implements PresentationService {
+public class QuizServiceImpl implements QuizService {
 
 	@Autowired
-	private PresentationRepository presentationRepository;
+	private QuizRepository quizRepository;
 
 	@Autowired
 	private UserRepository userRepository;
@@ -70,86 +70,84 @@ public class PresentationServiceImpl implements PresentationService {
 	ShowRepository showRepository;
 
 	@Override
-	public PresentationWithShowsResponseDto getPresentationWithShows(Long presentationId, int page, int size) {
+	public QuizWithShowsResponseDto getQuizWithShows(Long quizId, int page, int size) {
 		AppUtils.validatePageNumberAndSize(page, size);
-		Presentation presentation = presentationRepository.findById(presentationId).orElseThrow(
-				() -> new ResourceNotFoundException(AppConstants.PRESENTATION, AppConstants.ID, presentationId));
+		Quiz quiz = quizRepository.findById(quizId)
+				.orElseThrow(() -> new ResourceNotFoundException(AppConstants.PRESENTATION, AppConstants.ID, quizId));
 		Pageable pageable = PageRequest.of(page, size, Sort.Direction.ASC, AppConstants.ID);
-		Page<Show> shows = showRepository.findByPresentationId(presentationId, pageable);
+		Page<Show> shows = showRepository.findByQuizId(quizId, pageable);
 		List<ShowResponseDto> showsResponses = shows.getContent().stream().map(this::mapToShowResponseDto)
 				.collect(Collectors.toList());
 		PagedResponseDto<ShowResponseDto> pagedShowsResponse = new PagedResponseDto<ShowResponseDto>(showsResponses,
 				shows.getNumber(), shows.getSize(), shows.getTotalElements(), shows.getTotalPages(), shows.isLast());
-		PresentationWithShowsResponseDto presentationWithShowsResponse = new PresentationWithShowsResponseDto();
-		presentationWithShowsResponse.setId(presentationId);
-		presentationWithShowsResponse.setTitle(presentation.getTitle());
-		presentationWithShowsResponse.setShows(pagedShowsResponse);
-		return presentationWithShowsResponse;
+		QuizWithShowsResponseDto quizWithShowsResponse = new QuizWithShowsResponseDto();
+		quizWithShowsResponse.setId(quizId);
+		quizWithShowsResponse.setTitle(quiz.getTitle());
+		quizWithShowsResponse.setShows(pagedShowsResponse);
+		return quizWithShowsResponse;
 	}
 
 	@Override
-	public PresentationWithSlidesResponseDto getPresentationWithSlides(Long presentationId) {
-		Presentation presentation = presentationRepository.findById(presentationId).orElseThrow(
-				() -> new ResourceNotFoundException(AppConstants.PRESENTATION, AppConstants.ID, presentationId));
-		return this.mapPresentationToPresentationWithSlides(presentationId, presentation);
+	public QuizWithSlidesResponseDto getQuizWithSlides(Long quizId) {
+		Quiz quiz = quizRepository.findById(quizId)
+				.orElseThrow(() -> new ResourceNotFoundException(AppConstants.PRESENTATION, AppConstants.ID, quizId));
+		return this.mapQuizToQuizWithSlides(quizId, quiz);
 	}
 
 	@Override
-	public PagedResponseDto<Presentation> getUserPresentations(UserPrincipal currentUser, int page, int size) {
+	public PagedResponseDto<Quiz> getUserQuizzes(UserPrincipal currentUser, int page, int size) {
 		AppUtils.validatePageNumberAndSize(page, size);
 		Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, AppConstants.CREATED_AT);
-		Page<Presentation> presentatations = presentationRepository.findByUserId(currentUser.getId(), pageable);
+		Page<Quiz> presentatations = quizRepository.findByUserId(currentUser.getId(), pageable);
 
-		List<Presentation> content = presentatations.getNumberOfElements() == 0 ? Collections.emptyList()
+		List<Quiz> content = presentatations.getNumberOfElements() == 0 ? Collections.emptyList()
 				: presentatations.getContent();
 
-		return new PagedResponseDto<Presentation>(content, presentatations.getNumber(), presentatations.getSize(),
+		return new PagedResponseDto<Quiz>(content, presentatations.getNumber(), presentatations.getSize(),
 				presentatations.getTotalElements(), presentatations.getTotalPages(), presentatations.isLast());
 	}
 
 	@Override
-	public List<UserWithPresentationsCountResponseDto> getUsersWithPresentationsCount() {
+	public List<UserWithQuizzesCountResponseDto> getUsersWithQuizzesCount() {
 		List<User> users = userRepository.findAll();
-		List<UserWithPresentationsCountResponseDto> usersPresentationsCounts = new ArrayList<UserWithPresentationsCountResponseDto>();
+		List<UserWithQuizzesCountResponseDto> usersQuizzesCounts = new ArrayList<UserWithQuizzesCountResponseDto>();
 		for (User user : users) {
-			Long presentationsCount = presentationRepository.countByUser(user);
-			usersPresentationsCounts.add(new UserWithPresentationsCountResponseDto(user, presentationsCount));
+			Long quizzesCount = quizRepository.countByUser(user);
+			usersQuizzesCounts.add(new UserWithQuizzesCountResponseDto(user, quizzesCount));
 		}
-		return usersPresentationsCounts;
+		return usersQuizzesCounts;
 	}
 
 	@Override
-	public Presentation getPresentation(Long id) {
-		return presentationRepository.findById(id)
+	public Quiz getQuiz(Long id) {
+		return quizRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException(AppConstants.PRESENTATION, AppConstants.ID, id));
 	}
 
 	@Override
-	public ResponseEntity<Presentation> addPresentation(PresentationRequestDto presentationRequest,
-			UserPrincipal currentUser) throws IOException {
+	public ResponseEntity<Quiz> addQuiz(QuizRequestDto quizRequest, UserPrincipal currentUser) throws IOException {
 		User user = userRepository.getUser(currentUser);
 
-		Presentation presentation = new Presentation();
-		presentation.setTitle(presentationRequest.getTitle());
-		presentation.setPicture(presentationRequest.getPicture().getBytes());
+		Quiz quiz = new Quiz();
+		quiz.setTitle(quizRequest.getTitle());
+		quiz.setPicture(quizRequest.getPicture().getBytes());
 
-		presentation.setUser(user);
-		presentation.setCode(generateCode());
-		Presentation savedPresentation = presentationRepository.save(presentation);
-		return ResponseEntity.ok().body(savedPresentation);
+		quiz.setUser(user);
+		quiz.setCode(generateCode());
+		Quiz savedQuiz = quizRepository.save(quiz);
+		return ResponseEntity.ok().body(savedQuiz);
 	}
 
 	@Override
 	@Transactional
-	public Presentation updatePresentation(Long id, PresentationRequestDto updatedPresentationRequest,
-			UserPrincipal currentUser) throws IOException {
-		Presentation presentation = presentationRepository.findById(id)
+	public Quiz updateQuiz(Long id, QuizRequestDto updatedQuizRequest, UserPrincipal currentUser) throws IOException {
+		Quiz quiz = quizRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException(AppConstants.PRESENTATION, AppConstants.ID, id));
-		if (AppUtils.checkUserIsCurrentUserOrAdmin(presentation.getUser(), currentUser)) {
-			presentation.setTitle(updatedPresentationRequest.getTitle());
-			presentation.setPicture(updatedPresentationRequest.getPicture().getBytes());
-			List<Slide> existingSlides = presentation.getSlides();
-			List<SlideRequestDto> updatedSlides = updatedPresentationRequest.getSlides();
+		if (AppUtils.checkUserIsCurrentUserOrAdmin(quiz.getUser(), currentUser)) {
+			quiz.setTitle(updatedQuizRequest.getTitle());
+			quiz.setPicture(updatedQuizRequest.getPicture().getBytes());
+			List<Slide> existingSlides = quiz.getSlides();
+			List<SlideRequestDto> updatedSlides = updatedQuizRequest.getSlides();
 
 			for (SlideRequestDto updatedSlide : updatedSlides) {
 				if (updatedSlide.getId() != null) {
@@ -159,56 +157,54 @@ public class PresentationServiceImpl implements PresentationService {
 									updatedSlide.getId()));
 					existingSlide = updateSlide(existingSlide, updatedSlide);
 				} else {
-					Slide newSlide = createSlide(updatedSlide, presentation);
+					Slide newSlide = createSlide(updatedSlide, quiz);
 					existingSlides.add(newSlide);
 				}
 			}
 
 			existingSlides = deleteSlides(existingSlides, existingSlides);
 
-			presentation.setSlides(existingSlides);
+			quiz.setSlides(existingSlides);
 
-			Presentation updatedPresentation = presentationRepository.save(presentation);
-			return updatedPresentation;
+			Quiz updatedQuiz = quizRepository.save(quiz);
+			return updatedQuiz;
 		}
 		throw new UnauthorizedException(new ApiResponseDto(false, "You do not have permissions to edit that post."));
 	}
 
 	@Override
-	public ApiResponseDto deletePresentation(Long id, UserPrincipal currentUser) {
-		Presentation presentation = presentationRepository.findById(id).orElseThrow(
+	public ApiResponseDto deleteQuiz(Long id, UserPrincipal currentUser) {
+		Quiz quiz = quizRepository.findById(id).orElseThrow(
 				() -> new ResourceNotFoundException(AppConstants.PRESENTATION, AppConstants.ID, currentUser));
-		if (AppUtils.checkUserIsCurrentUserOrAdmin(presentation.getUser(), currentUser)) {
-			presentationRepository.deleteById(id);
-			return new ApiResponseDto(true, "Successfully deleted presentation");
+		if (AppUtils.checkUserIsCurrentUserOrAdmin(quiz.getUser(), currentUser)) {
+			quizRepository.deleteById(id);
+			return new ApiResponseDto(true, "Successfully deleted quiz");
 		}
-		ApiResponseDto apiResponse = new ApiResponseDto(false,
-				"You do not have permissions to delete that presentation.");
+		ApiResponseDto apiResponse = new ApiResponseDto(false, "You do not have permissions to delete that quiz.");
 		throw new UnauthorizedException(apiResponse);
 	}
 
 	@Override
-	public Long getPresentationByVerificationCode(String verificationCode) {
-		Optional<Presentation> optionalPresentation = this.presentationRepository.findByCode(verificationCode);
-		if (optionalPresentation.isPresent()) {
-			Presentation presentation = optionalPresentation.get();
-			return presentation.getId();
+	public Long getQuizByVerificationCode(String verificationCode) {
+		Optional<Quiz> optionalQuiz = this.quizRepository.findByCode(verificationCode);
+		if (optionalQuiz.isPresent()) {
+			Quiz quiz = optionalQuiz.get();
+			return quiz.getId();
 		}
 		return null;
 	}
 
-	private PresentationWithSlidesResponseDto mapPresentationToPresentationWithSlides(Long presentationId,
-			Presentation presentation) {
-		List<Slide> slides = slideRepository.findByPresentationId(presentationId);
+	private QuizWithSlidesResponseDto mapQuizToQuizWithSlides(Long quizId, Quiz quiz) {
+		List<Slide> slides = slideRepository.findByQuizId(quizId);
 		List<SlideResponseDto> slidesResponses = slides.stream().map(this::mapToSlideResponseDto)
 				.sorted(Comparator.comparingLong(SlideResponseDto::getId)).collect(Collectors.toList());
-		PresentationWithSlidesResponseDto presentationWithSlidesResponse = new PresentationWithSlidesResponseDto();
-		presentationWithSlidesResponse.setId(presentationId);
-		presentationWithSlidesResponse.setCode(presentation.getCode());
-		presentationWithSlidesResponse.setCreatedAt(presentation.getCreatedAt().toString());
-		presentationWithSlidesResponse.setTitle(presentation.getTitle());
-		presentationWithSlidesResponse.setSlides(slidesResponses);
-		return presentationWithSlidesResponse;
+		QuizWithSlidesResponseDto quizWithSlidesResponse = new QuizWithSlidesResponseDto();
+		quizWithSlidesResponse.setId(quizId);
+		quizWithSlidesResponse.setCode(quiz.getCode());
+		quizWithSlidesResponse.setCreatedAt(quiz.getCreatedAt().toString());
+		quizWithSlidesResponse.setTitle(quiz.getTitle());
+		quizWithSlidesResponse.setSlides(slidesResponses);
+		return quizWithSlidesResponse;
 	}
 
 	private Slide updateSlide(Slide existingSlide, SlideRequestDto updatedSlide) {
@@ -271,12 +267,12 @@ public class PresentationServiceImpl implements PresentationService {
 		return existingOptions;
 	}
 
-	private Slide createSlide(SlideRequestDto updatedSlide, Presentation presentation) {
+	private Slide createSlide(SlideRequestDto updatedSlide, Quiz quiz) {
 		SlideType slideType = slideTypeRepository.findByName(SlideTypeName.valueOf(updatedSlide.getType()));
 		Slide newSlide = new Slide();
 		newSlide.setTitle(updatedSlide.getTitle());
 		newSlide.setType(slideType);
-		newSlide.setPresentation(presentation);
+		newSlide.setQuiz(quiz);
 		newSlide.setDisplayTime(updatedSlide.getDisplayTime());
 		newSlide.setHeaderColor(updatedSlide.getHeaderColor());
 		newSlide.setTitleColor(updatedSlide.getTitleColor());
@@ -298,7 +294,7 @@ public class PresentationServiceImpl implements PresentationService {
 			if (existingSlide.getId() != null
 					&& updatedSlides.stream().noneMatch(updatedSlide -> updatedSlide.getId() != null
 							&& updatedSlide.getId().equals(existingSlide.getId()))) {
-				existingSlide.setPresentation(null);
+				existingSlide.setQuiz(null);
 				slideRepository.delete(existingSlide);
 			}
 		}
@@ -310,8 +306,7 @@ public class PresentationServiceImpl implements PresentationService {
 	}
 
 	private String generateCode() {
-		List<String> existingCodes = presentationRepository.findAll().stream().map(Presentation::getCode)
-				.collect(Collectors.toList());
+		List<String> existingCodes = quizRepository.findAll().stream().map(Quiz::getCode).collect(Collectors.toList());
 		Random random = new Random();
 
 		String codeGenerated;

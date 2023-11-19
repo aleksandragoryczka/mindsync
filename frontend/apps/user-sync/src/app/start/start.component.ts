@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { AttendeeMessageModel } from 'libs/shared/src/lib/models/attendee-message.model';
-import { PresentationService } from '../../../../../libs/shared/src/lib/services/presentation.service';
+import { QuizService } from '../../../../../libs/shared/src/lib/services/quiz.service';
 import {
   ButtonTypes,
   InputPopupFullDataModel,
@@ -24,15 +24,14 @@ export class StartComponent {
     ['surname']: { value: '', type: 'text', placeholder: 'Surname' },
   };
   inputPopupData: InputPopupFullDataModel = {
-    title: 'Join Presentation',
-    description:
-      'Type presentation code you want to join, your name and surname:',
+    title: 'Join Quiz',
+    description: 'Type quiz code you want to join, your name and surname:',
     inputs: this.inputs,
     buttons: [
       {
         type: ButtonTypes.PRIMARY,
         text: 'Join',
-        onClick: () => this.joinPresentation(this.inputs),
+        onClick: () => this.joinQuiz(this.inputs),
       },
 
       {
@@ -43,7 +42,7 @@ export class StartComponent {
   };
 
   constructor(
-    private presentationService: PresentationService,
+    private quizService: QuizService,
     private webSocketService: WebSocketService,
     private toastrService: ToastrService,
     private router: Router,
@@ -56,9 +55,9 @@ export class StartComponent {
     });
   }
 
-  joinPresentation(inputs: Record<string, InputPopupModel>): void {
-    this.presentationService
-      .joinPresentationByCode(String(inputs['code'].value))
+  joinQuiz(inputs: Record<string, InputPopupModel>): void {
+    this.quizService
+      .joinQuizByCode(String(inputs['code'].value))
       .subscribe(res => {
         if (res) {
           const attendee: AttendeeMessageModel = {

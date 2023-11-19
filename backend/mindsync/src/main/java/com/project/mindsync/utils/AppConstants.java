@@ -9,7 +9,7 @@ public class AppConstants {
 	public static final String DEFAULT_PAGE_NUMBER = "0";
 	public static final String DEFAULT_PAGE_SIZE = "30";
 	public static final int MAX_PAGE_SIZE = 30;
-	public static final String PRESENTATION = "presentation";
+	public static final String PRESENTATION = "quiz";
 	public static final String USER = "user";
 	public static final String ID = "id";
 	public static final String CREATED_AT = "createdAt";
@@ -21,6 +21,7 @@ public class AppConstants {
 			.singletonList(SlideTypeName.MULTIPLE_CHOICE);
 	public static final String MAIL_SENDER = "MindSync";
 	public static final String MAIL_SUBJECT = "Please verify your Account";
+	public static final String MAIL_VERIFY_URL_FIRST_PART = "http://localhost:4200/verify?code=";
 	public static final String MAIL_CONTENT = "Dear [[name]],<br>"
 			+ "Please click the link below to verify your Account:<br>"
 			+ "<h3><a href=\"[[URL]]\" target=\"_self\">VERIFY</a></h3>" + "Thank you,<br>" + MAIL_SENDER;

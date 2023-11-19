@@ -9,21 +9,20 @@
                     <div class="nav-item-div">
                         <ng-container *ngIf="isUserAuthenticated">
                             <li *ngFor="let element of userMenu" class="nav-item">
-                                <a *ngIf="element.text === 'Presentations'" class="nav-link"
-                                    class="presentation-dropdown" (mouseenter)="openDropdown(element.text)">
+                                <a *ngIf="element.text === 'Quizzes'" class="nav-link" class="quiz-dropdown"
+                                    (mouseenter)="openDropdown(element.text)">
                                     <span class="nav-text-link">{{ element.text }}<mat-icon
-                                            *ngIf="element.text === 'Presentations'">arrow_drop_down</mat-icon></span>
+                                            *ngIf="element.text === 'Quizzes'">arrow_drop_down</mat-icon></span>
                                     <div *ngIf="isDropdownOpen" (mouseleave)="closeDropdown()">
                                         <ul class="dropdown-menu">
-                                            <li><a routerLink="/dashboard">My presentations</a></li>
-                                            <li><a (click)="openCreatePresentationPopup()">Create new</a>
+                                            <li><a routerLink="/dashboard">My quizzes</a></li>
+                                            <li><a (click)="openCreateQuizPopup()">Create new</a>
                                             </li>
                                         </ul>
                                     </div>
                                 </a>
-                                <a *ngIf="element.text !== 'Presentations'" class="nav-link"
-                                    class="presentation-dropdown" routerLink="{{ element.router_link }}"
-                                    (click)="logOut(element.text)">
+                                <a *ngIf="element.text !== 'Quizzes'" class="nav-link" class="quiz-dropdown"
+                                    routerLink="{{ element.router_link }}" (click)="logOut(element.text)">
                                     <span class="nav-text-link">{{ element.text }}</span>
                                 </a>
                             </li>
@@ -55,7 +54,7 @@
                             <h2>Your Pathway to Collaborative Brillince!</h2>
                         </div>
                         <button class="mindsync-btn mindsync-btn-primary" (click)="openPopup('join')">Join
-                            presentation</button>
+                            quiz</button>
                         <button class="mindsync-btn mindsync-btn-secondary" (click)="openPopup('register')">Get
                             Started</button>
                     </div>

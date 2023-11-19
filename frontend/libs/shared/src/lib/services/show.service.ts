@@ -10,9 +10,9 @@ import { ShowModel } from '../models/show.model';
 export class ShowService {
   constructor(private http: HttpClient) {}
 
-  addShow(newShow: FormData, presentationId: string): Observable<ShowModel> {
+  addShow(newShow: FormData, quizId: string): Observable<ShowModel> {
     return this.http.post<ShowModel>(
-      `${environment.apiUrl}/show?presentationId=${presentationId}`,
+      `${environment.apiUrl}/show?quizId=${quizId}`,
       newShow
     );
   }

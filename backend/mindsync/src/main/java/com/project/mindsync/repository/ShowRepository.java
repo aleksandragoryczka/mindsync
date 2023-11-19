@@ -8,6 +8,6 @@ import com.project.mindsync.model.Show;
 
 public interface ShowRepository extends JpaRepository<Show, Long> {
 
-	Page<Show> findByPresentationId(Long presentationId, Pageable pageable);
+	Page<Show> findByQuizId(Long quizId, Pageable pageable);
 
 }

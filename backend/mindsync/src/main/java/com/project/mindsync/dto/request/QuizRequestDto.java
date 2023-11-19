@@ -8,7 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 import lombok.Data;
 
 @Data
-public class PresentationRequestDto {
+public class QuizRequestDto {
 	private String title;
 	private Instant createdAt;
 	private MultipartFile picture;

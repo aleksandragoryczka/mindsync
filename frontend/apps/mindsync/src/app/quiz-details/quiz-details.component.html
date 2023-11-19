@@ -1,24 +1,23 @@
 <div class="mindsync-default-container">
-    <div class="mindsync-default-content-container main-presentation-container">
+    <div class="mindsync-default-content-container main-quiz-container">
         <div class="mindsync-default-content-heading">
-            {{ presentation.title }}
+            {{ quiz.title }}
         </div>
         <div class="mindsync-default-content-data">
             <div class="container-navigation">
                 <div class="container-details">
                     <div class="details-section">
                         <p>Code: </p>
-                        <p>{{ presentation.code }}</p>
+                        <p>{{ quiz.code }}</p>
                     </div>
                     <div class="details-section">
                         <p>Created At: </p>
-                        <p>{{ StringFormatter.getDateFromISOString(presentation.createdAt ?? '') }}</p>
+                        <p>{{ StringFormatter.getDateFromISOString(quiz.createdAt ?? '') }}</p>
                     </div>
                 </div>
                 <div class="buttons-container">
                     <button class="mindsync-btn mindsync-btn-secondary" (click)="getShowsButton()">Shows</button>
-                    <button class="mindsync-btn mindsync-btn-secondary"
-                        (click)="openDeletePresentationPopup()">Delete</button>
+                    <button class="mindsync-btn mindsync-btn-secondary" (click)="openDeleteQuizPopup()">Delete</button>
                     <button class="mindsync-btn mindsync-btn-primary" (click)="startShow()">Start show</button>
                     <button class="mindsync-btn mindsync-btn-primary" (click)="openAddSlidePopup()">Add slide</button>
                 </div>

@@ -5,7 +5,7 @@ import java.util.List;
 import lombok.Data;
 
 @Data
-public class PresentationWithSlidesResponseDto {
+public class QuizWithSlidesResponseDto {
 	private Long id;
 	private String title;
 	private String code;

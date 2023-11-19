@@ -10,7 +10,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { CarouselSlideComponent } from '../carousel-slide.component';
-import { PresentationService } from 'libs/shared/src/lib/services/presentation.service';
+import { QuizService } from 'libs/shared/src/lib/services/quiz.service';
 import { SharedTableDataFunc } from 'libs/shared/src/lib/models/shared-table-data.model';
 import { TooltipTexts } from '../../../../../shared/src/lib/models/enums/tooltips-texts.enum';
 import { SlideTypes } from '../../../../../shared/src/lib/models/enums/slideTypes.enum';
@@ -68,7 +68,7 @@ export class SlideComponent
   wordCloudSeries: am4plugins_wordCloud.WordCloudSeries | undefined;
 
   constructor(
-    private presentationService: PresentationService,
+    private quizService: QuizService,
     private ngEl: ElementRef,
     private renderer: Renderer2,
     private dialog: MatDialog,

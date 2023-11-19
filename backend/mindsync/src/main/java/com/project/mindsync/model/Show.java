@@ -40,18 +40,18 @@ public class Show extends DateAudit {
 	private byte[] excelFile;
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "presentation_id", nullable = false)
+	@JoinColumn(name = "quiz_id", nullable = false)
 	@JsonIgnore
-	private Presentation presentation;
+	private Quiz quiz;
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "show", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Screenshot> screenshots;
 
-	public Show(String attendeesNumber, byte[] excelFile, Presentation presentation, List<Screenshot> screenshots) {
+	public Show(String attendeesNumber, byte[] excelFile, Quiz quiz, List<Screenshot> screenshots) {
 		this.attendeesNumber = attendeesNumber;
 		this.excelFile = excelFile;
-		this.presentation = presentation;
+		this.quiz = quiz;
 		this.screenshots = screenshots;
 	}
 

@@ -2,11 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { StartShowPopupComponent } from './start-show-popup/start-show-popup.component';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PresentationWithSlides } from 'libs/shared/src/lib/models/presentation-with-slides.model';
-import { PresentationModel } from 'libs/shared/src/lib/models/presentation.model';
+import { QuizWithSlides } from 'libs/shared/src/lib/models/quiz-with-slides.model';
+import { QuizModel } from 'libs/shared/src/lib/models/quiz.model';
 import { SlideModel } from 'libs/shared/src/lib/models/slide.model';
 import { tap, map } from 'rxjs';
-import { PresentationService } from 'libs/shared/src/lib/services/presentation.service';
 import { WebSocketService } from 'libs/shared/src/lib/services/web-socket.service';
 import { SelectedOptionsMessageModel } from 'libs/shared/src/lib/models/selected-options-message.model';
 import {
@@ -26,6 +25,7 @@ import { ShowService } from '../../../../../libs/shared/src/lib/services/show.se
 import { UserAnswerMessageModel } from '../../../../../libs/shared/src/lib/models/selected-options-message.model';
 import { formatDate } from '@angular/common';
 import html2canvas from 'html2canvas';
+import { QuizService } from 'libs/shared/src/lib/services/quiz.service';
 
 @Component({
   selector: 'project-start-show',
@@ -36,16 +36,16 @@ export class StartShowComponent implements OnInit {
   currentSlideIndex = 0;
   listOfSlides: SlideModel[] = [];
   attendeesNumber = 0;
-  presentation: PresentationModel = { title: '' };
+  quiz: QuizModel = { title: '' };
   answersShowed = false;
   isMultipleChoice = false;
-  presentationId = this.activatedRoute.snapshot.paramMap.get('id');
+  quizId = this.activatedRoute.snapshot.paramMap.get('id');
   slideScreenshots: Blob[] = [];
 
   constructor(
     private dialog: MatDialog,
     private activatedRoute: ActivatedRoute,
-    private presentationService: PresentationService,
+    private quizService: QuizService,
     private webSocketService: WebSocketService,
     private router: Router,
     private toastrService: ToastrService,
@@ -54,8 +54,8 @@ export class StartShowComponent implements OnInit {
 
   ngOnInit(): void {
     this.openDialog();
-    if (this.presentationId) {
-      this.loadSlides(this.presentationId);
+    if (this.quizId) {
+      this.loadSlides(this.quizId);
     }
   }
 
@@ -81,9 +81,9 @@ export class StartShowComponent implements OnInit {
       this.slideScreenshots.forEach(screenshot =>
         excelFormData.append('screenshots', screenshot)
       );
-      if (this.presentationId)
+      if (this.quizId)
         this.showService
-          .addShow(excelFormData, this.presentationId)
+          .addShow(excelFormData, this.quizId)
           .subscribe(async isAdded => {
             if (isAdded) {
               await this.router.navigate(['/dashboard']);
@@ -200,7 +200,7 @@ export class StartShowComponent implements OnInit {
   private mapShowDetailsToExcel(): any[] {
     const attendeesNumber = this.webSocketService.attendees.length;
     const summary: Summary = {
-      presentationTitle: this.presentation.title,
+      quizTitle: this.quiz.title,
       showTime: formatDate(new Date(), 'dd-MM-yyyy hh:mm:ss', 'en-US'),
       attendeeNumber: attendeesNumber,
     };
@@ -328,16 +328,16 @@ export class StartShowComponent implements OnInit {
   }
 
   private loadSlides(id: string): void {
-    this.presentationService
-      .getPresentationWithSlides(id)
+    this.quizService
+      .getQuizWithSlides(id)
       .pipe(
-        tap((res: PresentationWithSlides) => {
-          const presentation: PresentationModel = {
+        tap((res: QuizWithSlides) => {
+          const quiz: QuizModel = {
             title: res.title,
           };
-          this.presentation = presentation;
+          this.quiz = quiz;
         }),
-        map((res: PresentationWithSlides) => res.slides)
+        map((res: QuizWithSlides) => res.slides)
       )
       .subscribe((slides: SlideModel[]) => (this.listOfSlides = slides));
   }

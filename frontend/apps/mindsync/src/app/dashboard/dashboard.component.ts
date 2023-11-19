@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { Observable, map } from 'rxjs';
-import { PresentationModel } from '../../../../../libs/shared/src/lib/models/presentation.model';
-import { PresentationService } from '../../../../../libs/shared/src/lib/services/presentation.service';
+import { QuizModel } from '../../../../../libs/shared/src/lib/models/quiz.model';
 import { PaginatedResult } from 'libs/shared/src/lib/models/paginated-result.model';
+import { QuizService } from 'libs/shared/src/lib/services/quiz.service';
 
 @Component({
   selector: 'project-dashboard',
@@ -10,15 +10,14 @@ import { PaginatedResult } from 'libs/shared/src/lib/models/paginated-result.mod
   styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent {
-  listOfPresentations$: Observable<PresentationModel[]> =
-    this.loadPresentations();
+  listOfQuizzes$: Observable<QuizModel[]> = this.loadQuizzes();
 
-  constructor(private presentationService: PresentationService) {}
+  constructor(private quizService: QuizService) {}
 
-  private loadPresentations(): Observable<PresentationModel[]> {
-    return this.presentationService
-      .getPresentationsForUser()
-      .pipe(map((res: PaginatedResult<PresentationModel>) => res.content));
+  private loadQuizzes(): Observable<QuizModel[]> {
+    return this.quizService
+      .getQuizzesForUser()
+      .pipe(map((res: PaginatedResult<QuizModel>) => res.content));
   }
 
   slideConfig = {

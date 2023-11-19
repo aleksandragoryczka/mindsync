@@ -20,13 +20,13 @@ import com.project.mindsync.dto.request.UserUpdatedRequestDto;
 import com.project.mindsync.dto.response.ApiResponseDto;
 import com.project.mindsync.dto.response.PagedResponseDto;
 import com.project.mindsync.dto.response.UserSummaryResponseDto;
-import com.project.mindsync.dto.response.UserWithPresentationsCountResponseDto;
+import com.project.mindsync.dto.response.UserWithQuizzesCountResponseDto;
 import com.project.mindsync.dto.response.UserWithRoleResponseDto;
-import com.project.mindsync.model.Presentation;
+import com.project.mindsync.model.Quiz;
 import com.project.mindsync.model.User;
 import com.project.mindsync.security.CurrentUser;
 import com.project.mindsync.security.UserPrincipal;
-import com.project.mindsync.service.PresentationService;
+import com.project.mindsync.service.QuizService;
 import com.project.mindsync.service.UserService;
 import com.project.mindsync.utils.AppConstants;
 
@@ -41,7 +41,7 @@ public class UserController {
 	private UserService userService;
 
 	@Autowired
-	private PresentationService presentationService;
+	private QuizService quizService;
 
 	@GetMapping("")
 	public ResponseEntity<UserSummaryResponseDto> getCurrentUser(@CurrentUser UserPrincipal currentUser) {
@@ -59,19 +59,19 @@ public class UserController {
 		return ResponseEntity.ok().body(response);
 	}
 
-	@GetMapping("/presentations")
-	public ResponseEntity<PagedResponseDto<Presentation>> getUserPresentations(
+	@GetMapping("/quiz")
+	public ResponseEntity<PagedResponseDto<Quiz>> getUserQuizzes(
 			@RequestParam(name = "page", required = false, defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
 			@RequestParam(name = "size", required = false, defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size,
 			@CurrentUser UserPrincipal currentUser) {
-		PagedResponseDto<Presentation> response = presentationService.getUserPresentations(currentUser, page, size);
+		PagedResponseDto<Quiz> response = quizService.getUserQuizzes(currentUser, page, size);
 		return ResponseEntity.ok().body(response);
 	}
 
-	@GetMapping("/presentations-count")
+	@GetMapping("/quiz-count")
 	@PreAuthorize("hasRole('ADMIN')")
-	public ResponseEntity<List<UserWithPresentationsCountResponseDto>> getUserWithPresetationsCount() {
-		return ResponseEntity.ok().body(this.presentationService.getUsersWithPresentationsCount());
+	public ResponseEntity<List<UserWithQuizzesCountResponseDto>> getUserWithPresetationsCount() {
+		return ResponseEntity.ok().body(this.quizService.getUsersWithQuizzesCount());
 	}
 
 	@PutMapping("/{id}")

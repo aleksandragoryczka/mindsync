@@ -7,7 +7,7 @@ import lombok.Data;
 
 @AllArgsConstructor
 @Data
-public class UserWithPresentationsCountResponseDto {
+public class UserWithQuizzesCountResponseDto {
 	private User user;
-	private Long presentationsCount;
+	private Long quizzesCount;
 }

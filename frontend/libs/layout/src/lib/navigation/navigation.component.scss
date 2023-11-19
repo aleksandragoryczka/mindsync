@@ -74,7 +74,7 @@
   width: 100%;
 }
 
-.presentation-dropdown {
+.quiz-dropdown {
   position: relative;
   display: inline-block;
 }
@@ -100,7 +100,7 @@ mat-icon {
   font-size: 32px;
 }
 
-.presentation-dropdown:hover .dropdown-menu {
+.quiz-dropdown:hover .dropdown-menu {
   display: block;
 }
 

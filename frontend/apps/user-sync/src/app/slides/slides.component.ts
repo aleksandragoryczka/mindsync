@@ -1,9 +1,9 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { PresentationWithSlides } from 'libs/shared/src/lib/models/presentation-with-slides.model';
-import { PresentationModel } from 'libs/shared/src/lib/models/presentation.model';
+import { QuizWithSlides } from 'libs/shared/src/lib/models/quiz-with-slides.model';
+import { QuizModel } from 'libs/shared/src/lib/models/quiz.model';
 import { SlideModel } from 'libs/shared/src/lib/models/slide.model';
-import { PresentationService } from 'libs/shared/src/lib/services/presentation.service';
+import { QuizService } from 'libs/shared/src/lib/services/quiz.service';
 import { Observable, EMPTY, map, tap, BehaviorSubject } from 'rxjs';
 import { WebSocketService } from '../../../../../libs/shared/src/lib/services/web-socket.service';
 import { OptionModel } from 'libs/shared/src/lib/models/option.model';
@@ -27,8 +27,8 @@ import {
 })
 export class SlidesComponent implements OnInit, AfterViewInit {
   userAnswer = '';
-  presentation: PresentationModel = { title: '', code: '', createdAt: '' };
-  presentationId = this.activatedRoute.snapshot.paramMap.get('id');
+  quiz: QuizModel = { title: '', code: '', createdAt: '' };
+  quizId = this.activatedRoute.snapshot.paramMap.get('id');
   listOfSlides: SlideModel[] = [];
   private isCountdownEndedSubject: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
@@ -36,7 +36,7 @@ export class SlidesComponent implements OnInit, AfterViewInit {
     this.isCountdownEndedSubject.asObservable();
 
   constructor(
-    private presentationService: PresentationService,
+    private quizService: QuizService,
     private activatedRoute: ActivatedRoute,
     public webSocketService: WebSocketService,
     private dialog: MatDialog
@@ -47,8 +47,8 @@ export class SlidesComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    if (this.presentationId) {
-      this.loadSlides(this.presentationId);
+    if (this.quizId) {
+      this.loadSlides(this.quizId);
     }
   }
 
@@ -98,16 +98,16 @@ export class SlidesComponent implements OnInit, AfterViewInit {
   }
 
   private loadSlides(id: string): void {
-    this.presentationService
-      .getPresentationWithSlides(id)
+    this.quizService
+      .getQuizWithSlides(id)
       .pipe(
-        tap((res: PresentationWithSlides) => {
-          const presentation: PresentationModel = {
+        tap((res: QuizWithSlides) => {
+          const quiz: QuizModel = {
             title: res.title,
           };
-          this.presentation = presentation;
+          this.quiz = quiz;
         }),
-        map((res: PresentationWithSlides) => res.slides)
+        map((res: QuizWithSlides) => res.slides)
       )
       .subscribe((slides: SlideModel[]) => {
         this.listOfSlides = slides;

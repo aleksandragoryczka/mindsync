@@ -20,12 +20,12 @@ import com.project.mindsync.dto.response.PagedResponseDto;
 import com.project.mindsync.exception.ResourceNotFoundException;
 import com.project.mindsync.exception.UnauthorizedException;
 import com.project.mindsync.model.Option;
-import com.project.mindsync.model.Presentation;
+import com.project.mindsync.model.Quiz;
 import com.project.mindsync.model.Slide;
 import com.project.mindsync.model.SlideType;
 import com.project.mindsync.model.enums.SlideTypeName;
 import com.project.mindsync.repository.OptionRepository;
-import com.project.mindsync.repository.PresentationRepository;
+import com.project.mindsync.repository.QuizRepository;
 import com.project.mindsync.repository.SlideRepository;
 import com.project.mindsync.repository.SlideTypeRepository;
 import com.project.mindsync.security.UserPrincipal;
@@ -41,7 +41,7 @@ public class SlideServiceImpl implements SlideService {
 	private SlideRepository slideRepository;
 
 	@Autowired
-	private PresentationRepository presentationRepository;
+	private QuizRepository quizRepository;
 
 	@Autowired
 	private SlideTypeRepository slideTypeRepository;
@@ -50,9 +50,9 @@ public class SlideServiceImpl implements SlideService {
 	private OptionRepository optionRepository;
 
 	@Override
-	public ResponseEntity<Slide> addSlide(SlideRequestDto slideRequest, Long presentationId) {
-		Presentation presentation = presentationRepository.findById(presentationId).orElseThrow(
-				() -> new ResourceNotFoundException(AppConstants.PRESENTATION, AppConstants.ID, presentationId));
+	public ResponseEntity<Slide> addSlide(SlideRequestDto slideRequest, Long quizId) {
+		Quiz quiz = quizRepository.findById(quizId)
+				.orElseThrow(() -> new ResourceNotFoundException(AppConstants.PRESENTATION, AppConstants.ID, quizId));
 		Slide slide = new Slide();
 		slide.setTitle(slideRequest.getTitle());
 		slide.setDisplayTime(slideRequest.getDisplayTime());
@@ -60,7 +60,7 @@ public class SlideServiceImpl implements SlideService {
 		slide.setTitleColor(slideRequest.getTitleColor());
 		SlideType slideType = slideTypeRepository.findByName(SlideTypeName.valueOf(slideRequest.getType()));
 		slide.setType(slideType);
-		slide.setPresentation(presentation);
+		slide.setQuiz(quiz);
 
 		if (AppConstants.OPTIONS_SLIDES_TYPES.contains(slideType.getName())) {
 			List<Option> options = new ArrayList<Option>(slideRequest.getOptions().size());
@@ -76,11 +76,11 @@ public class SlideServiceImpl implements SlideService {
 	}
 
 	@Override
-	public PagedResponseDto<Slide> getAllSlidesByPresentation(Long presentationId, int page, int size) {
+	public PagedResponseDto<Slide> getAllSlidesByQuiz(Long quizId, int page, int size) {
 		AppUtils.validatePageNumberAndSize(page, size);
 
 		Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, AppConstants.CREATED_AT);
-		Page<Slide> slides = slideRepository.findByPresentationId(presentationId, pageable);
+		Page<Slide> slides = slideRepository.findByQuizId(quizId, pageable);
 
 		List<Slide> content = slides.getNumberOfElements() == 0 ? Collections.emptyList() : slides.getContent();
 
@@ -138,7 +138,7 @@ public class SlideServiceImpl implements SlideService {
 	public ResponseEntity<ApiResponseDto> deleteSlide(Long id, UserPrincipal currentUser) {
 		Slide slide = slideRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException(AppConstants.SLIDE, AppConstants.ID, id));
-		if (AppUtils.checkUserIsCurrentUserOrAdmin(slide.getPresentation().getUser(), currentUser)) {
+		if (AppUtils.checkUserIsCurrentUserOrAdmin(slide.getQuiz().getUser(), currentUser)) {
 			slideRepository.delete(slide);
 			return ResponseEntity.ok().body(new ApiResponseDto(true, "Successfully deleted Slide with ID: " + id));
 		}

@@ -10,7 +10,7 @@ import { PopupWithInputsComponent } from '../../../../ui/src/lib/popup-with-inpu
 import { UserService } from '../../../../shared/src/lib/services/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { PresentationService } from 'libs/shared/src/lib/services/presentation.service';
+import { QuizService } from 'libs/shared/src/lib/services/quiz.service';
 import StorageRealod from 'libs/shared/src/lib/utils/storage-reload';
 import { WebSocketService } from '../../../../shared/src/lib/services/web-socket.service';
 import { AttendeeMessageModel } from '../../../../shared/src/lib/models/attendee-message.model';
@@ -31,7 +31,7 @@ export class NavigationComponent implements OnInit {
     public router: Router,
     private activatedRoute: ActivatedRoute,
     private toastrService: ToastrService,
-    private presentationService: PresentationService,
+    private quizService: QuizService,
     private webSocketService: WebSocketService
   ) {}
 
@@ -78,16 +78,14 @@ export class NavigationComponent implements OnInit {
       inputs: this.homepageInputsPopup['register'],
     },
     join: {
-      title: 'Join presentation',
-      description:
-        'Type presentation code you want to join, your name and surname:',
+      title: 'Join quiz',
+      description: 'Type quiz code you want to join, your name and surname:',
       inputs: this.homepageInputsPopup['join'],
       buttons: [
         {
           type: ButtonTypes.PRIMARY,
           text: 'Join',
-          onClick: () =>
-            this.joinPresentation(this.homepageInputsPopup['join']),
+          onClick: () => this.joinQuiz(this.homepageInputsPopup['join']),
         },
 
         {
@@ -107,9 +105,9 @@ export class NavigationComponent implements OnInit {
     }
   }
 
-  joinPresentation(inputs: Record<string, InputPopupModel>): void {
-    this.presentationService
-      .joinPresentationByCode(String(inputs['code'].value))
+  joinQuiz(inputs: Record<string, InputPopupModel>): void {
+    this.quizService
+      .joinQuizByCode(String(inputs['code'].value))
       .subscribe(res => {
         if (res) {
           const attendee: AttendeeMessageModel = {
@@ -143,19 +141,19 @@ export class NavigationComponent implements OnInit {
         popup_name: 'login',
       },
       {
-        text: 'Join presentation',
+        text: 'Join quiz',
         router_link: '',
         popup_name: 'join',
       },
     ];
   }
 
-  openCreatePresentationPopup(): void {
+  openCreateQuizPopup(): void {
     const inputs: Record<string, InputPopupModel> = {
       ['title']: {
         value: '',
         type: 'text',
-        placeholder: 'Presentation title',
+        placeholder: 'Quiz title',
       },
       ['graphic']: {
         value: '',
@@ -167,7 +165,7 @@ export class NavigationComponent implements OnInit {
       {
         type: ButtonTypes.PRIMARY,
         text: 'Create',
-        onClick: () => this.createPresentation(inputs),
+        onClick: () => this.createQuiz(inputs),
       },
       {
         type: ButtonTypes.SECONDARY,
@@ -175,8 +173,8 @@ export class NavigationComponent implements OnInit {
       },
     ];
     const data: InputPopupFullDataModel = {
-      title: 'New presentation',
-      description: 'Fill basic data about new presentation:',
+      title: 'New quiz',
+      description: 'Fill basic data about new quiz:',
       inputs: inputs,
       buttons: buttons,
     };
@@ -198,16 +196,16 @@ export class NavigationComponent implements OnInit {
   }
 
   openDropdown(text: string): void {
-    if (text === 'Presentations') this.isDropdownOpen = true;
+    if (text === 'Quizzes') this.isDropdownOpen = true;
   }
 
   closeDropdown(): void {
     this.isDropdownOpen = false;
   }
 
-  private createPresentation(inputs: Record<string, InputPopupModel>): void {
+  private createQuiz(inputs: Record<string, InputPopupModel>): void {
     if (inputs['graphic'].value == '')
-      this.toastrService.warning('Upload a presentation graphic first');
+      this.toastrService.warning('Upload a quiz graphic first');
     else {
       const formData = new FormData();
       formData.append(
@@ -216,17 +214,15 @@ export class NavigationComponent implements OnInit {
         (inputs['graphic'].value as File).name
       );
       formData.append('title', String(inputs['title'].value));
-      this.presentationService
-        .addPresentation(formData)
-        .subscribe(async isCreated => {
-          if (isCreated) {
-            await this.router.navigateByUrl(`/presentation/${isCreated.id}`);
-            StorageRealod.reloadWithMessage(
-              'Success-Message',
-              'Presentation added successfully'
-            );
-          }
-        });
+      this.quizService.addQuiz(formData).subscribe(async isCreated => {
+        if (isCreated) {
+          await this.router.navigateByUrl(`/quiz/${isCreated.id}`);
+          StorageRealod.reloadWithMessage(
+            'Success-Message',
+            'Quiz added successfully'
+          );
+        }
+      });
     }
   }
 
@@ -249,7 +245,7 @@ export class NavigationComponent implements OnInit {
   private updateUserMenu(): void {
     const menu = [
       {
-        text: 'Presentations',
+        text: 'Quizzes',
       },
       {
         text: 'Profile',

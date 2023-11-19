@@ -25,14 +25,14 @@ import lombok.Setter;
 @Table(name = "presentatations")
 @Setter
 @Getter
-public class Presentation extends DateAudit {
+public class Quiz extends DateAudit {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	private String title;
 	private String code;
-	
+
 	@Column(name = "picture", columnDefinition = "BYTEA")
 	private byte[] picture;
 
@@ -41,11 +41,11 @@ public class Presentation extends DateAudit {
 	@JsonIgnore
 	private User user;
 
-	@OneToMany(mappedBy = "presentation", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL)
 	private List<Slide> slides;
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "presentation", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL)
 	private List<Show> shows;
 
 	public List<Slide> getSlides() {
@@ -57,7 +57,7 @@ public class Presentation extends DateAudit {
 			slides = new ArrayList<Slide>();
 		}
 		slides.add(slide);
-		slide.setPresentation(this);
+		slide.setQuiz(this);
 	}
 
 	public void setSlides(List<Slide> slides) {

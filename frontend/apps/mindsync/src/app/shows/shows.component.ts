@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { BehaviorSubject, Observable, map, switchMap } from 'rxjs';
 import { SharedTableData } from '../../../../../libs/shared/src/lib/models/shared-table-data.model';
-import { PresentationService } from '../../../../../libs/shared/src/lib/services/presentation.service';
 import { ActivatedRoute } from '@angular/router';
-import { PresentationWithShows } from 'libs/shared/src/lib/models/presentation-with-shows.model';
+import { QuizWithShows } from 'libs/shared/src/lib/models/quiz-with-shows.model';
 import StringFormatter from 'libs/shared/src/lib/utils/string-formatter';
 import {
   ButtonPopupModel,
@@ -19,6 +18,7 @@ import { saveAs } from 'file-saver';
 import { ScreenshotsComponent } from './screenshots/screenshots.component';
 import { ScreenshotModel } from 'libs/shared/src/lib/models/screenshot.model';
 import { TooltipTexts } from '../../../../../libs/shared/src/lib/models/enums/tooltips-texts.enum';
+import { QuizService } from 'libs/shared/src/lib/services/quiz.service';
 
 @Component({
   selector: 'project-shows',
@@ -26,8 +26,8 @@ import { TooltipTexts } from '../../../../../libs/shared/src/lib/models/enums/to
   styleUrls: ['./shows.component.scss'],
 })
 export class ShowsComponent implements OnInit {
-  presentationId = '';
-  presentationTitle = '';
+  quizId = '';
+  quizTitle = '';
   totalShowsNumberOfPages = 1;
   rowsPerPage = 10;
   caption = '';
@@ -37,7 +37,7 @@ export class ShowsComponent implements OnInit {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private presentationService: PresentationService,
+    private quizService: QuizService,
     private dialog: MatDialog,
     private showService: ShowService,
     private toastrService: ToastrService
@@ -45,9 +45,9 @@ export class ShowsComponent implements OnInit {
 
   ngOnInit(): void {
     const id = this.activatedRoute.snapshot.paramMap.get('id');
-    this.presentationTitle =
+    this.quizTitle =
       this.activatedRoute.snapshot.queryParamMap.get('title') ?? '';
-    if (id != null) this.presentationId = id;
+    if (id != null) this.quizId = id;
   }
 
   setPage(pageNumber: number): void {
@@ -64,13 +64,13 @@ export class ShowsComponent implements OnInit {
     });
   }
 
-  private downloadExcelFile(showId: string, presentationTitle: string): void {
+  private downloadExcelFile(showId: string, quizTitle: string): void {
     this.showService.getExcelFile(showId).subscribe(
       response => {
         const blob = new Blob([response], {
           type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
         });
-        saveAs(blob, presentationTitle);
+        saveAs(blob, quizTitle);
       },
       error => {
         this.toastrService.error(
@@ -108,12 +108,9 @@ export class ShowsComponent implements OnInit {
   private loadShows(): Observable<SharedTableData[]> {
     return this.currentPage$.pipe(
       switchMap(currentPage =>
-        this.presentationService.getPresentationsWithShows(
-          this.presentationId,
-          currentPage
-        )
+        this.quizService.getQuizzesWithShows(this.quizId, currentPage)
       ),
-      map((res: PresentationWithShows) => {
+      map((res: QuizWithShows) => {
         this.totalShowsNumberOfPages = res.shows.totalPages ?? 1;
         if (res.shows.content.length === 0 && this.currentPage$.value - 1 >= 0)
           this.currentPage$.next(this.currentPage$.value - 1);
@@ -136,7 +133,7 @@ export class ShowsComponent implements OnInit {
     });
   }
 
-  private mapData(data: PresentationWithShows): SharedTableData[] {
+  private mapData(data: QuizWithShows): SharedTableData[] {
     const shows = data.shows.content;
     this.rowsPerPage = data.shows.size ?? 10;
     const results: SharedTableData[] = [];
@@ -157,10 +154,10 @@ export class ShowsComponent implements OnInit {
           },
           {
             icon: 'cloud_download',
-            func: (arg: { showId: string; presentationTitle: string }) => {
-              this.downloadExcelFile(arg.showId, arg.presentationTitle);
+            func: (arg: { showId: string; quizTitle: string }) => {
+              this.downloadExcelFile(arg.showId, arg.quizTitle);
             },
-            arg: { showId: show.id, presentationTitle: data.title },
+            arg: { showId: show.id, quizTitle: data.title },
             tooltip: TooltipTexts.downloadShowSummary,
           },
           {

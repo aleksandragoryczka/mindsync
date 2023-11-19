@@ -1,16 +1,13 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
-import { UiModule } from '@project/ui';
 import { SharedModule } from '@project/shared';
-import { LayoutModule } from '@project/layout';
 import { JwtModule } from '@auth0/angular-jwt';
 import { environment } from '../environments/environment.development';
 import { AppRoutingModule } from './app-routing.module';
 import { ToastrModule } from 'ngx-toastr';
-import { DashboardComponent } from './dashboard/dashboard.component';
 import { MatIconModule } from '@angular/material/icon';
-import { PresentationDetailsComponent } from './presentation-details/presentation-details.component';
+import { QuizDetailsComponent } from './quiz-details/quiz-details.component';
 import { ShowsComponent } from './shows/shows.component';
 import { ScreenshotsComponent } from './shows/screenshots/screenshots.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -26,6 +23,9 @@ import { StartShowPopupComponent } from './start-show/start-show-popup/start-sho
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { StatisticsPopupComponent } from './start-show/statistics-popup/statistics-popup.component';
 import { NgApexchartsModule } from 'ng-apexcharts';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { UiModule } from 'libs/ui/src/lib/ui.module';
+import { LayoutModule } from 'libs/layout/src/lib/layout.module';
 
 export function tokenGetter() {
   return localStorage.getItem('Access-Token');
@@ -35,7 +35,7 @@ export function tokenGetter() {
   declarations: [
     AppComponent,
     DashboardComponent,
-    PresentationDetailsComponent,
+    QuizDetailsComponent,
     ShowsComponent,
     ScreenshotsComponent,
     ProfileComponent,

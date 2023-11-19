@@ -58,7 +58,7 @@ public class User {
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Presentation> presentations;
+	private List<Quiz> quizzes;
 
 	public User() {
 	}
@@ -71,15 +71,15 @@ public class User {
 		this.password = password;
 	}
 
-	public List<Presentation> getPresentations() {
-		return presentations == null ? null : new ArrayList<Presentation>(presentations);
+	public List<Quiz> getQuizzes() {
+		return quizzes == null ? null : new ArrayList<Quiz>(quizzes);
 	}
 
-	public void setPresentations(List<Presentation> presentations) {
-		if (presentations == null) {
-			this.presentations = null;
+	public void setQuizzes(List<Quiz> quizzes) {
+		if (quizzes == null) {
+			this.quizzes = null;
 		} else {
-			this.presentations = Collections.unmodifiableList(presentations);
+			this.quizzes = Collections.unmodifiableList(quizzes);
 		}
 	}
 

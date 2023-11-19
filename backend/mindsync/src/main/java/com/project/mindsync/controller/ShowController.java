@@ -62,9 +62,9 @@ public class ShowController {
 	@PostMapping("")
 	@PreAuthorize("hasRole('USER')")
 	public ResponseEntity<ShowResponseDto> addShow(
-			@RequestParam(name = "presentationId", required = true) Long presentationId,
+			@RequestParam(name = "quizId", required = true) Long quizId,
 			@ModelAttribute @Valid ShowRequestDto showRequest) {
-		return showService.addShow(showRequest, presentationId);
+		return showService.addShow(showRequest, quizId);
 	}
 
 	@DeleteMapping("/{id}")

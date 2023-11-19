@@ -9,8 +9,8 @@
 </div>
 <div *ngIf="webSocketService.startButtonPushed | async" class="mindsync-default-container">
     <div class="mindsync-default-content-container">
-        <div class="mindsync-default-content-heading">{{presentation.title}}</div>
-        <div class="mindsync-default-content-data usersync-start-content-data-presentation">
+        <div class="mindsync-default-content-heading">{{quiz.title}}</div>
+        <div class="mindsync-default-content-data usersync-start-content-data-quiz">
             <div *ngFor="let slide of listOfSlides; let i = index">
                 <ng-container *ngIf="i===(webSocketService.currentSlideId | async); ngIfChange: stopSpinner">
                     <!--   <ng-container *ngIf="isCountdownEnded | async">

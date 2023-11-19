@@ -1,6 +1,6 @@
 import { SlideModel } from './slide.model';
 
-export interface PresentationWithSlides {
+export interface QuizWithSlides {
   id: string;
   title: string;
   code: string;

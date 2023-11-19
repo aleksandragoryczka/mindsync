@@ -9,9 +9,9 @@ import {
 } from 'libs/shared/src/lib/models/input-popup-data.model';
 import { PaginatedResult } from 'libs/shared/src/lib/models/paginated-result.model';
 import { SharedTableData } from 'libs/shared/src/lib/models/shared-table-data.model';
-import { UserWithPresentationsCountModel } from 'libs/shared/src/lib/models/user-with-presentations-count.model';
+import { UserWithQuizzesCountModel } from 'libs/shared/src/lib/models/user-with-quizzes-count.model';
 import { User } from 'libs/shared/src/lib/models/user.model';
-import { PresentationService } from 'libs/shared/src/lib/services/presentation.service';
+import { QuizService } from 'libs/shared/src/lib/services/quiz.service';
 import { UserService } from 'libs/shared/src/lib/services/user.service';
 import { PopupWithInputsComponent } from 'libs/ui/src/lib/popup-with-inputs/popup-with-inputs.component';
 import { ToastrService } from 'ngx-toastr';
@@ -24,13 +24,7 @@ import { BehaviorSubject, Observable, map, switchMap } from 'rxjs';
 })
 export class AdminPanelComponent {
   caption = 'List of users';
-  headers = [
-    'Full name',
-    'Username',
-    'E-mail',
-    'Total presentations number',
-    'Role',
-  ];
+  headers = ['Full name', 'Username', 'E-mail', 'Total quizzes number', 'Role'];
   rowsPerPage = 10;
   totalNumberOfPages = 1;
   currentPage$ = new BehaviorSubject<number>(0);
@@ -40,7 +34,7 @@ export class AdminPanelComponent {
     private userService: UserService,
     private toastrService: ToastrService,
     private dialog: MatDialog,
-    private presentationService: PresentationService
+    private quizService: QuizService
   ) {}
 
   setPage(pageNumber: number): void {
@@ -54,14 +48,10 @@ export class AdminPanelComponent {
         this.totalNumberOfPages = res.totalPages ?? 1;
         if (res.content.length === 0 && this.currentPage$.value - 1 > 0)
           this.currentPage$.next(this.currentPage$.value - 1);
-        return this.presentationService.getUsersWithPresentationsCount().pipe(
-          map(
-            (
-              usersWithPresentationsCounts: UserWithPresentationsCountModel[]
-            ) => {
-              return this.mapData(res, usersWithPresentationsCounts);
-            }
-          )
+        return this.quizService.getUsersWithQuizzesCount().pipe(
+          map((usersWithQuizzesCounts: UserWithQuizzesCountModel[]) => {
+            return this.mapData(res, usersWithQuizzesCounts);
+          })
         );
       })
     );
@@ -74,13 +64,13 @@ export class AdminPanelComponent {
     return false;
   }
 
-  getUsersWithPresentationsCounts() {
-    return this.presentationService.getUsersWithPresentationsCount();
+  getUsersWithQuizzesCounts() {
+    return this.quizService.getUsersWithQuizzesCount();
   }
 
   private mapData(
     data: PaginatedResult<User>,
-    usersWithPresentationsCounts: UserWithPresentationsCountModel[]
+    usersWithQuizzesCounts: UserWithQuizzesCountModel[]
   ): SharedTableData[] {
     const users = data.content;
     const results: SharedTableData[] = [];
@@ -92,9 +82,8 @@ export class AdminPanelComponent {
           user.username ?? '',
           user.email ?? '',
           String(
-            usersWithPresentationsCounts.filter(
-              count => count.user.id === user.id
-            )[0]?.presentationsCount ?? 0
+            usersWithQuizzesCounts.filter(count => count.user.id === user.id)[0]
+              ?.quizzesCount ?? 0
           ),
           isAdmin ? 'ADMIN' : 'USER',
         ],

@@ -19,89 +19,87 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.project.mindsync.dto.request.PresentationRequestDto;
+import com.project.mindsync.dto.request.QuizRequestDto;
 import com.project.mindsync.dto.response.ApiResponseDto;
 import com.project.mindsync.dto.response.PagedResponseDto;
-import com.project.mindsync.dto.response.PresentationWithShowsResponseDto;
-import com.project.mindsync.dto.response.PresentationWithSlidesResponseDto;
-import com.project.mindsync.model.Presentation;
+import com.project.mindsync.dto.response.QuizWithShowsResponseDto;
+import com.project.mindsync.dto.response.QuizWithSlidesResponseDto;
+import com.project.mindsync.model.Quiz;
 import com.project.mindsync.model.Slide;
 import com.project.mindsync.security.CurrentUser;
 import com.project.mindsync.security.UserPrincipal;
-import com.project.mindsync.service.PresentationService;
+import com.project.mindsync.service.QuizService;
 import com.project.mindsync.service.SlideService;
 import com.project.mindsync.utils.AppConstants;
 
 @CrossOrigin(origins = { "http://localhost:4200", "http://localhost:4300", "http://localhost:4000" })
 @RestController
-@RequestMapping("/api/presentation")
-public class PresentationController {
+@RequestMapping("/api/quiz")
+public class QuizController {
 	@Autowired
-	private PresentationService presentationService;
+	private QuizService quizService;
 
 	@Autowired
 	private SlideService slideService;
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Presentation> getPresentation(@PathVariable(name = "id") Long id) {
-		Presentation presentation = presentationService.getPresentation(id);
+	public ResponseEntity<Quiz> getQuiz(@PathVariable(name = "id") Long id) {
+		Quiz quiz = quizService.getQuiz(id);
 
-		return ResponseEntity.ok().body(presentation);
+		return ResponseEntity.ok().body(quiz);
 	}
 
 	@GetMapping("")
-	public ResponseEntity<Long> getPresentationByVerificationCode(
+	public ResponseEntity<Long> getQuizByVerificationCode(
 			@RequestParam(name = "verificationCode", required = true) String verificationCode) {
-		Long presentationId = presentationService.getPresentationByVerificationCode(verificationCode);
-		return ResponseEntity.ok().body(presentationId);
+		Long quizId = quizService.getQuizByVerificationCode(verificationCode);
+		return ResponseEntity.ok().body(quizId);
 	}
 
 	@PostMapping("")
 	@PreAuthorize("hasRole('USER')")
-	public ResponseEntity<Presentation> addPresentation(
-			@ModelAttribute @Valid PresentationRequestDto presentationRequest, @CurrentUser UserPrincipal currentUser)
-			throws IOException {
-		return presentationService.addPresentation(presentationRequest, currentUser);
+	public ResponseEntity<Quiz> addQuiz(@ModelAttribute @Valid QuizRequestDto quizRequest,
+			@CurrentUser UserPrincipal currentUser) throws IOException {
+		return quizService.addQuiz(quizRequest, currentUser);
 	}
 
 	@PutMapping("/{id}")
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-	public ResponseEntity<Presentation> updatePresentation(@PathVariable(name = "id") Long id,
-			@Valid @RequestBody PresentationRequestDto updatedPresentationRequest,
-			@CurrentUser UserPrincipal currentUser) throws IOException {
-		Presentation presentation = presentationService.updatePresentation(id, updatedPresentationRequest, currentUser);
+	public ResponseEntity<Quiz> updateQuiz(@PathVariable(name = "id") Long id,
+			@Valid @RequestBody QuizRequestDto updatedQuizRequest, @CurrentUser UserPrincipal currentUser)
+			throws IOException {
+		Quiz quiz = quizService.updateQuiz(id, updatedQuizRequest, currentUser);
 
-		return ResponseEntity.ok().body(presentation);
+		return ResponseEntity.ok().body(quiz);
 	}
 
 	@DeleteMapping("/{id}")
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-	public ResponseEntity<ApiResponseDto> deletePresentation(@PathVariable(name = "id") Long id,
+	public ResponseEntity<ApiResponseDto> deleteQuiz(@PathVariable(name = "id") Long id,
 			@CurrentUser UserPrincipal currentUser) {
-		ApiResponseDto apiResponse = presentationService.deletePresentation(id, currentUser);
+		ApiResponseDto apiResponse = quizService.deleteQuiz(id, currentUser);
 		return ResponseEntity.ok().body(apiResponse);
 	}
 
 	@GetMapping("/{id}/allslides")
-	public ResponseEntity<PagedResponseDto<Slide>> getAllSlidesByPresentation(@PathVariable(name = "id") Long id,
+	public ResponseEntity<PagedResponseDto<Slide>> getAllSlidesByQuiz(@PathVariable(name = "id") Long id,
 			@RequestParam(name = "page", required = false, defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
 			@RequestParam(name = "size", required = false, defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size) {
-		PagedResponseDto<Slide> slides = slideService.getAllSlidesByPresentation(id, page, size);
+		PagedResponseDto<Slide> slides = slideService.getAllSlidesByQuiz(id, page, size);
 		return ResponseEntity.ok().body(slides);
 	}
 
 	@GetMapping("/{id}/slides")
-	public ResponseEntity<PresentationWithSlidesResponseDto> getPresentationWithSlides(
-			@PathVariable(name = "id") Long id) {
-		PresentationWithSlidesResponseDto response = presentationService.getPresentationWithSlides(id);
+	public ResponseEntity<QuizWithSlidesResponseDto> getQuizWithSlides(@PathVariable(name = "id") Long id) {
+		QuizWithSlidesResponseDto response = quizService.getQuizWithSlides(id);
 		return ResponseEntity.ok().body(response);
 	}
 
 	@GetMapping("/{id}/shows")
-	public ResponseEntity<PresentationWithShowsResponseDto> getPresentationWithShows(@PathVariable(name = "id") Long id,
+	public ResponseEntity<QuizWithShowsResponseDto> getQuizWithShows(@PathVariable(name = "id") Long id,
 			@RequestParam(name = "page", required = false, defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
 			@RequestParam(name = "size", required = false, defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size) {
-		PresentationWithShowsResponseDto response = presentationService.getPresentationWithShows(id, page, size);
+		QuizWithShowsResponseDto response = quizService.getQuizWithShows(id, page, size);
 		return ResponseEntity.ok().body(response);
 	}
 }

@@ -10,7 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.project.mindsync.model.Slide;
 
 public interface SlideRepository extends JpaRepository<Slide, Long> {
-	Page<Slide> findByPresentationId(Long presentationId, Pageable pageable);
+	Page<Slide> findByQuizId(Long quizId, Pageable pageable);
 
-	List<Slide> findByPresentationId(Long presentationId);
+	List<Slide> findByQuizId(Long quizId);
 }

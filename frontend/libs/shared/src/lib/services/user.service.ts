@@ -57,6 +57,7 @@ export class UserService {
   }
 
   register(registerModel: RegisterModel): Observable<User> {
+    console.log(registerModel);
     return this.http.post<User>(
       `${environment.apiUrl}/auth/register`,
       registerModel

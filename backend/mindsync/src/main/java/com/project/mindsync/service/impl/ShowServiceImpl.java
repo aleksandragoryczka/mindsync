@@ -24,10 +24,10 @@ import com.project.mindsync.dto.response.ShowResponseDto;
 import com.project.mindsync.dto.response.ShowWithScreenshotsResponseDto;
 import com.project.mindsync.exception.ResourceNotFoundException;
 import com.project.mindsync.exception.UnauthorizedException;
-import com.project.mindsync.model.Presentation;
+import com.project.mindsync.model.Quiz;
 import com.project.mindsync.model.Screenshot;
 import com.project.mindsync.model.Show;
-import com.project.mindsync.repository.PresentationRepository;
+import com.project.mindsync.repository.QuizRepository;
 import com.project.mindsync.repository.ScreenshotRepository;
 import com.project.mindsync.repository.ShowRepository;
 import com.project.mindsync.security.UserPrincipal;
@@ -40,7 +40,7 @@ public class ShowServiceImpl implements ShowService {
 	private static final Logger logger = LoggerFactory.getLogger(ShowService.class);
 
 	@Autowired
-	private PresentationRepository presentationRepository;
+	private QuizRepository quizRepository;
 
 	@Autowired
 	private ShowRepository showRepository;
@@ -91,13 +91,13 @@ public class ShowServiceImpl implements ShowService {
 	}
 
 	@Override
-	public ResponseEntity<ShowResponseDto> addShow(ShowRequestDto showRequest, Long presentationId) {
-		Presentation presentation = presentationRepository.findById(presentationId).orElseThrow(
-				() -> new ResourceNotFoundException(AppConstants.PRESENTATION, AppConstants.ID, presentationId));
+	public ResponseEntity<ShowResponseDto> addShow(ShowRequestDto showRequest, Long quizId) {
+		Quiz quiz = quizRepository.findById(quizId)
+				.orElseThrow(() -> new ResourceNotFoundException(AppConstants.PRESENTATION, AppConstants.ID, quizId));
 
 		Show show = new Show();
 		show.setAttendeesNumber(showRequest.getAttendeesNumber());
-		show.setPresentation(presentation);
+		show.setQuiz(quiz);
 		try {
 			show.setExcelFile(showRequest.getExcelFile().getBytes());
 		} catch (IOException e) {
@@ -122,12 +122,12 @@ public class ShowServiceImpl implements ShowService {
 	}
 
 	@Override
-	public PagedResponseDto<ShowResponseDto> getAllShowsByPresentation(Long presentationId, int page, int size) {
+	public PagedResponseDto<ShowResponseDto> getAllShowsByQuiz(Long quizId, int page, int size) {
 		AppUtils.validatePageNumberAndSize(page, size);
 
 		Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, AppConstants.CREATED_AT);
 
-		Page<Show> shows = showRepository.findByPresentationId(presentationId, pageable);
+		Page<Show> shows = showRepository.findByQuizId(quizId, pageable);
 
 		List<ShowResponseDto> showResponses = new ArrayList<ShowResponseDto>(shows.getContent().size());
 		for (Show show : shows.getContent()) {
@@ -142,7 +142,7 @@ public class ShowServiceImpl implements ShowService {
 	public ResponseEntity<ApiResponseDto> deleteShow(Long showId, UserPrincipal currentUser) {
 		Show show = showRepository.findById(showId)
 				.orElseThrow(() -> new ResourceNotFoundException(AppConstants.SHOW, AppConstants.ID, showId));
-		if (AppUtils.checkUserIsCurrentUserOrAdmin(show.getPresentation().getUser(), currentUser)) {
+		if (AppUtils.checkUserIsCurrentUserOrAdmin(show.getQuiz().getUser(), currentUser)) {
 			showRepository.delete(show);
 			return ResponseEntity.ok().body(new ApiResponseDto(true, "Successfully deleted Show with ID: " + showId));
 		}

@@ -10,13 +10,13 @@ import com.project.mindsync.dto.response.ShowWithScreenshotsResponseDto;
 import com.project.mindsync.security.UserPrincipal;
 
 public interface ShowService {
-	ResponseEntity<ShowResponseDto> addShow(ShowRequestDto showRequest, Long presentationId);
+	ResponseEntity<ShowResponseDto> addShow(ShowRequestDto showRequest, Long quizId);
 
 	PagedResponseDto<ScreenshotResponseDto> getScreenshotsByShowId(Long showId, int page, int size);
 
 	byte[] getExcelFile(Long showId);
 
-	PagedResponseDto<ShowResponseDto> getAllShowsByPresentation(Long presentationId, int page, int size);
+	PagedResponseDto<ShowResponseDto> getAllShowsByQuiz(Long quizId, int page, int size);
 
 	ResponseEntity<ApiResponseDto> deleteShow(Long showId, UserPrincipal currentUser);
 

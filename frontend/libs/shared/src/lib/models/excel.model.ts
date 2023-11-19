@@ -1,5 +1,5 @@
 export interface Summary {
-  presentationTitle?: string;
+  quizTitle?: string;
   showTime: string;
   attendeeNumber: number;
 }

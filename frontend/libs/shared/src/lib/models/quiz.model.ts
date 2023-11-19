@@ -1,6 +1,6 @@
 import { ShowModel } from './show.model';
 import { SlideModel } from './slide.model';
-export interface PresentationModel {
+export interface QuizModel {
   id?: string;
   title?: string;
   code?: string;

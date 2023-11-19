@@ -85,9 +85,9 @@ docker run -d --name mindsync-db -e POSTGRES_PASSWORD=password -p 5432:5432 post
 - Join in Presnetation - User who has "Joining code" and want to take part in the quiz can Join it via Popup in MindSync home page. He will beredirected to UserSync available at `http://localhost:4300/`:
   ![Alt text](screenshots/image-2.png)
 
-- Dashboard for authenticated users - depending user is Admin or not, navigation will contains "Admin panel" button or not. Tabs from "Presentations" dropdown:
+- Dashboard for authenticated users - depending user is Admin or not, navigation will contains "Admin panel" button or not. Tabs from "Quizzes" dropdown:
 
-  - "My presentations" navigates to Dashboard carousel.
+  - "My quizzes" navigates to Dashboard carousel.
   - "Create new" opens popup.
     ![Alt text](screenshots/image-5.png)
     ![Alt text](screenshots/image-8.png)
@@ -98,16 +98,16 @@ docker run -d --name mindsync-db -e POSTGRES_PASSWORD=password -p 5432:5432 post
 - Admin panel - to be modified, new functionalities to be add:
   ![Alt text](screenshots/image-7.png)
 
-- Options for each presentation:
+- Options for each quiz:
 
-  - "Details" button navigates to page where Presenation's owner can show individual slides, modify them (change background color, title, possible answer options, type of slide, title, display time), add new slide to the presentation, delete indicated slide or whole presentation.
+  - "Details" button navigates to page where Presenation's owner can show individual slides, modify them (change background color, title, possible answer options, type of slide, title, display time), add new slide to the quiz, delete indicated slide or whole quiz.
     ![Alt text](screenshots/image-11.png)
     ![Alt text](screenshots/image-12.png)
     ![Alt text](screenshots/image-10.png)
 
-  - "Shows" button navigates to page where Presentation's owner can show details about previous shows of indicated presentation. Actions buttons enable:
+  - "Shows" button navigates to page where Quiz's owner can show details about previous shows of indicated quiz. Actions buttons enable:
 
-    - Get preview of attendees answers screenshots, which are being captured live-time during inidcated show of the presentation. User can Download all screenshots in zipped format - design to be updated
+    - Get preview of attendees answers screenshots, which are being captured live-time during inidcated show of the quiz. User can Download all screenshots in zipped format - design to be updated
     - Download excel file with summary for fiven show. The excel file consists of three tabs: "Symmary", "Attendee Information", "Sldie Statistics". Simple content of "Slide Statistics" available below.
     - Delete show.
       ![Alt text](screenshots/image-13.png)
@@ -115,12 +115,12 @@ docker run -d --name mindsync-db -e POSTGRES_PASSWORD=password -p 5432:5432 post
       ![Alt text](screenshots/image-16.png)
       ![Alt text](screenshots/image-15.png)
 
-  - "Start Show" button starts new show display. It uses WebSocket to communicate with UserSync app and once new user joined indicated presentation (with a given joining code), list of attendees is being updated.
-    When presentation's owner wants to, he can start presentation by pressing the button. Slides will be displayed for the seconds declared in settings (in the "Details" tab). Time is live-timely counted down.
+  - "Start Show" button starts new show display. It uses WebSocket to communicate with UserSync app and once new user joined indicated quiz (with a given joining code), list of attendees is being updated.
+    When quiz's owner wants to, he can start quiz by pressing the button. Slides will be displayed for the seconds declared in settings (in the "Details" tab). Time is live-timely counted down.
     ![Alt text](screenshots/image-18.png)
     ![Alt text](screenshots/image-19.png)
 
-  When time go off, correct answer will be ticked in the Presentation owner's screen. For WORD_CLOUD type slides, word cloud with attendees answers will be displayed then. Presentation owner can preview Statistics of just displayed slide. The same statistics are saved as screenshots and can be later seen in "Shows" tab. Presnetation Owner can navigate via slides with "Next slide" button and once all sldies passes, finish it with "Finish" button.
+  When time go off, correct answer will be ticked in the Quiz owner's screen. For WORD_CLOUD type slides, word cloud with attendees answers will be displayed then. Quiz owner can preview Statistics of just displayed slide. The same statistics are saved as screenshots and can be later seen in "Shows" tab. Presnetation Owner can navigate via slides with "Next slide" button and once all sldies passes, finish it with "Finish" button.
   ![Alt text](screenshots/image-20.png)
   ![Alt text](screenshots/image-21.png)
   ![Alt text](screenshots/image-22.png)

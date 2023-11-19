@@ -8,12 +8,9 @@ import { environment } from 'apps/mindsync/src/environments/environment.developm
 export class SlideService {
   constructor(private http: HttpClient) {}
 
-  addSlide(
-    newSlide: SlideModel,
-    presentationId: string
-  ): Observable<SlideModel> {
+  addSlide(newSlide: SlideModel, quizId: string): Observable<SlideModel> {
     return this.http.post<SlideModel>(
-      `${environment.apiUrl}/slide/${presentationId}`,
+      `${environment.apiUrl}/slide/${quizId}`,
       newSlide
     );
   }

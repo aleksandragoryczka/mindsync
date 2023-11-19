@@ -43,9 +43,9 @@ public class Slide extends DateAudit {
 	private SlideType type;
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "presentation_id", nullable = false)
+	@JoinColumn(name = "quiz_id", nullable = false)
 	@JsonIgnore
-	private Presentation presentation;
+	private Quiz quiz;
 
 	@OneToMany(mappedBy = "slide", cascade = CascadeType.ALL)
 	private List<Option> options;
@@ -64,7 +64,7 @@ public class Slide extends DateAudit {
 		this.type = slideType;
 	}
 
-	public Slide(Long id, String title, SlideType slideType, Presentation presentation) {
+	public Slide(Long id, String title, SlideType slideType, Quiz quiz) {
 
 	}
 

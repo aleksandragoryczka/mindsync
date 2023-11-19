@@ -12,9 +12,9 @@ import com.project.mindsync.security.UserPrincipal;
 
 public interface SlideService {
 
-	ResponseEntity<Slide> addSlide(SlideRequestDto slideRequest, Long presentationId);
+	ResponseEntity<Slide> addSlide(SlideRequestDto slideRequest, Long quizId);
 
-	PagedResponseDto<Slide> getAllSlidesByPresentation(Long presentationId, int page, int size);
+	PagedResponseDto<Slide> getAllSlidesByQuiz(Long quizId, int page, int size);
 
 	Slide updateSlide(Long id, @Valid SlideRequestDto updatedSlideRequest);
 

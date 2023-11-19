@@ -59,14 +59,19 @@ public class WebSecurityConfig {
 		http.csrf(csrf -> csrf.disable()).cors(cors -> cors.disable())
 				.exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-				// .authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
-				.authorizeHttpRequests(auth -> auth.requestMatchers(
-						// Permit access to your WebSocket endpoint
-						new AntPathRequestMatcher("/ws/**")).permitAll()
-						.requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
-						.requestMatchers("/api/auth/**").permitAll().requestMatchers("/api/user/**").permitAll()
-						.requestMatchers("/api/presentation/**").permitAll().requestMatchers("/api/slide/**")
-						.permitAll().requestMatchers("/api/show/**").permitAll());
+				.authorizeHttpRequests(auth -> auth.requestMatchers(new AntPathRequestMatcher("/ws/**")).permitAll()
+						.requestMatchers(new AntPathRequestMatcher("/api/auth/**")).permitAll());
+		// .authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
+		/*
+		 * .authorizeHttpRequests(auth -> auth.requestMatchers( // Permit access to your
+		 * WebSocket endpoint new AntPathRequestMatcher("/ws/**")).permitAll()
+		 * .requestMatchers("/swagger-ui/**", "/v3/api-docs/**",
+		 * "/swagger-ui.html").permitAll()
+		 * .requestMatchers("/api/auth/**").permitAll().requestMatchers("/api/user/**").
+		 * permitAll()
+		 * .requestMatchers("/api/quiz/**").permitAll().requestMatchers("/api/slide/**")
+		 * .permitAll().requestMatchers("/api/show/**").permitAll());
+		 */
 		// auth.requestMatchers("/api/auth/**").permitAll()
 		// .requestMatchers("/api/user/**").permitAll().anyRequest().authenticated());
 		http.authenticationProvider(authenticationProvider());

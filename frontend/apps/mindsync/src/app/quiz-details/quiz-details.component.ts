@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SlideModel } from 'libs/shared/src/lib/models/slide.model';
-import { PresentationService } from 'libs/shared/src/lib/services/presentation.service';
+import { QuizService } from 'libs/shared/src/lib/services/quiz.service';
 import { EMPTY, Observable, map, tap } from 'rxjs';
-import { PresentationModel } from '../../../../../libs/shared/src/lib/models/presentation.model';
+import { QuizModel } from '../../../../../libs/shared/src/lib/models/quiz.model';
 import StringFormatter from '../../../../../libs/shared/src/lib/utils/string-formatter';
-import { PresentationWithSlides } from 'libs/shared/src/lib/models/presentation-with-slides.model';
+import { QuizWithSlides } from 'libs/shared/src/lib/models/quiz-with-slides.model';
 import {
   ButtonPopupModel,
   ButtonTypes,
@@ -23,18 +23,18 @@ import StorageRealod from 'libs/shared/src/lib/utils/storage-reload';
 import MultipleChoiceOptionsValidator from 'libs/shared/src/lib/utils/multiple-choice-options-validator';
 
 @Component({
-  selector: 'project-presentation-details',
-  templateUrl: './presentation-details.component.html',
-  styleUrls: ['./presentation-details.component.scss'],
+  selector: 'project-quiz-details',
+  templateUrl: './quiz-details.component.html',
+  styleUrls: ['./quiz-details.component.scss'],
 })
-export class PresentationDetailsComponent implements OnInit {
+export class QuizDetailsComponent implements OnInit {
   defaultHedaerColor = '#538d22';
   defualtTitleColor = '#FFFFFF';
   defaultDisplayTime = '20';
   defaultType = SlideTypes.WORD_CLOUD;
   listOfSlides$: Observable<SlideModel[]> = EMPTY;
-  presentation: PresentationModel = { title: '', code: '', createdAt: '' };
-  presentationId = this.activatedRoute.snapshot.paramMap.get('id');
+  quiz: QuizModel = { title: '', code: '', createdAt: '' };
+  quizId = this.activatedRoute.snapshot.paramMap.get('id');
   slides: SlideModel[] = [];
   StringFormatter = StringFormatter;
 
@@ -48,14 +48,14 @@ export class PresentationDetailsComponent implements OnInit {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private presentationService: PresentationService,
+    private quizService: QuizService,
     private dialog: MatDialog,
     private toastrService: ToastrService,
     private router: Router,
     private slideService: SlideService
   ) {
-    if (this.presentationId) {
-      this.listOfSlides$ = this.loadSlides(this.presentationId);
+    if (this.quizId) {
+      this.listOfSlides$ = this.loadSlides(this.quizId);
     }
   }
 
@@ -67,13 +67,13 @@ export class PresentationDetailsComponent implements OnInit {
     }
   }
 
-  openDeletePresentationPopup(): void {
+  openDeleteQuizPopup(): void {
     const inputs: Record<string, InputPopupModel> = {};
     const buttons: ButtonPopupModel[] = [
       {
         type: ButtonTypes.PRIMARY,
         text: 'Yes',
-        onClick: () => this.deletePresentation(),
+        onClick: () => this.deleteQuiz(),
       },
       {
         type: ButtonTypes.SECONDARY,
@@ -81,8 +81,8 @@ export class PresentationDetailsComponent implements OnInit {
       },
     ];
     const data: InputPopupFullDataModel = {
-      title: 'Delete presentation',
-      description: 'Are you sure you want to delete that presentation?',
+      title: 'Delete quiz',
+      description: 'Are you sure you want to delete that quiz?',
       inputs: inputs,
       buttons: buttons,
     };
@@ -144,14 +144,14 @@ export class PresentationDetailsComponent implements OnInit {
   }
 
   async startShow() {
-    await this.router.navigate([`/${this.presentationId}/start-show`], {
-      queryParams: { code: this.presentation.code },
+    await this.router.navigate([`/${this.quizId}/start-show`], {
+      queryParams: { code: this.quiz.code },
     });
   }
 
   async getShowsButton() {
-    await this.router.navigate([`/${this.presentationId}/shows`], {
-      queryParams: { title: this.presentation.title },
+    await this.router.navigate([`/${this.quizId}/shows`], {
+      queryParams: { title: this.quiz.title },
     });
   }
 
@@ -181,9 +181,9 @@ export class PresentationDetailsComponent implements OnInit {
       );
       return;
     }
-    if (this.presentationId) {
+    if (this.quizId) {
       this.slideService
-        .addSlide(newSlideRequest, this.presentationId)
+        .addSlide(newSlideRequest, this.quizId)
         .subscribe(isCreated => {
           if (isCreated)
             StorageRealod.reloadWithMessage(
@@ -197,31 +197,29 @@ export class PresentationDetailsComponent implements OnInit {
     }
   }
 
-  private deletePresentation(): void {
-    if (this.presentationId) {
-      this.presentationService
-        .deletePresentation(this.presentationId)
-        .subscribe(isDeleted => {
-          if (isDeleted) {
-            this.dialog.closeAll();
-            this.router.navigateByUrl('/dashboard');
-            this.toastrService.success('Presentation deleted successfully');
-          } else this.toastrService.warning('Something went wrong');
-        });
+  private deleteQuiz(): void {
+    if (this.quizId) {
+      this.quizService.deleteQuiz(this.quizId).subscribe(isDeleted => {
+        if (isDeleted) {
+          this.dialog.closeAll();
+          this.router.navigateByUrl('/dashboard');
+          this.toastrService.success('Quiz deleted successfully');
+        } else this.toastrService.warning('Something went wrong');
+      });
     }
   }
 
   private loadSlides(id: string): Observable<SlideModel[]> {
-    return this.presentationService.getPresentationWithSlides(id).pipe(
-      tap((res: PresentationWithSlides) => {
-        const presentation: PresentationModel = {
+    return this.quizService.getQuizWithSlides(id).pipe(
+      tap((res: QuizWithSlides) => {
+        const quiz: QuizModel = {
           title: res.title,
           code: res.code,
           createdAt: res.createdAt,
         };
-        this.presentation = presentation;
+        this.quiz = quiz;
       }),
-      map((res: PresentationWithSlides) => res.slides)
+      map((res: QuizWithSlides) => res.slides)
     );
   }
 }
