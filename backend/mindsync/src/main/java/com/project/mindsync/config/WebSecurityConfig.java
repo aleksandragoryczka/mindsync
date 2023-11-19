@@ -59,21 +59,16 @@ public class WebSecurityConfig {
 		http.csrf(csrf -> csrf.disable()).cors(cors -> cors.disable())
 				.exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-				.authorizeHttpRequests(auth -> auth.requestMatchers(new AntPathRequestMatcher("/ws/**")).permitAll()
-						.requestMatchers(new AntPathRequestMatcher("/api/auth/**")).permitAll());
-		// .authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
-		/*
-		 * .authorizeHttpRequests(auth -> auth.requestMatchers( // Permit access to your
-		 * WebSocket endpoint new AntPathRequestMatcher("/ws/**")).permitAll()
-		 * .requestMatchers("/swagger-ui/**", "/v3/api-docs/**",
-		 * "/swagger-ui.html").permitAll()
-		 * .requestMatchers("/api/auth/**").permitAll().requestMatchers("/api/user/**").
-		 * permitAll()
-		 * .requestMatchers("/api/quiz/**").permitAll().requestMatchers("/api/slide/**")
-		 * .permitAll().requestMatchers("/api/show/**").permitAll());
-		 */
-		// auth.requestMatchers("/api/auth/**").permitAll()
-		// .requestMatchers("/api/user/**").permitAll().anyRequest().authenticated());
+				.authorizeHttpRequests(auth -> auth.requestMatchers(new AntPathRequestMatcher("/swagger-ui"))
+						.permitAll().requestMatchers(new AntPathRequestMatcher("/v3/api/docs/**")).permitAll()
+						.requestMatchers(new AntPathRequestMatcher("/swagger-ui.html")).permitAll()
+						.requestMatchers(new AntPathRequestMatcher("/ws/**")).permitAll()
+						.requestMatchers(new AntPathRequestMatcher("/api/auth/**")).permitAll()
+						.requestMatchers(new AntPathRequestMatcher("/api/quiz/**")).permitAll()
+						.requestMatchers(new AntPathRequestMatcher("/api/show/**")).authenticated()
+						.requestMatchers(new AntPathRequestMatcher("/api/slide/**")).authenticated()
+						.requestMatchers(new AntPathRequestMatcher("/api/user/**")).permitAll());
+
 		http.authenticationProvider(authenticationProvider());
 		http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 		return http.build();

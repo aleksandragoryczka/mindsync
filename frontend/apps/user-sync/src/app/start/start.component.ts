@@ -8,7 +8,7 @@ import {
 } from 'libs/shared/src/lib/models/input-popup-data.model';
 import { WebSocketService } from 'libs/shared/src/lib/services/web-socket.service';
 import { ToastrService } from 'ngx-toastr';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { PopupWithInputsComponent } from 'libs/ui/src/lib/popup-with-inputs/popup-with-inputs.component';
 
@@ -47,7 +47,6 @@ export class StartComponent {
     private toastrService: ToastrService,
     private router: Router,
     private dialog: MatDialog,
-    private activatedRoute: ActivatedRoute
   ) {
     this.dialog.open(PopupWithInputsComponent, {
       data: this.inputPopupData,
