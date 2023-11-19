@@ -23,10 +23,22 @@
                 </div>
             </div>
             <div class="carousel-main-container">
-                <project-shared-carousel *ngIf="(listOfSlides$ | async) as slides" [slideConfig]="slideConfig"
-                    [data]="slides" [slideType]="'Slide'"></project-shared-carousel>
+                <ng-container *ngIf="(listOfSlides$ | async) as slides">
+                    <ng-container *ngIf="slides.length > 0; else noSlides">
+                        <project-shared-carousel [slideConfig]="slideConfig" [data]="slides"
+                            [slideType]="'Slide'"></project-shared-carousel>
+                    </ng-container>
+                    <ng-template #noSlides>
+                        <div class="d-flex flex-column justify-content-center align-items-center">
+                            <img src="libs/ui/src/assets/images/no-results.png" [width]="100">
+                            <br>
+                            <h1>No slides found.</h1>
+                            <br>
+                            <h3>Add your first slide by 'Add slide' button</h3>
+                        </div>
+                    </ng-template>
+                </ng-container>
             </div>
-
         </div>
     </div>
 </div>

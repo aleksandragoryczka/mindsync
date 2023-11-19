@@ -108,7 +108,7 @@ export class ShowsComponent implements OnInit {
   private loadShows(): Observable<SharedTableData[]> {
     return this.currentPage$.pipe(
       switchMap(currentPage =>
-        this.quizService.getQuizzesWithShows(this.quizId, currentPage)
+        this.quizService.getQuizWithShows(this.quizId, currentPage)
       ),
       map((res: QuizWithShows) => {
         this.totalShowsNumberOfPages = res.shows.totalPages ?? 1;

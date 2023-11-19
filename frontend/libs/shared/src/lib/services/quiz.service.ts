@@ -34,7 +34,7 @@ export class QuizService {
     );
   }
 
-  getQuizzesWithShows(
+  getQuizWithShows(
     id: string,
     page = 0,
     size = 5

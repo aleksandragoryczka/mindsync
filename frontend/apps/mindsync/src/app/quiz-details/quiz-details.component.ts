@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SlideModel } from 'libs/shared/src/lib/models/slide.model';
 import { QuizService } from 'libs/shared/src/lib/services/quiz.service';
-import { EMPTY, Observable, map, tap } from 'rxjs';
+import { EMPTY, Observable, firstValueFrom, map, tap } from 'rxjs';
 import { QuizModel } from '../../../../../libs/shared/src/lib/models/quiz.model';
 import StringFormatter from '../../../../../libs/shared/src/lib/utils/string-formatter';
 import { QuizWithSlides } from 'libs/shared/src/lib/models/quiz-with-slides.model';
@@ -21,6 +21,7 @@ import { OptionModel } from '../../../../../libs/shared/src/lib/models/option.mo
 import { SlideService } from 'libs/shared/src/lib/services/slide.service';
 import StorageRealod from 'libs/shared/src/lib/utils/storage-reload';
 import MultipleChoiceOptionsValidator from 'libs/shared/src/lib/utils/multiple-choice-options-validator';
+import { ShowService } from 'libs/shared/src/lib/services/show.service';
 
 @Component({
   selector: 'project-quiz-details',
@@ -52,7 +53,8 @@ export class QuizDetailsComponent implements OnInit {
     private dialog: MatDialog,
     private toastrService: ToastrService,
     private router: Router,
-    private slideService: SlideService
+    private slideService: SlideService,
+    private showService: ShowService
   ) {
     if (this.quizId) {
       this.listOfSlides$ = this.loadSlides(this.quizId);
@@ -144,15 +146,32 @@ export class QuizDetailsComponent implements OnInit {
   }
 
   async startShow() {
-    await this.router.navigate([`/${this.quizId}/start-show`], {
-      queryParams: { code: this.quiz.code },
-    });
+    const slides = await firstValueFrom(this.listOfSlides$);
+    if (slides.length > 0) {
+      await this.router.navigate([`/${this.quizId}/start-show`], {
+        queryParams: { code: this.quiz.code },
+      });
+    } else {
+      this.toastrService.warning(
+        'You have to add at least one Slide to start a show.'
+      );
+    }
   }
 
   async getShowsButton() {
-    await this.router.navigate([`/${this.quizId}/shows`], {
-      queryParams: { title: this.quiz.title },
-    });
+    if (this.quizId) {
+      this.quizService.getQuizWithShows(this.quizId).subscribe(async res => {
+        if (res.shows.totalElements > 0) {
+          await this.router.navigate([`/${this.quizId}/shows`], {
+            queryParams: { title: this.quiz.title },
+          });
+        } else {
+          this.toastrService.warning(
+            'There is no Shows connected with that Quiz'
+          );
+        }
+      });
+    }
   }
 
   private addSlide(

@@ -1,7 +1,19 @@
 <div class="mindsync-default-container">
     <ng-container *ngIf="(listOfQuizzes$ | async) as quizzes; else loading">
-        <project-shared-carousel [slideConfig]="slideConfig" [data]="quizzes"
-            [slideType]="'CardSlide'"></project-shared-carousel>
+        <ng-container *ngIf="quizzes.length > 0; else noQuizzes">
+            <project-shared-carousel [slideConfig]="slideConfig" [data]="quizzes"
+                [slideType]="'CardSlide'"></project-shared-carousel>
+        </ng-container>
+        <ng-template #noQuizzes>
+            <div class="d-flex flex-column justify-content-center align-items-center">
+                <img src="libs/ui/src/assets/images/no-results.png" [width]="300">
+                <br>
+                <h1>No quizzes found.</h1>
+                <br>
+                <h3>Please create your first quiz</h3>
+                <h3>by Create new option in Quizzes tab</h3>
+            </div>
+        </ng-template>
     </ng-container>
     <ng-template #loading>
         <mat-spinner></mat-spinner>
