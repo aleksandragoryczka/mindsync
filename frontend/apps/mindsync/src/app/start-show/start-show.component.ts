@@ -319,7 +319,6 @@ export class StartShowComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(res => {
       this.attendeesNumber = res;
-      this.webSocketService.sendMessage('/app/send/start-button', true);
       this.webSocketService.sendMessage(
         '/app/send/current-slide',
         this.currentSlideIndex

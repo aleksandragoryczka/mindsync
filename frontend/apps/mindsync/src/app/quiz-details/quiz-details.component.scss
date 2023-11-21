@@ -44,3 +44,16 @@ h1,
 h3 {
   color: $darker-green;
 }
+
+@media screen and (max-width: 1550px) {
+  .mindsync-default-container {
+    margin: 0;
+    padding: 10px;
+    overflow-y: auto;
+    height: 100%;
+  }
+
+  .mindsync-btn {
+    padding: 16px 20px;
+  }
+}

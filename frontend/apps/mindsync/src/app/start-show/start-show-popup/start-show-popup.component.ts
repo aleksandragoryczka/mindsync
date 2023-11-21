@@ -25,6 +25,7 @@ export class StartShowPopupComponent implements OnInit {
   }
 
   startShow(): void {
+    this.webSocketService.sendMessage('/app/send/start-button', true);
     this.dialogRef.close(this.attendees.length);
   }
 }
