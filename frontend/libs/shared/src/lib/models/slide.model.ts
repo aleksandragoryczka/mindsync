@@ -9,5 +9,4 @@ export interface SlideModel {
   headerColor?: string;
   titleColor?: string;
   options?: Array<OptionModel>;
-  //TODO: to be implemented
 }

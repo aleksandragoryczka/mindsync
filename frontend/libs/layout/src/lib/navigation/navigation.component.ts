@@ -203,6 +203,14 @@ export class NavigationComponent implements OnInit {
     this.isDropdownOpen = false;
   }
 
+  async logoNavigateTo(): Promise<void> {
+    if (this.isUserAuthenticated) {
+      await this.router.navigateByUrl('/dashboard');
+    } else {
+      await this.router.navigateByUrl('');
+    }
+  }
+
   private createQuiz(inputs: Record<string, InputPopupModel>): void {
     if (inputs['graphic'].value == '')
       this.toastrService.warning('Upload a quiz graphic first');
