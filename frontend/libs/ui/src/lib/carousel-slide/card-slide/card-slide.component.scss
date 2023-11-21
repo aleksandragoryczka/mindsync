@@ -29,3 +29,17 @@ img {
   height: 100%;
   object-fit: cover;
 }
+
+@media screen and (max-width: 1550px) {
+  .mdc-card {
+    height: auto;
+  }
+
+  .img-container {
+    height: 240px;
+  }
+
+  .mindsync-btn {
+    margin: 7px 0;
+  }
+}
