@@ -21,7 +21,6 @@ export class DashboardComponent {
       const slidesToShowTmp =
         QuizzesDisplayNumberGetter.getQuizzesNumberToDisplay(quizzesNumber);
       const slidesToShowResponsiveTmp = quizzesNumber < 3 ? slidesToShowTmp : 3;
-      console.log(quizzesNumber);
       this.slideConfig = {
         slidesToShow: slidesToShowTmp,
         slidesToScroll: 1,

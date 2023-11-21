@@ -19,7 +19,7 @@
                     <ng-container *ngIf="(isCountdownEnded | async) === false"> -->
                     <ng-container [ngSwitch]="listOfSlides[i].type">
                         <ng-container *ngSwitchCase="'WORD_CLOUD'">
-                            <div class="mindsync-default-container">
+                            <div class="mindsync-default-container user-sync-single-slide-container">
                                 <div class="mindsync-default-content-container">
                                     <div class="mindsync-default-content-heading"> {{ listOfSlides[i].title }}
                                     </div>

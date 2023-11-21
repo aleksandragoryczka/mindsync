@@ -38,7 +38,6 @@ import { WebSocketService } from 'libs/shared/src/lib/services/web-socket.servic
 import { SelectedOptionsMessageModel } from '../../../../../shared/src/lib/models/selected-options-message.model';
 import { ActivatedRoute } from '@angular/router';
 import { loremIpsum } from 'lorem-ipsum';
-import { filter } from '@amcharts/amcharts4/.internal/core/utils/Iterator';
 import MultipleChoiceOptionsValidator from '../../../../../shared/src/lib/utils/multiple-choice-options-validator';
 
 @Component({

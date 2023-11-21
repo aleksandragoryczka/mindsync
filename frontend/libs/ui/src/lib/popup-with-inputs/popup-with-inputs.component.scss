@@ -117,3 +117,29 @@ mat-icon:hover {
 .attach-icon {
   color: $beige;
 }
+
+@media screen and (max-width: 500px) {
+  .mindsync-default-content-container {
+    min-width: auto;
+  }
+
+  ::ng-deep .mdc-dialog .mdc-dialog__content {
+    padding: 6px !important;
+  }
+
+  .default-input {
+    width: 100%;
+    height: auto;
+    margin-top: 5px;
+  }
+
+  .mindsync-input-section {
+    flex-direction: column;
+    margin-top: 9px;
+  }
+
+  .mindsync-popup-inputs-container {
+    min-width: auto;
+    margin-bottom: 50px;
+  }
+}

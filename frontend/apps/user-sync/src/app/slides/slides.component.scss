@@ -19,3 +19,29 @@
   max-height: 200px;
   align-items: flex-start;
 }
+
+@media screen and (max-width: 500px) {
+  h2 {
+    text-align: center;
+    font-size: 1.58rem;
+  }
+
+  .usersync-start-content-data-quiz {
+    min-width: auto;
+    min-height: auto;
+    padding: 0;
+  }
+
+  .answer-content-data {
+    border-radius: 0 0 35px 35px;
+    align-items: normal;
+  }
+
+  /*.mindsync-default-content-data {
+    padding: 0;
+  }*/
+
+  .user-sync-single-slide-container {
+    min-width: 300px;
+  }
+}
