@@ -6,11 +6,12 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { AuthenticatedResponse } from '../models/authenticated-response.model';
 import { Injectable } from '@angular/core';
 import { LoginModel } from '../models/login.model';
-import { environment } from '../../../../../apps/mindsync/src/environments/environment.development';
+
 import { RegisterModel } from '../models/register.model';
 import { UpdatedUserModel } from '../models/updated-user.model';
 import { UpdatedPasswordModel } from '../models/updated-password.model';
 import { PaginatedResult } from '../models/paginated-result.model';
+import { sharedEnvironment } from '../environments/shared-environment';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
@@ -43,7 +44,7 @@ export class UserService {
   login(loginModel: LoginModel): Observable<boolean> {
     return this.http
       .post<AuthenticatedResponse>(
-        `${environment.apiUrl}/auth/signin`,
+        `${sharedEnvironment.apiUrl}/auth/signin`,
         loginModel
       )
       .pipe(
@@ -58,7 +59,7 @@ export class UserService {
 
   register(registerModel: RegisterModel): Observable<User> {
     return this.http.post<User>(
-      `${environment.apiUrl}/auth/register`,
+      `${sharedEnvironment.apiUrl}/auth/register`,
       registerModel
     );
   }
@@ -70,17 +71,17 @@ export class UserService {
 
   verifyUser(code: string): Observable<boolean> {
     return this.http.get<boolean>(
-      `${environment.apiUrl}/auth/verify?code=${code}`
+      `${sharedEnvironment.apiUrl}/auth/verify?code=${code}`
     );
   }
 
   getUserDetails(): Observable<User> {
-    return this.http.get<User>(`${environment.apiUrl}/user`);
+    return this.http.get<User>(`${sharedEnvironment.apiUrl}/user`);
   }
 
   updateUser(updatedUser: UpdatedUserModel, userId: string): Observable<User> {
     return this.http.put<User>(
-      `${environment.apiUrl}/user/${userId}`,
+      `${sharedEnvironment.apiUrl}/user/${userId}`,
       updatedUser
     );
   }
@@ -90,27 +91,27 @@ export class UserService {
     userId: string
   ): Observable<boolean> {
     return this.http.put<boolean>(
-      `${environment.apiUrl}/user/${userId}/password`,
+      `${sharedEnvironment.apiUrl}/user/${userId}/password`,
       updatedPasswordModel
     );
   }
 
   getAllUsers(page = 0, size = 8): Observable<PaginatedResult<User>> {
     return this.http.get<PaginatedResult<User>>(
-      `${environment.apiUrl}/user/all?page=${page}&size=${size}`
+      `${sharedEnvironment.apiUrl}/user/all?page=${page}&size=${size}`
     );
   }
 
   giveAdmin(idUser: string): Observable<boolean> {
     return this.http.put<boolean>(
-      `${environment.apiUrl}/user/${idUser}/giveAdmin`,
+      `${sharedEnvironment.apiUrl}/user/${idUser}/giveAdmin`,
       null
     );
   }
 
   removeAdmin(idUser: string): Observable<boolean> {
     return this.http.put<boolean>(
-      `${environment.apiUrl}/user/${idUser}/removeAdmin`,
+      `${sharedEnvironment.apiUrl}/user/${idUser}/removeAdmin`,
       null
     );
   }

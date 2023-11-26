@@ -10,8 +10,8 @@ import { SlidesComponent } from './slides/slides.component';
 import { AppRoutingModule } from './app-routing.module';
 import { ToastrModule } from 'ngx-toastr';
 import { JwtModule } from '@auth0/angular-jwt';
-import { environment } from 'apps/mindsync/src/environments/environment.development';
 import { FormsModule } from '@angular/forms';
+import { sharedEnvironment } from 'libs/shared/src/lib/environments/shared-environment';
 
 export function tokenGetter() {
   return localStorage.getItem('Access-Token');
@@ -38,7 +38,7 @@ export function tokenGetter() {
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
-        allowedDomains: [environment.allowedDomains],
+        allowedDomains: [sharedEnvironment.allowedDomains],
         disallowedRoutes: [],
       },
     }),

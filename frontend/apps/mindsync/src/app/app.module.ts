@@ -3,7 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { SharedModule } from '@project/shared';
 import { JwtModule } from '@auth0/angular-jwt';
-import { environment } from '../environments/environment.development';
 import { AppRoutingModule } from './app-routing.module';
 import { ToastrModule } from 'ngx-toastr';
 import { MatIconModule } from '@angular/material/icon';
@@ -26,6 +25,7 @@ import { NgApexchartsModule } from 'ng-apexcharts';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { UiModule } from 'libs/ui/src/lib/ui.module';
 import { LayoutModule } from 'libs/layout/src/lib/layout.module';
+import { sharedEnvironment } from 'libs/shared/src/lib/environments/shared-environment';
 
 export function tokenGetter() {
   return localStorage.getItem('Access-Token');
@@ -60,7 +60,7 @@ export function tokenGetter() {
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
-        allowedDomains: [environment.allowedDomains],
+        allowedDomains: [sharedEnvironment.allowedDomains],
         disallowedRoutes: [],
       },
     }),

@@ -18,10 +18,10 @@ import { ToastrService } from 'ngx-toastr';
 import { SlideTypes } from 'libs/shared/src/lib/models/enums/slideTypes.enum';
 import ColorFormatter from 'libs/shared/src/lib/utils/color-formatter';
 import { OptionModel } from '../../../../../libs/shared/src/lib/models/option.model';
-import { SlideService } from 'libs/shared/src/lib/services/slide.service';
 import StorageRealod from 'libs/shared/src/lib/utils/storage-reload';
 import MultipleChoiceOptionsValidator from 'libs/shared/src/lib/utils/multiple-choice-options-validator';
 import { ShowService } from 'libs/shared/src/lib/services/show.service';
+import { SlideService } from 'libs/shared/src/lib/services/SlideService';
 
 @Component({
   selector: 'project-quiz-details',

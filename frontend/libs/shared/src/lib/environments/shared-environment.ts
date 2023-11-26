@@ -1,4 +1,4 @@
-export const environment = {
+export const sharedEnvironment = {
   production: false,
   apiUrl: 'http://localhost:8080/api',
   allowedDomains: 'localhost:8080',

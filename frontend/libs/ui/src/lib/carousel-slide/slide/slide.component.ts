@@ -26,7 +26,7 @@ import { ToastrService } from 'ngx-toastr';
 import { PopupWithInputsComponent } from '../../popup-with-inputs/popup-with-inputs.component';
 import StringFormatter from 'libs/shared/src/lib/utils/string-formatter';
 import ColorFormatter from '../../../../../shared/src/lib/utils/color-formatter';
-import { SlideService } from '../../../../../shared/src/lib/services/slide.service';
+import { SlideService } from 'libs/shared/src/lib/services/SlideService';
 import StorageRealod from '../../../../../shared/src/lib/utils/storage-reload';
 import { OptionModel } from 'libs/shared/src/lib/models/option.model';
 import * as am4core from '@amcharts/amcharts4/core';
