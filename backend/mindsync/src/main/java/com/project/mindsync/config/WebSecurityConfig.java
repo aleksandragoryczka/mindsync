@@ -63,9 +63,9 @@ public class WebSecurityConfig {
 				.authorizeHttpRequests(
 						auth -> auth.requestMatchers(HttpMethod.OPTIONS).permitAll().requestMatchers("/api/slide/**")
 								.authenticated().requestMatchers(new AntPathRequestMatcher("/api/show/**"))
-								.authenticated().requestMatchers(new AntPathRequestMatcher("/swagger-ui")).permitAll()
-								.requestMatchers(new AntPathRequestMatcher("/actuator/**")).permitAll()
-								.requestMatchers(new AntPathRequestMatcher("/v3/api/docs/**")).permitAll()
+								.authenticated().requestMatchers(new AntPathRequestMatcher("/actuator/**")).permitAll()
+								.requestMatchers(new AntPathRequestMatcher("/swagger-ui/**")).permitAll()
+								.requestMatchers(new AntPathRequestMatcher("/v3/api-docs/**")).permitAll()
 								.requestMatchers(new AntPathRequestMatcher("/swagger-ui.html")).permitAll()
 								.requestMatchers(new AntPathRequestMatcher("/ws/**")).permitAll()
 								.requestMatchers(new AntPathRequestMatcher("/api/auth/**")).permitAll()
