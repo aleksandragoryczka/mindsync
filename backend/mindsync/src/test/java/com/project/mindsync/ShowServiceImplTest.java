@@ -2,7 +2,6 @@ package com.project.mindsync;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 import java.io.IOException;
@@ -28,7 +27,6 @@ import com.project.mindsync.dto.response.ApiResponseDto;
 import com.project.mindsync.dto.response.PagedResponseDto;
 import com.project.mindsync.dto.response.ScreenshotResponseDto;
 import com.project.mindsync.dto.response.ShowResponseDto;
-import com.project.mindsync.exception.UnauthorizedException;
 import com.project.mindsync.model.Quiz;
 import com.project.mindsync.model.Screenshot;
 import com.project.mindsync.model.Show;

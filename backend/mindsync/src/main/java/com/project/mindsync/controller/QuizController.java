@@ -21,15 +21,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.project.mindsync.dto.request.QuizRequestDto;
 import com.project.mindsync.dto.response.ApiResponseDto;
-import com.project.mindsync.dto.response.PagedResponseDto;
 import com.project.mindsync.dto.response.QuizWithShowsResponseDto;
 import com.project.mindsync.dto.response.QuizWithSlidesResponseDto;
 import com.project.mindsync.model.Quiz;
-import com.project.mindsync.model.Slide;
 import com.project.mindsync.security.CurrentUser;
 import com.project.mindsync.security.UserPrincipal;
 import com.project.mindsync.service.QuizService;
-import com.project.mindsync.service.SlideService;
 import com.project.mindsync.utils.AppConstants;
 
 @CrossOrigin(origins = { "http://localhost:4200", "http://localhost:4300", "http://localhost:4000" })
@@ -39,8 +36,6 @@ public class QuizController {
 	@Autowired
 	private QuizService quizService;
 
-	@Autowired
-	private SlideService slideService;
 
 	@GetMapping("/{id}")
 	public ResponseEntity<Quiz> getQuiz(@PathVariable(name = "id") Long id) {
