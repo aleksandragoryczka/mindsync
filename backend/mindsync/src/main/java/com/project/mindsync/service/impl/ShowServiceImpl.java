@@ -150,16 +150,10 @@ public class ShowServiceImpl implements ShowService {
 		throw new UnauthorizedException(apiResponse);
 	}
 
-	private ScreenshotResponseDto mapToScreenshotResponseDto(Screenshot screenshot) {
+	public ScreenshotResponseDto mapToScreenshotResponseDto(Screenshot screenshot) {
 		ScreenshotResponseDto screenshotResponse = new ScreenshotResponseDto();
 		screenshotResponse.setId(screenshot.getId());
 		screenshotResponse.setPicture(screenshot.getPicture());
-		// TODO: is it necessary? - byloby gdybym np. po kliknieciu na maly screenshot
-		// chciala go powiekszac - czy nie da sie tego dodac na forntendzie?
-		// String fileDownloadUri =
-		// ServletUriComponentsBuilder.fromCurrentContextPath().path("/screenshots/")
-		// .path(screenshotResponse.getId().toString()).toUriString();
-		// screenshotResponse.setUrl(fileDownloadUri);
 		return screenshotResponse;
 	}
 }

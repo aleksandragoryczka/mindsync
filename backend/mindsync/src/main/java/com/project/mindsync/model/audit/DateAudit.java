@@ -18,4 +18,5 @@ public abstract class DateAudit implements Serializable {
 	@CreatedDate
 	@Column(name = "created_at", nullable = false, updatable = false)
 	private Instant createdAt;
+	
 }

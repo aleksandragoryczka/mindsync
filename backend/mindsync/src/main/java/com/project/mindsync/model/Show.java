@@ -35,7 +35,6 @@ public class Show extends DateAudit {
 	@Column(name = "attendees_number")
 	private String attendeesNumber;
 
-	// @Lob
 	@Column(name = "excel_file", columnDefinition = "BYTEA")
 	private byte[] excelFile;
 
