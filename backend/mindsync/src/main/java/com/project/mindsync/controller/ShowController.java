@@ -34,15 +34,6 @@ public class ShowController {
 	@Autowired
 	private ShowService showService;
 
-	@GetMapping("/{id}")
-	public ResponseEntity<PagedResponseDto<ShowWithScreenshotsResponseDto>> getShowWithScreenshots(
-			@PathVariable(name = "id") Long id,
-			@RequestParam(name = "page", required = false, defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
-			@RequestParam(name = "size", required = false, defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size) {
-		PagedResponseDto<ShowWithScreenshotsResponseDto> response = showService.getShowWithScreenshots(id, page, size);
-		return ResponseEntity.ok().body(response);
-	}
-
 	@GetMapping("/{id}/screenshots")
 	public ResponseEntity<PagedResponseDto<ScreenshotResponseDto>> getScreenshotsByShowId(
 			@PathVariable(name = "id") Long id,

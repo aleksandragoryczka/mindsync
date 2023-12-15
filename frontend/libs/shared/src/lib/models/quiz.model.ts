@@ -9,3 +9,4 @@ export interface QuizModel {
   slides?: SlideModel[];
   shows?: ShowModel[];
 }
+

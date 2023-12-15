@@ -15,3 +15,4 @@ public class SpringdocConfig {
 		return new OpenAPI().info(new Info().title("MindSync"));
 	}
 }
+

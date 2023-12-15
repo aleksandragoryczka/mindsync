@@ -81,14 +81,6 @@ public class QuizController {
 		return ResponseEntity.ok().body(apiResponse);
 	}
 
-	@GetMapping("/{id}/allslides")
-	public ResponseEntity<PagedResponseDto<Slide>> getAllSlidesByQuiz(@PathVariable(name = "id") Long id,
-			@RequestParam(name = "page", required = false, defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
-			@RequestParam(name = "size", required = false, defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size) {
-		PagedResponseDto<Slide> slides = slideService.getAllSlidesByQuiz(id, page, size);
-		return ResponseEntity.ok().body(slides);
-	}
-
 	@GetMapping("/{id}/slides")
 	public ResponseEntity<QuizWithSlidesResponseDto> getQuizWithSlides(@PathVariable(name = "id") Long id) {
 		QuizWithSlidesResponseDto response = quizService.getQuizWithSlides(id);

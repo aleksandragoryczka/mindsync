@@ -21,7 +21,7 @@ import { OptionModel } from '../../../../../libs/shared/src/lib/models/option.mo
 import StorageRealod from 'libs/shared/src/lib/utils/storage-reload';
 import MultipleChoiceOptionsValidator from 'libs/shared/src/lib/utils/multiple-choice-options-validator';
 import { ShowService } from 'libs/shared/src/lib/services/show.service';
-import { SlideService } from 'libs/shared/src/lib/services/SlideService';
+import { SlideService } from 'libs/shared/src/lib/services/slide.service';
 
 @Component({
   selector: 'project-quiz-details',

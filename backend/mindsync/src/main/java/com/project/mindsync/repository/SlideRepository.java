@@ -14,3 +14,5 @@ public interface SlideRepository extends JpaRepository<Slide, Long> {
 
 	List<Slide> findByQuizId(Long quizId);
 }
+
+

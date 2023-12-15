@@ -8,7 +8,7 @@ import { Injectable } from '@angular/core';
 import { Observable, finalize } from 'rxjs';
 import { LoaderService } from '../services/loader.service';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class LoadingInterceptor implements HttpInterceptor {
   private totalRequests = 0;
 

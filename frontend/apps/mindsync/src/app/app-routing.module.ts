@@ -19,19 +19,30 @@ const routes: Routes = [
         component: DashboardComponent,
         canActivate: [authGuard],
       },
-      { path: 'profile', component: ProfileComponent },
-      { path: 'admin-panel', component: AdminPanelComponent },
+      {
+        path: 'profile',
+        component: ProfileComponent,
+        canActivate: [authGuard],
+      },
+      {
+        path: 'admin-panel',
+        component: AdminPanelComponent,
+        canActivate: [authGuard],
+      },
       {
         path: 'quiz/:id',
         component: QuizDetailsComponent,
+        canActivate: [authGuard],
       },
       {
         path: ':id/shows',
         component: ShowsComponent,
+        canActivate: [authGuard],
       },
       {
         path: ':id/start-show',
         component: StartShowComponent,
+        canActivate: [authGuard],
       },
     ],
   },
