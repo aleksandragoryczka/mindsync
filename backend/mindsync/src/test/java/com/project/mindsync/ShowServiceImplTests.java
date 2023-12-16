@@ -38,7 +38,7 @@ import com.project.mindsync.security.UserPrincipal;
 import com.project.mindsync.service.impl.ShowServiceImpl;
 import com.project.mindsync.utils.AppConstants;
 
-class ShowServiceImplTest {
+class ShowServiceImplTests {
 
 	@Mock
 	private QuizRepository quizRepository;
