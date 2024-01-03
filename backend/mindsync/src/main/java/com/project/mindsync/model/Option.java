@@ -26,9 +26,7 @@ public class Option {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
 	private String option;
-
 	private Boolean isCorrect;
 
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -44,7 +42,6 @@ public class Option {
 		this.id = id;
 		this.option = option;
 	}
-
 }
 
 

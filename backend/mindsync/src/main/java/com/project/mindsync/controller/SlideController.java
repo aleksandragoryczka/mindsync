@@ -46,7 +46,4 @@ public class SlideController {
 			@CurrentUser UserPrincipal currentUser) {
 		return slideService.deleteSlide(id, currentUser);
 	}
-
 }
-
-
